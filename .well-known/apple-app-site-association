@@ -1,0 +1,17 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "433222F9GS.com.shobukan.app"
+        ],
+        "components": [
+          {
+            "/": "/join/*",
+            "comment": "Ouvre une invitation Shobukan dans l'application."
+          }
+        ]
+      }
+    ]
+  }
+}
