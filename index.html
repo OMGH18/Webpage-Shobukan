@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shobukan — Party games manga entre amis</title>
+  <meta name="description" content="Shobukan : mini-jeux multijoueurs sur le thème du manga. Infiltré, Qui suis-je ?, Tabou, Trivia… En soirée sur un seul téléphone ou à distance avec un code.">
+  <meta name="robots" content="index,follow">
+  <meta property="og:title" content="Shobukan — Party games manga entre amis">
+  <meta property="og:description" content="Mini-jeux multijoueurs sur le thème du manga. En soirée sur un seul téléphone ou à distance avec un code.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://shobukan.djabelsolutions.fr/">
+  <link rel="canonical" href="https://shobukan.djabelsolutions.fr/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⛩️</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Shojumaru&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7f5ef;
+      --surface: #ffffff;
+      --text: #1a1520;
+      --muted: #6b6478;
+      --accent: #b21e30;
+      --accent-soft: #f4d9de;
+      --border: #e6e0d3;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 24px;
+    }
+    header .row {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      font-family: 'Shojumaru', serif;
+      font-size: 22px;
+      color: var(--accent);
+      letter-spacing: 0.5px;
+    }
+    .brand a { color: inherit; text-decoration: none; }
+    nav.top { font-size: 13px; display: flex; gap: 18px; }
+    nav.top a { color: var(--muted); text-decoration: none; }
+    nav.top a:hover { color: var(--accent); }
+    main.container { max-width: 720px; margin: 0 auto; padding: 56px 24px 80px; }
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0 0 6px;
+      font-weight: 700;
+    }
+    h1 {
+      font-family: 'Shojumaru', serif;
+      font-size: clamp(32px, 7vw, 52px);
+      margin: 0 0 14px;
+      letter-spacing: 0.3px;
+      line-height: 1.15;
+    }
+    .lede { font-size: 17px; color: var(--muted); max-width: 560px; margin: 0 0 28px; }
+    .soon {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      padding: 8px 18px;
+      margin-bottom: 56px;
+    }
+    /* TODO lancement : remplacer .soon par le badge App Store officiel
+       <a href="https://apps.apple.com/app/idXXXXXXXXX">…</a> */
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 56px; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 20px;
+    }
+    .card h3 { margin: 0 0 8px; font-size: 15px; }
+    .card p { margin: 0; font-size: 14px; color: var(--muted); }
+    section.block { margin-bottom: 48px; }
+    h2 {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      margin: 0 0 12px;
+    }
+    .support {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+    }
+    .support p { margin: 0 0 10px; font-size: 15px; }
+    .support a.mail {
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent-soft);
+    }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 24px 40px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    footer .row { max-width: 720px; margin: 0 auto; }
+    footer nav { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+    footer .legal { font-size: 12px; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="row">
+      <span class="brand"><a href="/">Shobukan</a></span>
+      <nav class="top">
+        <a href="#support">Support</a>
+        <a href="/privacy/">Confidentialité</a>
+        <a href="/terms/">Conditions</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <p class="eyebrow">Party game mobile</p>
+    <h1>Le party game manga, entre amis.</h1>
+    <p class="lede">
+      Infiltré, Qui suis-je ?, Tabou, Trivia… Des mini-jeux multijoueurs sur le
+      thème du manga, à jouer en soirée sur un seul téléphone ou à distance en
+      rejoignant une partie avec un simple code.
+    </p>
+    <span class="soon">Bientôt sur l'App Store</span>
+
+    <div class="cards">
+      <div class="card">
+        <h3>7 modes de jeu</h3>
+        <p>Démasque l'infiltré, fais deviner sans les mots interdits, retrouve l'intrus… un mode pour chaque ambiance.</p>
+      </div>
+      <div class="card">
+        <h3>En local, sans réseau</h3>
+        <p>Le téléphone passe de main en main : jouable partout, en soirée ou en convention, sans connexion.</p>
+      </div>
+      <div class="card">
+        <h3>En ligne avec un code</h3>
+        <p>Crée une partie, partage ton code à 6 caractères, et jouez chacun sur son téléphone — sans créer de compte.</p>
+      </div>
+    </div>
+
+    <section class="block" id="support">
+      <h2>Support</h2>
+      <div class="support">
+        <p>Une question, un problème, une suggestion ? Écris-nous :</p>
+        <p><a class="mail" href="mailto:support@djabelsolutions.fr">support@djabelsolutions.fr</a></p>
+        <p style="color:var(--muted); font-size:13px; margin:0;">Nous répondons généralement sous 48&nbsp;heures.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="row">
+      <nav>
+        <a href="/privacy/">Politique de confidentialité</a>
+        <a href="/terms/">Conditions d'utilisation</a>
+        <a href="mailto:support@djabelsolutions.fr">Contact</a>
+      </nav>
+      <p class="legal">
+        Shobukan est un jeu de culture générale indépendant. Il n'est affilié,
+        sponsorisé ni approuvé par aucun éditeur de manga ou d'anime. Les noms
+        d'œuvres et de personnages cités appartiennent à leurs ayants droit
+        respectifs.<br>
+        © 2026 Djabel Solutions.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
