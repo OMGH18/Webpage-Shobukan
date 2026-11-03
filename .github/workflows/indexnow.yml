@@ -1,0 +1,31 @@
+# Prévient Bing / Yandex (IndexNow) à chaque mise à jour du site.
+# Bing alimente la recherche de ChatGPT : une page notifiée y apparaît plus vite.
+name: IndexNow
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Attendre la fin du déploiement GitHub Pages
+        run: sleep 120
+      - name: Envoyer les URL du sitemap à IndexNow
+        run: |
+          urls=$(grep -oE '<loc>[^<]+</loc>' sitemap.xml | sed -E 's#</?loc>##g' | jq -R . | jq -s -c .)
+          body=$(jq -n -c --argjson urls "$urls" '{
+            host: "shobukan.djabelsolutions.fr",
+            key: "aea40d54f8e080aad7444dbc0fd0f931",
+            keyLocation: "https://shobukan.djabelsolutions.fr/aea40d54f8e080aad7444dbc0fd0f931.txt",
+            urlList: $urls
+          }')
+          echo "$body"
+          code=$(curl -s -o /dev/null -w '%{http_code}' -X POST https://api.indexnow.org/indexnow \
+            -H 'Content-Type: application/json; charset=utf-8' -d "$body")
+          echo "IndexNow HTTP $code"
+          # 200 = OK, 202 = clé en cours de validation (normal la première fois)
+          [ "$code" = "200" ] || [ "$code" = "202" ]

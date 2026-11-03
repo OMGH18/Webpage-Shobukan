@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://shobukan.djabelsolutions.fr/</loc>
+    <lastmod>2026-11-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://shobukan.djabelsolutions.fr/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://shobukan.djabelsolutions.fr/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://shobukan.djabelsolutions.fr/en/"/>
+  </url>
+  <url>
+    <loc>https://shobukan.djabelsolutions.fr/en/</loc>
+    <lastmod>2026-11-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://shobukan.djabelsolutions.fr/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://shobukan.djabelsolutions.fr/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://shobukan.djabelsolutions.fr/en/"/>
+  </url>
+  <url>
+    <loc>https://shobukan.djabelsolutions.fr/prix/</loc>
+    <lastmod>2026-11-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://shobukan.djabelsolutions.fr/prix/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://shobukan.djabelsolutions.fr/en/pricing/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://shobukan.djabelsolutions.fr/en/pricing/"/>
+  </url>
+  <url>
+    <loc>https://shobukan.djabelsolutions.fr/en/pricing/</loc>
+    <lastmod>2026-11-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://shobukan.djabelsolutions.fr/prix/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://shobukan.djabelsolutions.fr/en/pricing/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://shobukan.djabelsolutions.fr/en/pricing/"/>
+  </url>
+  <url>
+    <loc>https://shobukan.djabelsolutions.fr/privacy/</loc>
+    <lastmod>2026-11-03</lastmod>
+  </url>
+  <url>
+    <loc>https://shobukan.djabelsolutions.fr/terms/</loc>
+    <lastmod>2026-11-03</lastmod>
+  </url>
+  <url>
+    <loc>https://shobukan.djabelsolutions.fr/account-deletion/</loc>
+    <lastmod>2026-11-03</lastmod>
+  </url>
+</urlset>

@@ -11,7 +11,11 @@
   <meta property="og:title" content="Rejoins ma partie Shobukan !">
   <meta property="og:description" content="On lance une partie de mini-jeux manga — rejoins-nous avec le code d'invitation.">
   <meta property="og:type" content="website">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⛩️</text></svg>">
+  <meta property="og:image" content="https://shobukan.djabelsolutions.fr/assets/og-fr.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="apple-itunes-app" content="app-id=6778133739" id="itunes-banner">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Shojumaru&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -100,6 +104,8 @@
     }
     .btn.primary { background: var(--accent); color: #fff; }
     .btn.primary:active { opacity: 0.85; }
+    .btn.dark { background: var(--text); color: #fff; }
+    .btn.dark:hover { background: var(--accent); }
     .soon {
       display: inline-block;
       font-size: 13px;
@@ -154,14 +160,13 @@
         <a class="btn primary" id="open-app" href="#">J'ai déjà l'app — ouvrir</a>
       </p>
       <p>
-        <!-- TODO lancement : remplacer par le lien App Store réel
-             <a class="btn primary" href="https://apps.apple.com/app/idXXXXXXXXX">Télécharger l'app</a> -->
-        <span class="soon">Bientôt sur l'App Store</span>
+        <a class="btn dark" href="https://apps.apple.com/fr/app/shobukan-jeu-multi-anime/id6778133739">Télécharger sur l'App Store</a>
+        <a class="btn dark" href="https://play.google.com/store/apps/details?id=com.shobukan.app&amp;referrer=utm_source%3Dsite%26utm_medium%3Dinvite">Télécharger sur Google Play</a>
       </p>
       <div class="steps">
         <strong>Comment rejoindre :</strong>
         <ol>
-          <li>Ouvre l'app Shobukan</li>
+          <li>Installe Shobukan (gratuit) et ouvre l'app</li>
           <li>Appuie sur « Rejoindre »</li>
           <li>Entre le code ci-dessus</li>
         </ol>
@@ -198,6 +203,9 @@
         // Ouvre l'app via le scheme custom pour les cas où l'universal link
         // n'a pas été intercepté (app installée mais lien ouvert dans le navigateur).
         document.getElementById('open-app').setAttribute('href', 'shobukan://join/' + code)
+        // Bannière iOS : ouvre directement la bonne partie si l'app est installée.
+        document.getElementById('itunes-banner').setAttribute('content',
+          'app-id=6778133739, app-argument=https://shobukan.djabelsolutions.fr/join/' + code)
         invite.classList.remove('hidden')
       } else {
         document.title = 'Page introuvable — Shobukan'
