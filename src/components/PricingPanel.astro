@@ -1,110 +1,70 @@
 ---
-import { Image } from 'astro:assets'
-import type { ImageMetadata } from 'astro'
-import shinobi from '../assets/art/shobukan-shinobi-back.png'
-import { PRICES, UNIVERSES, formatPrice, quizPath, universeName, type Lang } from '../data/product'
+import { PRICES, UNIVERSES, formatPrice, type Lang } from '../data/product'
 import { ROUTES } from '../i18n/ui'
 
 interface Props { lang: Lang; showDetailsLink?: boolean }
 const { lang, showDetailsLink = true } = Astro.props
 const fr = lang === 'fr'
 const p = (v: number) => formatPrice(v, lang)
-const art = import.meta.glob<{ default: ImageMetadata }>('../assets/universes/*.png', { eager: true })
-const artFor = (id: string) => art[`../assets/universes/${id.replaceAll('_', '-')}.png`]?.default
 
 const c = fr
   ? {
       monthly: 'Mensuel', yearly: 'Annuel', save: '-25 %',
-      pickTitle: 'Mon choix', pickBody: "L'annuel, c'est le meilleur prix !",
-      free: { name: 'Gratuit', price: p(0), per: '', items: ['Tous les modes', `Les ${UNIVERSES.length} univers manga`, 'Parties sur un téléphone illimitées', 'Rejoindre en ligne sans limite', `${PRICES.freeHostedGames} parties en ligne hébergées`, 'Avec publicités'], cta: 'Jouer gratuitement' },
+      free: { name: 'Gratuit', price: p(0), sub: 'Pour toujours', items: ['Tous les modes', `Les ${UNIVERSES.length} univers manga`, 'Parties sur un téléphone illimitées', 'Rejoindre en ligne sans limite', `${PRICES.freeHostedGames} parties en ligne hébergées`, 'Avec publicités'], cta: 'Jouer gratuitement' },
       premium: { name: 'Premium', badge: 'Recommandé', perMonth: '/mois', perYear: '/an', yearlyNote: `soit ${p(PRICES.yearlyPerMonth)} par mois`, monthlyNote: 'Sans engagement', items: ['Zéro pub, pour toute la table', 'Parties en ligne illimitées', 'Vies illimitées en Expédition', '1 crédit créateur inclus', 'Accès anticipé aux nouveautés'], cta: 'Passer Premium' },
-      credit: { name: 'Crédit créateur', price: p(PRICES.creatorCredit), per: '/pack', items: ['Crée ton propre pack', 'Tes questions ou tes mots', 'Jouable gratuitement par tous', 'Achat unique, sans abonnement'], cta: 'Créer un pack' },
+      credit: { name: 'Crédit créateur', price: p(PRICES.creatorCredit), per: '/pack', sub: 'À l’unité', items: ['Crée ton propre pack', 'Tes questions ou tes mots', 'Jouable gratuitement par tous', 'Achat unique, sans abonnement'], cta: 'Créer un pack' },
       trust: ['Sans engagement', 'Résiliable à tout moment', 'Mêmes prix sur iPhone et Android', 'Rejoindre une partie est gratuit'],
-      details: 'Détail complet des prix et de ce qui est inclus',
+      details: 'Détail complet des prix',
       note: 'Prix de référence en France. Le store affiche le prix exact dans ta devise avant l’achat.',
     }
   : {
       monthly: 'Monthly', yearly: 'Yearly', save: '-25%',
-      pickTitle: 'My pick', pickBody: 'Yearly is the best price!',
-      free: { name: 'Free', price: p(0), per: '', items: ['Every mode', `All ${UNIVERSES.length} manga universes`, 'Unlimited same-phone games', 'Join online without limit', `Host ${PRICES.freeHostedGames} online games`, 'With ads'], cta: 'Play for free' },
+      free: { name: 'Free', price: p(0), sub: 'Forever', items: ['Every mode', `All ${UNIVERSES.length} manga universes`, 'Unlimited same-phone games', 'Join online without limit', `Host ${PRICES.freeHostedGames} online games`, 'With ads'], cta: 'Play for free' },
       premium: { name: 'Premium', badge: 'Recommended', perMonth: '/month', perYear: '/year', yearlyNote: `that's ${p(PRICES.yearlyPerMonth)} per month`, monthlyNote: 'No commitment', items: ['No ads, for the whole table', 'Unlimited online games', 'Unlimited Expedition lives', '1 creator credit included', 'Early access to new content'], cta: 'Go Premium' },
-      credit: { name: 'Creator credit', price: p(PRICES.creatorCredit), per: '/pack', items: ['Create your own pack', 'Your questions or words', 'Free for everyone to play', 'One-off, no subscription'], cta: 'Create a pack' },
+      credit: { name: 'Creator credit', price: p(PRICES.creatorCredit), per: '/pack', sub: 'Pay per pack', items: ['Create your own pack', 'Your questions or words', 'Free for everyone to play', 'One-off, no subscription'], cta: 'Create a pack' },
       trust: ['No commitment', 'Cancel anytime', 'Same price on iPhone and Android', 'Joining a game is free'],
-      details: 'Full pricing and what’s included',
+      details: 'Full pricing details',
       note: 'Reference prices in France. The store shows the exact price in your currency before you buy.',
     }
-const trustIcons = [
-  'M4 7h16v13H4zM4 7l2-4h12l2 4M9 12h6',
-  'M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4',
-  'M7 3h10a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm4 15h2',
-  'M15 19a4 4 0 0 0-8 0M11 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm6-1v6m3-3h-6',
-]
 ---
 
 <div class="pricing" data-plan="yearly">
-  <div class="stage">
-    <svg class="blob b1" viewBox="0 0 200 200" aria-hidden="true"><path d="M44 -60C58 -48 71 -35 74 -20C77 -5 70 12 61 28C52 45 40 61 23 70C6 79 -16 82 -34 74C-52 66 -66 48 -72 28C-78 8 -76 -14 -66 -31C-56 -48 -38 -61 -19 -69C0 -77 30 -72 44 -60Z" transform="translate(100 100)" fill="#e3263d"/></svg>
-    <svg class="blob b2" viewBox="0 0 200 200" aria-hidden="true"><path d="M39 -52C51 -42 61 -29 66 -13C71 3 70 21 61 34C52 47 35 55 17 61C-1 67 -20 71 -36 64C-52 57 -65 39 -70 19C-75 -1 -72 -23 -61 -38C-50 -53 -31 -61 -13 -64C5 -67 27 -62 39 -52Z" transform="translate(100 100)" fill="#f5c842"/></svg>
-
-    <div class="toggle" role="group" aria-label={fr ? 'Période de facturation' : 'Billing period'}>
-      <button type="button" data-set="monthly">{c.monthly}</button>
-      <button type="button" data-set="yearly" aria-pressed="true">{c.yearly} <span class="save">{c.save}</span></button>
-    </div>
-
-    <div class="mascot" aria-hidden="true">
-      <div class="speech"><b>{c.pickTitle}</b><span>{c.pickBody}</span></div>
-      <Image src={shinobi} alt="" width={260} loading="lazy" />
-    </div>
-
-    <div class="plans">
-      <div class="plan">
-        <h3>{c.free.name}</h3>
-        <p class="price"><b>{c.free.price}</b></p>
-        <p class="note-line">{fr ? 'Pour toujours' : 'Forever'}</p>
-        <ul class="check">{c.free.items.map((i) => <li>{i}</li>)}</ul>
-        <a class="btn btn-ghost plan-cta" href="#download">{c.free.cta}</a>
-      </div>
-      <div class="plan hl">
-        <span class="ribbon">{c.premium.badge}</span>
-        <h3>{c.premium.name}</h3>
-        <p class="price">
-          <b class="y">{p(PRICES.yearly)}</b><b class="m">{p(PRICES.monthly)}</b>
-          <span class="y">{c.premium.perYear}</span><span class="m">{c.premium.perMonth}</span>
-        </p>
-        <p class="note-line"><span class="y">{c.premium.yearlyNote}</span><span class="m">{c.premium.monthlyNote}</span></p>
-        <ul class="check">{c.premium.items.map((i) => <li>{i}</li>)}</ul>
-        <a class="btn btn-primary plan-cta" href="#download">{c.premium.cta}</a>
-      </div>
-      <div class="plan">
-        <h3>{c.credit.name}</h3>
-        <p class="price"><b>{c.credit.price}</b> <span>{c.credit.per}</span></p>
-        <p class="note-line">{fr ? 'À l’unité' : 'Pay per pack'}</p>
-        <ul class="check">{c.credit.items.map((i) => <li>{i}</li>)}</ul>
-        <a class="btn btn-ghost plan-cta" href="#download">{c.credit.cta}</a>
-      </div>
-    </div>
-
-    <ul class="logos" aria-label={fr ? 'Les univers du jeu' : 'Universes in the game'}>
-      {UNIVERSES.map((u) => {
-        const img = artFor(u.id)
-        return (
-          <li style={`--c1:${u.colors[0]};--c3:${u.colors[2]}`}>
-            <a href={quizPath(u, lang)} title={`Quiz ${universeName(u, lang)}`}>
-              {img && <Image src={img} alt={universeName(u, lang)} width={80} height={80} loading="lazy" />}
-            </a>
-          </li>
-        )
-      })}
-    </ul>
+  <div class="toggle" role="group" aria-label={fr ? 'Période de facturation' : 'Billing period'}>
+    <button type="button" data-set="monthly">{c.monthly}</button>
+    <button type="button" data-set="yearly" aria-pressed="true">{c.yearly} <span class="save">{c.save}</span></button>
   </div>
 
-  <ul class="trust">
-    {c.trust.map((tr, i) => (
-      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d={trustIcons[i]} fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>{tr}</li>
-    ))}
-  </ul>
+  <div class="plans">
+    <div class="card plan">
+      <h3>{c.free.name}</h3>
+      <p class="price"><b>{c.free.price}</b></p>
+      <p class="sub">{c.free.sub}</p>
+      <ul class="check">{c.free.items.map((i) => <li>{i}</li>)}</ul>
+      <a class="btn btn-ghost plan-cta" href="#download">{c.free.cta}</a>
+    </div>
+    <div class="card plan hl">
+      <span class="tag ribbon">{c.premium.badge}</span>
+      <h3>{c.premium.name}</h3>
+      <p class="price">
+        <b class="y">{p(PRICES.yearly)}</b><b class="m">{p(PRICES.monthly)}</b>
+        <span class="y">{c.premium.perYear}</span><span class="m">{c.premium.perMonth}</span>
+      </p>
+      <p class="sub"><span class="y">{c.premium.yearlyNote}</span><span class="m">{c.premium.monthlyNote}</span></p>
+      <ul class="check">{c.premium.items.map((i) => <li>{i}</li>)}</ul>
+      <a class="btn btn-primary plan-cta" href="#download">{c.premium.cta}</a>
+    </div>
+    <div class="card plan">
+      <h3>{c.credit.name}</h3>
+      <p class="price"><b>{c.credit.price}</b> <span>{c.credit.per}</span></p>
+      <p class="sub">{c.credit.sub}</p>
+      <ul class="check">{c.credit.items.map((i) => <li>{i}</li>)}</ul>
+      <a class="btn btn-ghost plan-cta" href="#download">{c.credit.cta}</a>
+    </div>
+  </div>
+
+  <ul class="trust">{c.trust.map((tr) => <li>{tr}</li>)}</ul>
   <p class="foot">
-    {showDetailsLink && <a href={ROUTES.pricing[lang]}>{c.details}</a>}
+    {showDetailsLink && <a href={ROUTES.pricing[lang]}>{c.details} →</a>}
     <span>{c.note}</span>
   </p>
 </div>
@@ -122,79 +82,35 @@ const trustIcons = [
 </script>
 
 <style>
-  .stage {
-    position: relative; overflow: hidden;
-    border-radius: var(--radius-lg);
-    background:
-      radial-gradient(circle at 20% 15%, #fff 0, transparent 40%),
-      radial-gradient(rgba(18, 6, 9, 0.12) 1px, transparent 1.4px) 0 0 / 16px 16px,
-      linear-gradient(135deg, #fff1ec, #fde3e7 45%, #fff6dc);
-    padding: clamp(24px, 4vw, 40px) clamp(16px, 3vw, 32px) clamp(24px, 3vw, 32px);
-    color: #120609;
-  }
-  .blob { position: absolute; pointer-events: none; opacity: 0.95; }
-  .b1 { width: 260px; left: -90px; top: -80px; }
-  .b2 { width: 220px; right: -70px; bottom: 60px; }
-
-  .toggle {
-    position: relative; z-index: 2; display: inline-flex; gap: 4px; padding: 5px;
-    background: #fff; border: 3px solid #120609; border-radius: 999px; box-shadow: 4px 4px 0 #120609;
-  }
-  .toggle button {
-    font: inherit; font-weight: 700; font-size: 14px; border: 0; cursor: pointer;
-    padding: 8px 16px; border-radius: 999px; background: transparent; color: #120609;
-  }
+  .toggle { display: inline-flex; gap: 4px; padding: 4px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 999px; }
+  .toggle button { font: inherit; font-weight: 600; font-size: 14px; border: 0; cursor: pointer; padding: 8px 16px; border-radius: 999px; background: transparent; color: var(--muted); }
   .toggle button[aria-pressed='true'] { background: var(--accent); color: #fff; }
-  .save { font-size: 11px; background: #c9f26b; color: #120609; border: 2px solid #120609; border-radius: 999px; padding: 1px 6px; margin-left: 4px; }
+  .save { font-size: 11px; font-weight: 800; color: #120609; background: var(--gold); border-radius: 999px; padding: 1px 6px; margin-left: 4px; }
 
-  .mascot { position: absolute; z-index: 1; right: clamp(16px, 6vw, 90px); top: 6px; display: flex; align-items: flex-start; gap: 6px; }
-  .mascot :global(img) { width: 120px; height: auto; transform: scaleX(-1) rotate(-6deg); filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.25)); }
-  .speech {
-    position: relative; margin-top: 18px; background: #fff; border: 3px solid #120609; border-radius: 16px;
-    padding: 9px 13px; box-shadow: 4px 4px 0 #120609; max-width: 190px; font-size: 14px; line-height: 1.25; transform: rotate(-3deg);
+  .plans { display: grid; gap: 12px; margin-top: 18px; }
+  @media (min-width: 860px) { .plans { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+  .plan { position: relative; padding: 24px 22px 22px; display: flex; flex-direction: column; }
+  .plan.hl {
+    border-color: rgba(255, 51, 72, 0.6);
+    background:
+      radial-gradient(120% 70% at 50% 0%, var(--brand-subtle), transparent 70%),
+      radial-gradient(rgba(255, 246, 230, 0.05) 1px, transparent 1.4px) 0 0 / 12px 12px,
+      var(--surface-2);
+    box-shadow: 0 20px 50px rgba(255, 51, 72, 0.14), var(--elev-1);
   }
-  .speech b { display: block; color: var(--accent); font-family: var(--font-display); text-transform: uppercase; font-size: 16px; }
-  .speech::after { content: ''; position: absolute; right: -11px; top: 22px; width: 16px; height: 16px; background: #fff; border-right: 3px solid #120609; border-top: 3px solid #120609; transform: rotate(45deg); }
-  @media (max-width: 760px) {
-    .mascot { position: relative; right: auto; top: auto; margin: 18px 0 -6px; justify-content: flex-end; }
-    .mascot :global(img) { width: 92px; }
-  }
-
-  .plans { position: relative; z-index: 2; display: grid; gap: 14px; margin-top: 64px; align-items: end; }
-  @media (min-width: 860px) { .plans { grid-template-columns: 1fr 1.08fr 1fr; gap: 18px; } }
-  @media (max-width: 760px) { .plans { margin-top: 10px; } }
-  .plan {
-    position: relative; background: #17171a; color: var(--text); border: 3px solid #120609; border-radius: 20px;
-    padding: 24px 22px 22px; box-shadow: 6px 6px 0 #120609, inset 0 1px 0 rgba(255, 255, 255, 0.06);
-    display: flex; flex-direction: column;
-  }
-  .plan.hl { padding-top: 30px; outline: 3px solid var(--gold); outline-offset: -9px; }
-  .ribbon {
-    position: absolute; right: 16px; top: -15px; transform: rotate(4deg);
-    background: var(--gold); color: #120609; border: 3px solid #120609; border-radius: 8px;
-    font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px;
-  }
-  .plan h3 { font-family: var(--font-display); text-transform: uppercase; font-size: 20px; letter-spacing: -0.02em; }
-  .price { margin: 10px 0 0; display: flex; align-items: baseline; gap: 6px; }
-  .price b { font-family: var(--font-display); font-size: clamp(40px, 4.4vw, 54px); letter-spacing: -0.04em; line-height: 1; }
+  .ribbon { position: absolute; right: 18px; top: 20px; }
+  .plan h3 { font-family: var(--font-display); font-weight: 800; font-size: 18px; }
+  .price { margin: 12px 0 0; display: flex; align-items: baseline; gap: 6px; }
+  .price b { font-family: var(--font-display); font-weight: 800; font-size: clamp(38px, 4vw, 48px); letter-spacing: -0.04em; line-height: 1; }
   .price span { color: var(--muted); }
-  .note-line { margin: 6px 0 0; color: var(--gold); font-size: 14px; font-weight: 600; }
+  .sub { margin: 6px 0 0; color: var(--gold); font-size: 14px; font-weight: 600; }
   .plan .check { margin: 18px 0 22px; flex: 1; }
   .plan-cta { width: 100%; }
   .pricing[data-plan='yearly'] .m, .pricing[data-plan='monthly'] .y { display: none; }
 
-  .logos { position: relative; z-index: 2; list-style: none; padding: 0; margin: 26px 0 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-  .logos a {
-    display: grid; place-items: center; width: 48px; height: 48px; border-radius: 12px;
-    background: radial-gradient(circle at 50% 40%, var(--c1), var(--c3));
-    border: 3px solid #120609; box-shadow: 3px 3px 0 #120609; transition: transform 0.15s;
-  }
-  .logos a:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 #120609; }
-  .logos :global(img) { width: 32px; height: 32px; object-fit: contain; }
-
-  .trust { list-style: none; padding: 0; margin: 18px 0 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 26px; color: var(--muted); font-size: 14px; }
+  .trust { list-style: none; padding: 0; margin: 18px 0 0; display: flex; flex-wrap: wrap; gap: 8px 22px; color: var(--muted); font-size: 14px; }
   .trust li { display: inline-flex; align-items: center; gap: 8px; }
-  .trust svg { width: 17px; height: 17px; color: var(--accent-hot); }
-  .foot { text-align: center; margin: 12px 0 0; font-size: 13px; color: var(--faint); display: grid; gap: 4px; }
-  .foot a { color: var(--text); font-size: 14px; }
+  .trust li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .foot { margin: 10px 0 0; font-size: 13px; color: var(--faint); display: flex; flex-wrap: wrap; gap: 4px 16px; }
+  .foot a { color: var(--text); font-weight: 600; font-size: 14px; text-decoration: none; }
 </style>

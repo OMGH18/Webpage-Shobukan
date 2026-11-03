@@ -8,15 +8,15 @@ import PricingPanel from './PricingPanel.astro'
 import Faq from './Faq.astro'
 import CtaBand from './CtaBand.astro'
 import icon from '../assets/art/icon.png'
+import arena from '../assets/art/arena-shonen-pop.jpg'
+import UniverseMarquee from './UniverseMarquee.astro'
 import undercoverBg from '../assets/art/undercover-game-bg.jpg'
 import quizArt from '../assets/art/otaku-quiz.jpg'
 import undercoverArt from '../assets/art/undercover.jpg'
 import gridMark from '../assets/art/anime-grid-mark.png'
 import village from '../assets/art/campaign-village.jpg'
 import shinobi from '../assets/art/shobukan-shinobi-back.png'
-import quizFr from '../data/quiz-fr.json'
-import quizEn from '../data/quiz-en.json'
-import { CONTENT, PLAYERS, PRICES, SITE, UNIVERSES, formatPrice, quizPath, universeName, type Lang } from '../data/product'
+import { CONTENT, PLAYERS, PRICES, SITE, UNIVERSES, formatPrice, universeName, type Lang } from '../data/product'
 import { ROUTES } from '../i18n/ui'
 import { app, faqPage, organization, website } from '../data/schema'
 
@@ -26,22 +26,17 @@ const fr = lang === 'fr'
 const p = (v: number) => formatPrice(v, lang)
 const nf = new Intl.NumberFormat(fr ? 'fr-FR' : 'en-US')
 const universeList = UNIVERSES.map((u) => universeName(u, lang)).join(', ')
-const counts = ((fr ? quizFr : quizEn) as { counts: Record<string, number> }).counts
-const art = import.meta.glob<{ default: ImageMetadata }>('../assets/universes/*.png', { eager: true })
-const artFor = (id: string) => art[`../assets/universes/${id.replaceAll('_', '-')}.png`]?.default
-const byId = (id: string) => UNIVERSES.find((u) => u.id === id)!
-const fanLeft = ['naruto', 'one_piece', 'jujutsu_kaisen'].map(byId)
-const fanRight = ['demon_slayer', 'dragon_ball', 'chainsaw_man'].map(byId)
 
 const c = fr
   ? {
       title: 'Shobukan : quiz manga et Undercover anime entre amis',
       description: 'Jeu mobile gratuit de soirée sur le manga (iPhone, Android) : Undercover, Otaku Quiz, Anime Grid du jour. Sur un seul téléphone ou en ligne avec un code.',
-      h1a: 'Party game', h1b: 'manga',
-      lede: `Shobukan est un jeu mobile gratuit de soirée sur le thème du manga. Undercover, quiz et défis quotidiens sur ${UNIVERSES.length} univers.`,
+      h1a: 'Ce soir,', h1b: "l'un de vous ment.",
+      bubble1: "C'est pas moi !", bubble2: 'Trop facile.', sfx: 'DOKI !',
+      univTitle: 'De Naruto à Kingdom', univSub: 'Touche un manga pour tester son quiz gratuit.',
+      lede: `Shobukan est un jeu mobile gratuit de soirée sur le thème du manga : Undercover, quiz et défis quotidiens sur ${UNIVERSES.length} univers.`,
       lede2: 'Sur un seul téléphone, même sans réseau, ou en ligne avec tes potes.',
-      qLabel: 'questions',
-      ucA: "Ce soir, l'un de vous", ucB: 'ment.',
+            ucA: 'Undercover :', ucB: 'trouve l’infiltré.',
       ucList: ['Chacun reçoit un mot secret tiré d’un manga', "L'infiltré a un mot proche… et ne le sait pas", 'Un indice chacun, un vote, un démasqué'],
       ucCta: 'Les règles du jeu', ucChip: `${PLAYERS.undercoverMin} à ${PLAYERS.undercoverMax} joueurs · en ligne ou même téléphone`,
       tiles: [
@@ -81,11 +76,12 @@ const c = fr
   : {
       title: 'Shobukan: anime quiz and Undercover party game with friends',
       description: 'Free mobile party game about manga (iPhone, Android): Undercover, Otaku Quiz and a daily Anime Grid. Play on one phone or online with a code.',
-      h1a: 'Party game', h1b: 'manga',
-      lede: `Shobukan is a free mobile party game about manga and anime. Undercover, quizzes and daily challenges across ${UNIVERSES.length} universes.`,
+      h1a: 'Tonight,', h1b: 'one of you is lying.',
+      bubble1: 'It wasn’t me!', bubble2: 'Too easy.', sfx: 'DOKI!',
+      univTitle: 'From Naruto to Kingdom', univSub: 'Tap an anime to try its free quiz.',
+      lede: `Shobukan is a free mobile party game about manga and anime: Undercover, quizzes and daily challenges across ${UNIVERSES.length} universes.`,
       lede2: 'On a single phone, even offline, or online with your friends.',
-      qLabel: 'questions',
-      ucA: 'Tonight, one of you', ucB: 'is lying.',
+            ucA: 'Undercover:', ucB: 'find the impostor.',
       ucList: ['Everyone gets a secret word from a manga', 'The impostor has a close word… and doesn’t know it', 'One clue each, one vote, one busted'],
       ucCta: 'How to play', ucChip: `${PLAYERS.undercoverMin} to ${PLAYERS.undercoverMax} players · online or one phone`,
       tiles: [
@@ -127,47 +123,23 @@ const tileImg: Record<string, ImageMetadata> = { quiz: quizArt, grid: gridMark, 
 const path = ROUTES.home[lang]
 const medium = `home_${lang}`
 const jsonLd = [organization(), website(), app(lang), faqPage(`${SITE}${path}#faq`, c.faq)]
-const fanCard = (u: (typeof UNIVERSES)[number]) => ({ u, img: artFor(u.id), n: Math.floor((counts[u.id] ?? 0) / 10) * 10 })
 ---
 
 <Base lang={lang} title={c.title} description={c.description} path={path} alternates={{ fr: ROUTES.home.fr, en: ROUTES.home.en }} jsonLd={jsonLd}>
   <div class="wrap stack">
-    <!-- HERO : bannière avec cartes en éventail -->
+    <!-- HERO : texte + planche de manga -->
     <section class="hero">
-      <div class="fan left" aria-hidden="true">
-        {fanLeft.map(fanCard).map(({ u, img, n }, i) => (
-          <a class={`fcard f${i}`} href={quizPath(u, lang)} tabindex="-1" style={`--c1:${u.colors[0]};--c2:${u.colors[1]};--c3:${u.colors[2]}`}>
-            <span class="fhead">{universeName(u, lang)}</span>
-            {img && <Image src={img} alt="" width={200} loading="eager" />}
-            <span class="fstat"><b>{n}+</b> {c.qLabel}</span>
-            <span class="fok">QUIZ ✓</span>
-          </a>
-        ))}
+      <div class="hero-copy">
+        <p class="brandline"><Image src={icon} alt="" width={48} height={48} loading="eager" />Shobukan</p>
+        <h1 class="display">{c.h1a}<br /><span class="hl">{c.h1b}</span></h1>
+        <p class="hero-lede"><strong>{c.lede}</strong> {c.lede2}</p>
+        <StoreButtons lang={lang} medium={medium} />
       </div>
-      <div class="fan right" aria-hidden="true">
-        {fanRight.map(fanCard).map(({ u, img, n }, i) => (
-          <a class={`fcard f${i}`} href={quizPath(u, lang)} tabindex="-1" style={`--c1:${u.colors[0]};--c2:${u.colors[1]};--c3:${u.colors[2]}`}>
-            <span class="fhead">{universeName(u, lang)}</span>
-            {img && <Image src={img} alt="" width={200} loading="eager" />}
-            <span class="fstat"><b>{n}+</b> {c.qLabel}</span>
-            <span class="fok">QUIZ ✓</span>
-          </a>
-        ))}
-      </div>
-      <svg class="wires" viewBox="0 0 1400 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <path d="M250 200 C 420 170, 470 250, 560 250" />
-        <path d="M300 330 C 430 340, 470 280, 560 268" />
-        <path d="M1150 190 C 980 170, 930 250, 840 250" />
-        <path d="M1100 340 C 970 340, 930 280, 840 268" />
-      </svg>
-      <div class="vignette" aria-hidden="true"></div>
-      <div class="hero-center">
-        <h1>
-          <span class="brandline"><Image src={icon} alt="" width={48} height={48} loading="eager" />Shobukan</span>
-          <span class="display mix"><b>{c.h1a}</b> <i>{c.h1b}</i></span>
-        </h1>
-        <p class="hero-lede">{c.lede}<br /><span>{c.lede2}</span></p>
-        <StoreButtons lang={lang} medium={medium} center />
+      <div class="page" aria-hidden="true">
+        <div class="panel-m pa"><Image src={arena} alt="" width={560} loading="eager" fetchpriority="high" /></div>
+        <div class="panel-m pb"><Image src={undercoverArt} alt="" width={360} loading="eager" /><span class="bubble b1">{c.bubble1}</span></div>
+        <div class="panel-m pc"><Image src={quizArt} alt="" width={360} loading="eager" /><span class="bubble b2">{c.bubble2}</span></div>
+        <span class="sfx">{c.sfx}</span>
       </div>
     </section>
 
@@ -203,7 +175,7 @@ const fanCard = (u: (typeof UNIVERSES)[number]) => ({ u, img: artFor(u.id), n: M
     <section class="shows">
       <figure class="show reveal">
         <div class="art a-quiz">
-          <p class="display mix stitle"><b>{c.shows[0].a}</b> <i>{c.shows[0].b}</i></p>
+          <p class="display stitle">{c.shows[0].a} {c.shows[0].b}</p>
           <div class="mini">
             <span class="mq">{fr ? 'Combien de sabres utilise Zoro ?' : 'How many swords does Zoro use?'}</span>
             <span class="mo">2</span><span class="mo ok">3</span><span class="mo">4</span><span class="mo">5</span>
@@ -214,7 +186,7 @@ const fanCard = (u: (typeof UNIVERSES)[number]) => ({ u, img: artFor(u.id), n: M
       </figure>
       <figure class="show reveal">
         <div class="art a-grid">
-          <p class="display mix stitle"><b>{c.shows[1].a}</b> <i>{c.shows[1].b}</i></p>
+          <p class="display stitle">{c.shows[1].a} {c.shows[1].b}</p>
           <Image class="gmark" src={gridMark} alt="" width={280} loading="lazy" />
           <span class="rar r1">{c.rare[0]}</span><span class="rar r2">{c.rare[1]}</span><span class="rar r3">{c.rare[2]}</span>
         </div>
@@ -222,7 +194,7 @@ const fanCard = (u: (typeof UNIVERSES)[number]) => ({ u, img: artFor(u.id), n: M
       </figure>
       <figure class="show reveal">
         <div class="art a-exp">
-          <p class="display mix stitle"><b>{c.shows[2].a}</b> <i>{c.shows[2].b}</i></p>
+          <p class="display stitle">{c.shows[2].a}</p>
           <div class="frame"><Image src={village} alt="" width={420} loading="lazy" /></div>
           <Image class="ninja" src={shinobi} alt="" width={160} loading="lazy" />
         </div>
@@ -243,8 +215,6 @@ const fanCard = (u: (typeof UNIVERSES)[number]) => ({ u, img: artFor(u.id), n: M
               <li><span class="sn">{s.n}</span><span class="st"><b>{s.t}</b><small>{s.s}</small></span></li>
             ))}
           </ol>
-          <p class="well-title display">{c.storyTitleA} <span class="hl">{c.storyTitleB}</span></p>
-          <span class="pager">01 / 04</span>
         </div>
         <a class="btn btn-primary" href={ROUTES.undercover[lang]}>{c.ucCta}</a>
       </article>
@@ -255,13 +225,18 @@ const fanCard = (u: (typeof UNIVERSES)[number]) => ({ u, img: artFor(u.id), n: M
         </header>
         <div class="well">
           <QuickQuestion lang={lang} />
-          <p class="well-title display">{c.quizTitleA} <span class="hl">{c.quizTitleB}</span></p>
-          <span class="pager">01 / 18</span>
         </div>
         <a class="btn btn-primary" href={ROUTES.quiz[lang]}>{c.quizCta}</a>
       </article>
     </section>
 
+    <!-- UNIVERS -->
+    <section class="univ">
+      <div class="univ-head"><h2 class="display">{c.univTitle}</h2><p>{c.univSub}</p></div>
+    </section>
+  </div>
+  <div class="marquee-wrap"><UniverseMarquee lang={lang} /></div>
+  <div class="wrap stack">
     <!-- PRIX -->
     <section class="price-sec" id="prix">
       <h2 class="display">{c.priceTitleA} <span class="hl">{c.priceTitleB}</span></h2>
@@ -280,51 +255,54 @@ const fanCard = (u: (typeof UNIVERSES)[number]) => ({ u, img: artFor(u.id), n: M
   .hero {
     position: relative; overflow: hidden; isolation: isolate;
     border-radius: var(--radius-lg); border: 1px solid var(--border);
-    min-height: clamp(460px, 44vw, 560px);
-    display: grid; place-items: center;
+    display: grid; gap: 40px; align-items: center;
+    padding: clamp(28px, 5vw, 64px);
     background:
-      radial-gradient(50% 70% at 50% 45%, rgba(227, 38, 61, 0.28), transparent 70%),
-      radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1.4px) 0 0 / 14px 14px,
-      linear-gradient(180deg, #121214, #0a0a0b);
+      radial-gradient(60% 80% at 80% 40%, rgba(255, 51, 72, 0.32), transparent 70%),
+      radial-gradient(rgba(255, 246, 230, 0.06) 1px, transparent 1.4px) 0 0 / 14px 14px,
+      linear-gradient(160deg, #14070b, #0a0a0f 55%, #050508);
   }
-  .fan { position: absolute; top: 0; bottom: 0; width: 42%; perspective: 900px; z-index: -1; }
-  .fan.left { left: -4%; }
-  .fan.right { right: -4%; }
-  .fcard {
-    position: absolute; top: 50%; width: clamp(150px, 15vw, 210px); aspect-ratio: 0.62;
-    border-radius: 18px; padding: 12px; text-decoration: none; color: #fff;
-    display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start;
-    background: radial-gradient(90% 60% at 50% 40%, var(--c1), transparent 70%), linear-gradient(170deg, var(--c2), var(--c3));
-    border: 3px solid rgba(255, 255, 255, 0.85);
-    box-shadow: 0 30px 50px rgba(0, 0, 0, 0.55);
-  }
-  .fcard :global(img) { width: 78%; height: auto; align-self: center; filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.35)); }
-  .fhead { background: rgba(0, 0, 0, 0.55); border-radius: 999px; padding: 5px 10px; font-weight: 700; font-size: 13px; white-space: nowrap; }
-  .fstat { font-size: 13px; font-weight: 600; background: rgba(0, 0, 0, 0.45); border-radius: 8px; padding: 4px 8px; }
-  .fstat b { font-family: var(--font-display); font-size: 17px; }
-  .fok { position: absolute; bottom: 44px; left: 12px; font-family: var(--font-display); font-weight: 700; font-size: 18px; color: #fff; background: #12a35b; border: 2px solid #fff; border-radius: 8px; padding: 2px 8px; transform: rotate(-6deg); }
-  .left .f0 { left: 0; transform: translateY(-50%) rotateY(28deg) rotateZ(-4deg); }
-  .left .f1 { left: 24%; transform: translateY(-46%) rotateY(26deg) rotateZ(-2deg) scale(0.95); }
-  .left .f2 { left: 48%; transform: translateY(-42%) rotateY(24deg) scale(0.9); }
-  .right .f0 { right: 0; transform: translateY(-50%) rotateY(-28deg) rotateZ(4deg); }
-  .right .f1 { right: 24%; transform: translateY(-46%) rotateY(-26deg) rotateZ(2deg) scale(0.95); }
-  .right .f2 { right: 48%; transform: translateY(-42%) rotateY(-24deg) scale(0.9); }
-  /* Voile sombre derrière le texte central : les cartes et les pointillés passent dessous. */
-  .vignette { position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse 30% 58% at 50% 50%, rgba(10, 10, 11, 0.96), rgba(10, 10, 11, 0.75) 55%, transparent 100%); }
-  @media (max-width: 860px) { .vignette { background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(10, 10, 11, 0.95), rgba(10, 10, 11, 0.6) 70%, transparent 100%); } }
-  .wires { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; fill: none; stroke: rgba(255, 255, 255, 0.55); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 0.5 9; }
-  .hero-center { text-align: center; padding: 40px 16px; max-width: 640px; }
-  .hero-center h1 { margin: 0; display: grid; gap: 14px; justify-items: center; }
-  .brandline { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-brand); font-size: 22px; font-weight: 400; letter-spacing: 0.02em; }
+  @media (min-width: 980px) { .hero { grid-template-columns: 1.1fr 1fr; } }
+  .brandline { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 18px; font-family: var(--font-brand); font-size: 20px; color: var(--muted); }
   .brandline :global(img) { width: 30px; height: 30px; border-radius: 8px; }
-  .hero-center .mix { font-size: clamp(38px, 6vw, 72px); line-height: 1; text-shadow: 0 6px 30px rgba(0, 0, 0, 0.6); }
-  .hero-lede { color: #d4d4d8; font-size: clamp(15px, 1.5vw, 17px); margin: 18px auto 26px; max-width: 520px; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8); }
-  .hero-lede span { color: #fff; }
-  @media (max-width: 860px) {
-    .fan { width: 60%; opacity: 0.45; }
-    .fan.left { left: -28%; } .fan.right { right: -28%; }
-    .wires { display: none; }
+  .hero h1 { font-size: clamp(38px, 6vw, 70px); line-height: 1.08; }
+  .hero-lede { color: var(--muted); font-size: clamp(16px, 1.5vw, 18px); margin: 20px 0 28px; max-width: 540px; }
+  .hero-lede strong { color: var(--text); font-weight: 600; }
+
+  /* Planche de manga : 3 cases aux gouttières inclinées */
+  .page {
+    position: relative; width: min(500px, 100%); justify-self: center;
+    aspect-ratio: 1 / 1.06;
+    display: grid; grid-template-columns: 1.15fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px;
+    transform: rotate(2deg);
   }
+  .panel-m { position: relative; overflow: hidden; background: #000; outline: 4px solid var(--text); outline-offset: -2px; box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55); }
+  .panel-m :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .pa { grid-row: 1 / 3; clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%); }
+  .pb { clip-path: polygon(8% 0, 100% 0, 100% 100%, 4% 94%); margin-left: -6%; }
+  .pc { clip-path: polygon(4% 0, 100% 6%, 100% 100%, 0 100%); margin-left: -10%; }
+  .bubble {
+    position: absolute; z-index: 2; background: #fff; color: #120609;
+    font-weight: 800; font-size: clamp(13px, 1.5vw, 16px); line-height: 1.2;
+    padding: 9px 13px; border-radius: 50% / 45%; border: 3px solid #120609; white-space: nowrap;
+  }
+  .bubble::after { content: ''; position: absolute; width: 14px; height: 14px; background: #fff; border-right: 3px solid #120609; border-bottom: 3px solid #120609; }
+  .b1 { left: 14%; bottom: 10%; transform: rotate(-4deg); }
+  .b1::after { top: -9px; right: 26px; transform: rotate(225deg); }
+  .b2 { right: 6%; top: 10%; transform: rotate(5deg); }
+  .b2::after { bottom: -9px; left: 24px; transform: rotate(45deg); }
+  .sfx {
+    position: absolute; left: -4%; top: 4%; z-index: 3;
+    font-family: var(--font-brand); font-size: clamp(30px, 4.4vw, 50px); color: var(--gold);
+    -webkit-text-stroke: 3px #120609; paint-order: stroke fill;
+    transform: rotate(-12deg); text-shadow: 4px 4px 0 var(--accent);
+  }
+
+  /* ---------- UNIVERS ---------- */
+  .univ { margin-top: 12px; }
+  .univ-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; }
+  .univ-head h2 { font-size: clamp(24px, 3vw, 32px); }
+  .univ-head p { margin: 0; color: var(--muted); }
 
   /* ---------- BENTO ---------- */
   .bento { display: grid; gap: 12px; }
@@ -350,7 +328,8 @@ const fanCard = (u: (typeof UNIVERSES)[number]) => ({ u, img: artFor(u.id), n: M
   @media (min-width: 900px) { .shows { grid-template-columns: repeat(3, 1fr); } }
   .show { margin: 0; }
   .art { position: relative; overflow: hidden; border-radius: var(--radius-lg); aspect-ratio: 1.3; border: 1px solid var(--border); }
-  .stitle { position: absolute; left: 22px; top: 18px; margin: 0; font-size: clamp(20px, 2vw, 26px); color: #fff; z-index: 2; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); }
+  .art::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(rgba(0, 0, 0, 0.18) 1.2px, transparent 1.6px) 0 0 / 10px 10px; mix-blend-mode: multiply; }
+  .stitle { position: absolute; left: 22px; top: 18px; margin: 0; font-family: var(--font-brand); font-weight: 400; letter-spacing: 0.01em; font-size: clamp(22px, 2.2vw, 28px); color: #fff; z-index: 2; -webkit-text-stroke: 1.5px rgba(18, 6, 9, 0.6); paint-order: stroke fill; text-shadow: 3px 3px 0 rgba(18, 6, 9, 0.5); }
   .a-quiz { background: radial-gradient(70% 70% at 70% 80%, #ff7ac3, transparent 60%), linear-gradient(135deg, #7a1c8f, #c2186b 60%, #ff5b7f); }
   .mini {
     position: absolute; left: 22px; bottom: 22px; width: 58%; z-index: 2;
@@ -372,7 +351,7 @@ const fanCard = (u: (typeof UNIVERSES)[number]) => ({ u, img: artFor(u.id), n: M
   .frame :global(img) { width: 100%; height: 100%; object-fit: cover; }
   .ninja { position: absolute; right: 2%; bottom: -4%; width: 34%; filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.4)); }
   figcaption { margin-top: 12px; display: grid; gap: 3px; }
-  figcaption b, figcaption a b { font-family: var(--font-display); text-transform: uppercase; letter-spacing: -0.02em; color: var(--accent-hot); font-size: 16px; }
+  figcaption b, figcaption a b { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.01em; color: var(--text); font-size: 17px; }
   figcaption a { text-decoration: none; }
   figcaption span { color: var(--muted); font-size: 15px; }
 
@@ -386,7 +365,7 @@ const fanCard = (u: (typeof UNIVERSES)[number]) => ({ u, img: artFor(u.id), n: M
   .big-head p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
   .well {
     position: relative; width: 100%; background: var(--well); border: 1px solid var(--border); border-radius: 16px;
-    padding: 22px 22px 70px; box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.5);
+    padding: 22px; box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.5);
   }
   .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
   .steps li { display: flex; align-items: center; gap: 14px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
@@ -395,10 +374,9 @@ const fanCard = (u: (typeof UNIVERSES)[number]) => ({ u, img: artFor(u.id), n: M
   .st { display: grid; }
   .st b { font-weight: 600; font-size: 15px; }
   .st small { color: var(--muted); font-size: 13px; }
-  .well-title { position: absolute; left: 22px; bottom: 18px; margin: 0; font-size: clamp(20px, 2.2vw, 26px); }
-  .pager { position: absolute; right: 22px; bottom: 22px; font-size: 11px; letter-spacing: 0.2em; color: var(--faint); }
 
   /* ---------- PRIX ---------- */
+  .marquee-wrap { margin: 14px 0 clamp(28px, 4vw, 44px); }
   .price-sec { display: grid; gap: 16px; }
   .price-sec h2 { font-size: clamp(28px, 3.6vw, 40px); }
 </style>

@@ -1,11 +1,10 @@
 ---
-import '@fontsource-variable/geist'
-import '@fontsource-variable/space-grotesk'
+import '@fontsource-variable/inter'
+import '@fontsource-variable/plus-jakarta-sans'
 import '@fontsource/shojumaru'
 import '../styles/global.css'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
-import PromoBar from '../components/PromoBar.astro'
 import MobileNav from '../components/MobileNav.astro'
 import { APP_STORE_ID, SITE, type Lang } from '../data/product'
 import { t } from '../i18n/ui'
@@ -45,7 +44,7 @@ const xDefault = alternates?.en ?? alternates?.fr
     {alternates && xDefault && <link rel="alternate" hreflang="x-default" href={new URL(xDefault, SITE).href} />}
 
     <meta name="apple-itunes-app" content={`app-id=${APP_STORE_ID}`} id="itunes-banner" />
-    <meta name="theme-color" content="#0b0b0d" />
+    <meta name="theme-color" content="#050508" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Shobukan" />
@@ -69,7 +68,6 @@ const xDefault = alternates?.en ?? alternates?.fr
   </head>
   <body>
     <a class="skip" href="#main">{ui.skip}</a>
-    <PromoBar lang={lang} />
     <Header lang={lang} path={path} alternates={alternates} />
     <main id="main">
       <slot />

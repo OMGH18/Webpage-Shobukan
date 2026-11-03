@@ -1,34 +1,36 @@
 /* Système de design Shobukan : fond neutre très sombre, cartes anthracite,
    titres Space Grotesk en capitales bicolores, rouge Shobukan en accent. */
 :root {
-  --bg: #0b0b0d;
-  --bg-2: #0f0f11;
-  --surface: #141416;
-  --surface-2: #1b1b1e;
-  --card-hover: #222226;
-  --well: #0d0d0f;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.14);
-  --text: #fafafa;
-  --muted: #a1a1aa;
-  --faint: #71717a;
-  --accent: #e3263d;
-  --accent-hot: #ff4a5f;
-  --accent-deep: #9e1327;
-  --brand-subtle: rgba(227, 38, 61, 0.15);
-  --brand-tint: rgba(227, 38, 61, 0.08);
-  --gold: #f5c842;
-  --good: #3ccf8e;
-  --bad: #ff5a6a;
-  --radius: 12px;
-  --radius-lg: 22px;
-  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  --elev-2: 0 6px 18px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  /* Couleurs de l'app Shobukan (constants/theme.ts, thème sombre) */
+  --bg: #050508;
+  --bg-2: #08080c;
+  --surface: #101016;
+  --surface-2: #181820;
+  --card-hover: #1f1f29;
+  --well: #0a0a0f;
+  --border: rgba(255, 246, 230, 0.08);
+  --border-strong: rgba(255, 246, 230, 0.15);
+  --text: #fff6e6;
+  --muted: #c8c2d2;
+  --faint: #817b8d;
+  --accent: #ff3348;
+  --accent-hot: #ff6675;
+  --accent-deep: #c9182b;
+  --brand-subtle: rgba(255, 51, 72, 0.15);
+  --brand-tint: rgba(255, 51, 72, 0.08);
+  --gold: #ffd21a;
+  --good: #06d6a0;
+  --bad: #ff4d5c;
+  --radius: 14px;
+  --radius-lg: 24px;
+  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 246, 230, 0.04);
+  --elev-2: 0 6px 18px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 246, 230, 0.05);
   --shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
-  --font-display: 'Space Grotesk Variable', 'Geist Variable', system-ui, sans-serif;
-  --font-body: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-brand: 'Shojumaru', var(--font-display);
-  --wrap: 1408px;
+  /* Polices de l'app : Shojumaru = marque et grands titres, Plus Jakarta = structure, Inter = texte */
+  --font-brand: 'Shojumaru', 'Plus Jakarta Sans Variable', serif;
+  --font-display: 'Plus Jakarta Sans Variable', 'Inter Variable', system-ui, sans-serif;
+  --font-body: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --wrap: 1360px;
   --gutter: 16px;
   color-scheme: dark;
 }
@@ -59,25 +61,21 @@ a:hover { color: var(--text); }
 
 /* ---------- Typographie ---------- */
 h1, h2, h3 { line-height: 1.08; margin: 0; letter-spacing: -0.02em; }
-.display {
-  font-family: var(--font-display); font-weight: 700; text-transform: uppercase;
-  letter-spacing: -0.035em; line-height: 0.98;
-}
-h1.display { font-size: clamp(38px, 6.4vw, 72px); }
+.display { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.025em; line-height: 1.06; }
+/* Les grands titres de page sont en Shojumaru, comme les titres d'écran de l'app. */
+h1.display { font-family: var(--font-brand); font-weight: 400; letter-spacing: 0.01em; line-height: 1.12; font-size: clamp(34px, 5.6vw, 64px); }
 h2.display { font-size: clamp(28px, 3.6vw, 40px); }
 h3.display { font-size: clamp(22px, 2.4vw, 28px); }
 h2 { font-size: clamp(24px, 3vw, 32px); font-weight: 700; }
 h3 { font-size: 18px; font-weight: 650; letter-spacing: -0.01em; }
 /* Deuxième ligne d'un titre bicolore */
 .hl { color: var(--accent-hot); }
-/* Titre « gras + fin espacé » : <b>PARTY</b> <i>MANGA</i> */
-.mix b { font-weight: 700; }
-.mix i { font-style: normal; font-weight: 300; letter-spacing: 0.22em; }
 .eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
-  font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--muted); margin: 0 0 14px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--gold); margin: 0 0 14px;
 }
+.eyebrow::before { content: ''; width: 16px; height: 2px; background: currentColor; border-radius: 2px; }
 .lede { font-size: clamp(16px, 1.6vw, 18px); color: var(--muted); max-width: 620px; margin: 16px 0 0; }
 .lede strong { color: var(--text); font-weight: 600; }
 .muted { color: var(--muted); }
@@ -135,9 +133,8 @@ h3 { font-size: 18px; font-weight: 650; letter-spacing: -0.01em; }
   border-radius: 999px; padding: 5px 11px;
 }
 .tag {
-  display: inline-block; font-size: 10px; font-weight: 800; font-style: italic; letter-spacing: 0.06em; text-transform: uppercase;
-  color: #fff; background: var(--accent); border-radius: 5px; padding: 3px 7px;
-  transform: skewX(-8deg);
+  display: inline-block; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  color: #120609; background: var(--gold); border-radius: 999px; padding: 3px 8px;
 }
 .check { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 7px; }
 .check li { position: relative; padding-left: 24px; color: var(--muted); font-size: 15px; }
