@@ -1,0 +1,88 @@
+---
+import { Image } from 'astro:assets'
+import icon from '../assets/art/icon.png'
+import type { Lang } from '../data/product'
+import { ROUTES, t } from '../i18n/ui'
+
+interface Props {
+  lang: Lang
+  path: string
+  alternates?: { fr: string | null; en: string | null }
+}
+const { lang, path, alternates } = Astro.props
+const ui = t(lang)
+const home = ROUTES.home[lang]
+const otherLang: Lang = lang === 'fr' ? 'en' : 'fr'
+const switchHref = alternates?.[otherLang] ?? ROUTES.home[otherLang]
+
+const links = [
+  { href: `${home}#modes`, label: ui.nav.modes },
+  ...(ROUTES.quiz[lang] ? [{ href: ROUTES.quiz[lang] as string, label: ui.nav.quiz }] : []),
+  { href: ROUTES.undercover[lang], label: ui.nav.undercover },
+  { href: ROUTES.pricing[lang], label: ui.nav.pricing },
+]
+const isCurrent = (href: string) => href === path || (href !== home && !href.includes('#') && path.startsWith(href))
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href={home} aria-label="Shobukan">
+      <Image src={icon} alt="" width={40} height={40} loading="eager" />
+      <span class="display">Shobukan</span>
+    </a>
+    <nav class="links" aria-label={ui.navLabel}>
+      {links.map((l) => <a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a>)}
+    </nav>
+    <div class="actions">
+      <a class="lang" href={switchHref} hreflang={otherLang} lang={otherLang}>{ui.langSwitch}</a>
+      <a class="btn btn-primary cta" href="#download">{ui.nav.download}</a>
+      <details class="menu">
+        <summary aria-label="Menu"><span></span><span></span><span></span></summary>
+        <div class="sheet">
+          {links.map((l) => <a href={l.href}>{l.label}</a>)}
+          <a href={switchHref} hreflang={otherLang} lang={otherLang}>{ui.langSwitch}</a>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(14, 5, 7, 0.72);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .bar { display: flex; align-items: center; gap: 18px; height: 68px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); flex: none; }
+  .brand img { width: 36px; height: 36px; border-radius: 10px; }
+  .brand span { font-size: 21px; color: var(--text); }
+  .links { display: none; gap: 26px; margin-left: 18px; }
+  .links a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 15px; }
+  .links a:hover, .links a[aria-current='page'] { color: var(--text); }
+  .actions { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .lang { display: none; color: var(--muted); text-decoration: none; font-weight: 600; font-size: 14px; }
+  .lang:hover { color: var(--text); }
+  .cta { padding: 10px 18px; font-size: 14px; }
+  .menu { position: relative; }
+  .menu summary {
+    list-style: none; cursor: pointer; width: 42px; height: 42px; border-radius: 12px;
+    border: 1px solid var(--border-strong); display: grid; place-content: center; gap: 4px;
+  }
+  .menu summary::-webkit-details-marker { display: none; }
+  .menu summary span { display: block; width: 18px; height: 2px; background: var(--text); border-radius: 2px; }
+  .sheet {
+    position: absolute; right: 0; top: 52px; min-width: 220px;
+    background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: 16px;
+    padding: 8px; display: grid; box-shadow: var(--shadow);
+  }
+  .sheet a { color: var(--text); text-decoration: none; padding: 12px 14px; border-radius: 10px; font-weight: 600; }
+  .sheet a:hover { background: rgba(255, 255, 255, 0.06); }
+  @media (min-width: 900px) {
+    .links, .lang { display: flex; }
+    .menu { display: none; }
+  }
+  @media (max-width: 380px) { .brand span { display: none; } }
+</style>

@@ -1,0 +1,406 @@
+---
+import { Image } from 'astro:assets'
+import Base from '../layouts/Base.astro'
+import StoreButtons from './StoreButtons.astro'
+import UniverseGrid from './UniverseGrid.astro'
+import Faq from './Faq.astro'
+import CtaBand from './CtaBand.astro'
+import arena from '../assets/art/arena-shonen-pop.jpg'
+import undercoverArt from '../assets/art/undercover.jpg'
+import quizArt from '../assets/art/otaku-quiz.jpg'
+import gridMark from '../assets/art/anime-grid-mark.png'
+import village from '../assets/art/campaign-village.jpg'
+import mangaBg from '../assets/art/format-picker-bg.jpg'
+import { PLAYERS, PRICES, SITE, UNIVERSES, formatPrice, type Lang } from '../data/product'
+import { ROUTES } from '../i18n/ui'
+import { app, faqPage, organization, website } from '../data/schema'
+
+interface Props { lang: Lang }
+const { lang } = Astro.props
+const fr = lang === 'fr'
+const p = (v: number) => formatPrice(v, lang)
+const universeList = UNIVERSES.map((u) => (fr ? u.fr : u.en)).join(', ')
+
+const c = fr
+  ? {
+      title: 'Shobukan : quiz manga et Undercover anime entre amis',
+      description: `Jeu mobile gratuit de soirée sur le manga (iPhone, Android) : Undercover, Otaku Quiz, Anime Grid du jour. Sur un seul téléphone ou en ligne avec un code.`,
+      eyebrow: 'Party game manga · iPhone & Android',
+      h1: ['Le party game', 'manga, entre amis.'],
+      lede: `<strong>Shobukan est un jeu mobile gratuit de soirée sur le thème du manga.</strong> Démasque l'infiltré à Undercover, prouve que tu es le vrai otaku du groupe au quiz et relève la grille du jour, sur ${UNIVERSES.length} univers.`,
+      chips: ['Gratuit', 'Même sans internet en local', `Jusqu'à ${PLAYERS.max} joueurs`],
+      modesEyebrow: 'Les modes',
+      modesTitle: 'Quatre façons de jouer',
+      modesLede: 'Deux modes de groupe pour les soirées. Deux modes solo pour revenir chaque jour.',
+      undercover: {
+        tag: 'Bluff & déduction',
+        title: 'Undercover',
+        body: "Chacun reçoit un mot secret tiré d'un manga, sauf l'infiltré, qui a un mot proche. Un indice chacun, un vote, et la paranoïa s'installe. Attention à Mister White : il ne connaît même pas son mot.",
+        meta: `${PLAYERS.undercoverMin} à ${PLAYERS.undercoverMax} joueurs · même téléphone ou en ligne`,
+        link: 'Les règles du jeu',
+      },
+      quiz: {
+        tag: 'Culture otaku',
+        title: 'Otaku Quiz',
+        body: 'Une question, quatre réponses, une seule bonne. Joue seul pour monter en grade, défie tes potes sur le même téléphone ou affronte d’autres joueurs en ligne.',
+        meta: `Solo ou 2 à ${PLAYERS.quizMax} joueurs`,
+        link: 'Essayer un quiz gratuit',
+      },
+      grid: {
+        tag: 'Chaque jour',
+        title: 'Anime Grid',
+        body: 'Neuf cases, trois mangas, trois critères. Trouve un personnage pour chaque croisement : plus ta réponse est rare, plus tu marques. Nouvelle grille et nouveau classement chaque jour.',
+        meta: 'Solo · classement quotidien',
+      },
+      expedition: {
+        tag: 'Aventure',
+        title: 'Expédition',
+        body: 'Une aventure solo en chapitres où ta culture manga est ta seule arme. Réponds juste pour vaincre les ennemis, choisis ta route et va le plus loin possible.',
+        meta: 'Solo · progression par chapitres',
+      },
+      packs: {
+        title: 'Et tes propres packs.',
+        body: 'Crée tes questions et tes mots : ton anime de niche, les private jokes du groupe. Une fois créé, ton pack se joue gratuitement par tout le monde.',
+      },
+      playEyebrow: 'En soirée ou à distance',
+      playTitle: 'Un téléphone suffit.',
+      local: {
+        title: 'Sur un seul téléphone',
+        body: 'Le téléphone passe de main en main : chacun découvre son rôle en secret, puis on joue à voix haute. Ça marche même sans internet, en soirée, en convention ou dans le train.',
+      },
+      online: {
+        title: 'En ligne avec un code',
+        body: 'Crée une partie, partage le code à 6 caractères ou le lien d’invitation, et chacun joue sur son téléphone, dans la même pièce ou à l’autre bout du pays.',
+      },
+      universesEyebrow: `${UNIVERSES.length} univers`,
+      universesTitle: 'Tous tes mangas préférés.',
+      universesLede: 'Choisis un manga ou mélange-les tous dans la même partie. Touche un univers pour tester un quiz gratuit.',
+      allQuiz: 'Voir tous les quiz manga',
+      priceEyebrow: 'Prix',
+      priceTitle: 'Tout le jeu est gratuit.',
+      stats: [
+        { big: p(0), small: 'pour jouer à tous les modes et tous les univers, avec pubs' },
+        { big: String(PRICES.freeHostedGames), small: 'parties en ligne hébergées offertes, rejoindre est illimité' },
+        { big: `${p(PRICES.monthly)}`, small: `par mois pour Premium sans pub (ou ${p(PRICES.yearly)} par an)` },
+      ],
+      priceLink: 'Voir le détail des prix',
+      faqTitle: 'Questions fréquentes',
+      faq: [
+        { q: 'Shobukan est-il gratuit ?', a: `Oui. Tous les modes et les ${UNIVERSES.length} univers manga sont jouables gratuitement, avec des publicités. L'abonnement Premium (${p(PRICES.monthly)} par mois ou ${p(PRICES.yearly)} par an, prix en France) retire les publicités et rend l'hébergement des parties en ligne illimité.` },
+        { q: 'À combien de joueurs peut-on jouer ?', a: `De 1 à ${PLAYERS.max} joueurs selon le mode : Otaku Quiz se joue seul ou jusqu'à ${PLAYERS.quizMax}, Undercover de ${PLAYERS.undercoverMin} à ${PLAYERS.undercoverMax} joueurs. L'Anime Grid et l'Expédition se jouent en solo.` },
+        { q: 'Peut-on jouer sans internet ?', a: 'Oui, en mode local : le téléphone passe de main en main et la partie fonctionne sans connexion. Les parties en ligne, l’Anime Grid et le classement ont besoin d’internet.' },
+        { q: 'Peut-on jouer à distance avec des amis ?', a: 'Oui. Crée une partie en ligne et partage le code à 6 caractères ou le lien d’invitation : chacun joue sur son propre téléphone.' },
+        { q: 'Quels mangas sont dans le jeu ?', a: `${UNIVERSES.length} univers : ${universeList}, plus un mode tous univers mélangés.` },
+        { q: 'Sur quels téléphones Shobukan est-il disponible ?', a: 'Sur iPhone (App Store) et Android (Google Play), en français et en anglais.' },
+      ],
+    }
+  : {
+      title: 'Shobukan: anime quiz and Undercover party game with friends',
+      description: 'Free mobile party game about manga (iPhone, Android): Undercover, Otaku Quiz and a daily Anime Grid. Play on one phone or online with a code.',
+      eyebrow: 'Manga party game · iPhone & Android',
+      h1: ['The manga', 'party game.'],
+      lede: `<strong>Shobukan is a free mobile party game about manga and anime.</strong> Unmask the impostor in Undercover, prove you're the real otaku of the group in the quiz and beat the daily grid, across ${UNIVERSES.length} universes.`,
+      chips: ['Free', 'Works offline on one phone', `Up to ${PLAYERS.max} players`],
+      modesEyebrow: 'Game modes',
+      modesTitle: 'Four ways to play',
+      modesLede: 'Two group modes for game nights. Two solo modes to come back to every day.',
+      undercover: {
+        tag: 'Bluff & deduction',
+        title: 'Undercover',
+        body: 'Everyone gets a secret word from a manga, except the impostor, whose word is close but different. One clue each, one vote, and the paranoia kicks in. Watch out for Mister White: they don’t even know their word.',
+        meta: `${PLAYERS.undercoverMin} to ${PLAYERS.undercoverMax} players · same phone or online`,
+        link: 'How to play',
+      },
+      quiz: {
+        tag: 'Otaku knowledge',
+        title: 'Otaku Quiz',
+        body: 'One question, four answers, only one is right. Play solo to rank up, challenge friends on the same phone or face other players online.',
+        meta: `Solo or 2 to ${PLAYERS.quizMax} players`,
+        link: null,
+      },
+      grid: {
+        tag: 'Daily',
+        title: 'Anime Grid',
+        body: 'Nine cells, three manga, three criteria. Find a character for every crossing: the rarer your answer, the higher your score. New grid and new leaderboard every day.',
+        meta: 'Solo · daily leaderboard',
+      },
+      expedition: {
+        tag: 'Adventure',
+        title: 'Expedition',
+        body: 'A solo adventure in chapters where your manga knowledge is your only weapon. Answer right to defeat enemies, pick your route and push as far as you can.',
+        meta: 'Solo · chapter progression',
+      },
+      packs: {
+        title: 'And your own packs.',
+        body: 'Write your own questions and words: your niche anime, your group’s inside jokes. Once created, anyone can play your pack for free.',
+      },
+      playEyebrow: 'Same room or far apart',
+      playTitle: 'One phone is enough.',
+      local: {
+        title: 'On a single phone',
+        body: 'Pass the phone around: everyone sees their role in secret, then you play out loud. It even works offline, at parties, conventions or on the train.',
+      },
+      online: {
+        title: 'Online with a code',
+        body: 'Create a game, share the 6-character code or the invite link, and everyone plays on their own phone, in the same room or miles apart.',
+      },
+      universesEyebrow: `${UNIVERSES.length} universes`,
+      universesTitle: 'All your favorite manga.',
+      universesLede: 'Pick one manga or mix them all in the same game.',
+      allQuiz: null,
+      priceEyebrow: 'Pricing',
+      priceTitle: 'The whole game is free.',
+      stats: [
+        { big: p(0), small: 'to play every mode and every universe, with ads' },
+        { big: String(PRICES.freeHostedGames), small: 'free hosted online games, joining is unlimited' },
+        { big: `${p(PRICES.monthly)}`, small: `per month for ad-free Premium (or ${p(PRICES.yearly)} per year)` },
+      ],
+      priceLink: 'See full pricing',
+      faqTitle: 'FAQ',
+      faq: [
+        { q: 'Is Shobukan free?', a: `Yes. Every mode and all ${UNIVERSES.length} manga universes are free to play, with ads. The optional Premium subscription (${p(PRICES.monthly)} per month or ${p(PRICES.yearly)} per year, prices in France) removes ads and makes online hosting unlimited.` },
+        { q: 'How many players can play?', a: `From 1 to ${PLAYERS.max} depending on the mode: Otaku Quiz is played solo or with up to ${PLAYERS.quizMax} players, Undercover with ${PLAYERS.undercoverMin} to ${PLAYERS.undercoverMax}. Anime Grid and Expedition are solo.` },
+        { q: 'Can you play offline?', a: 'Yes, in local mode: the phone is passed around and the game works without a connection. Online games, Anime Grid and leaderboards need internet.' },
+        { q: 'Can you play remotely with friends?', a: 'Yes. Create an online game and share the 6-character code or the invite link: everyone plays on their own phone.' },
+        { q: 'Which manga are in the game?', a: `${UNIVERSES.length} universes: ${universeList}, plus an all-universes mix.` },
+        { q: 'Which phones is Shobukan available on?', a: 'iPhone (App Store) and Android (Google Play), in English and French.' },
+      ],
+    }
+
+const path = ROUTES.home[lang]
+const medium = `home_${lang}`
+const jsonLd = [organization(), website(), app(lang), faqPage(`${SITE}${path}#faq`, c.faq)]
+---
+
+<Base lang={lang} title={c.title} description={c.description} path={path} alternates={{ fr: ROUTES.home.fr, en: ROUTES.home.en }} jsonLd={jsonLd}>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="halftone hero-dots" aria-hidden="true"></div>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">{c.eyebrow}</p>
+        <h1 class="display">{c.h1[0]}<br /><span class="accent">{c.h1[1]}</span></h1>
+        <p class="lede" set:html={c.lede} />
+        <div class="hero-stores"><StoreButtons lang={lang} medium={medium} note={false} /></div>
+        <ul class="chips">{c.chips.map((ch) => <li class="chip">{ch}</li>)}</ul>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="poster"><Image src={arena} alt="" width={520} loading="eager" fetchpriority="high" /></div>
+        <div class="float f1"><Image src={undercoverArt} alt="" width={200} loading="eager" /></div>
+        <div class="float f2"><Image src={quizArt} alt="" width={180} loading="eager" /></div>
+        <div class="float f3"><Image src={gridMark} alt="" width={170} loading="eager" /></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODES -->
+  <section class="section" id="modes">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">{c.modesEyebrow}</p>
+        <h2 class="display">{c.modesTitle}</h2>
+        <p class="lede">{c.modesLede}</p>
+      </div>
+
+      <div class="grid-2">
+        <article class="card mode reveal">
+          <div class="mode-art"><Image src={undercoverArt} alt={fr ? 'Illustration du mode Undercover' : 'Undercover mode artwork'} width={560} loading="lazy" /></div>
+          <div class="mode-body">
+            <span class="tag">{c.undercover.tag}</span>
+            <h3 class="display">{c.undercover.title}</h3>
+            <p>{c.undercover.body}</p>
+            <p class="meta">{c.undercover.meta}</p>
+            <a class="more" href={ROUTES.undercover[lang]}>{c.undercover.link} →</a>
+          </div>
+        </article>
+        <article class="card mode reveal">
+          <div class="mode-art"><Image src={quizArt} alt={fr ? 'Illustration du mode Otaku Quiz' : 'Otaku Quiz mode artwork'} width={560} loading="lazy" /></div>
+          <div class="mode-body">
+            <span class="tag">{c.quiz.tag}</span>
+            <h3 class="display">{c.quiz.title}</h3>
+            <p>{c.quiz.body}</p>
+            <p class="meta">{c.quiz.meta}</p>
+            {c.quiz.link && ROUTES.quiz[lang] && <a class="more" href={ROUTES.quiz[lang] as string}>{c.quiz.link} →</a>}
+          </div>
+        </article>
+
+        <article class="card feature grid-feature reveal">
+          <div class="feature-body">
+            <span class="tag">{c.grid.tag}</span>
+            <h3 class="display">{c.grid.title}</h3>
+            <p>{c.grid.body}</p>
+            <p class="meta">{c.grid.meta}</p>
+          </div>
+          <Image class="grid-mark" src={gridMark} alt={fr ? "Logo de l'Anime Grid : une grille de 3 par 3" : 'Anime Grid logo: a 3 by 3 grid'} width={300} loading="lazy" />
+        </article>
+        <article class="card feature expedition reveal">
+          <Image class="bg" src={village} alt="" width={900} loading="lazy" />
+          <div class="feature-body">
+            <span class="tag">{c.expedition.tag}</span>
+            <h3 class="display">{c.expedition.title}</h3>
+            <p>{c.expedition.body}</p>
+            <p class="meta">{c.expedition.meta}</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="packs card reveal">
+        <h3>{c.packs.title}</h3>
+        <p class="muted">{c.packs.body}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCAL / ONLINE -->
+  <section class="section play">
+    <Image class="manga-bg" src={mangaBg} alt="" width={1000} loading="lazy" />
+    <div class="wrap">
+      <div class="section-head center">
+        <p class="eyebrow">{c.playEyebrow}</p>
+        <h2 class="display">{c.playTitle}</h2>
+      </div>
+      <div class="grid-2">
+        <div class="card how reveal">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10.5 18.5h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <h3>{c.local.title}</h3>
+          <p class="muted">{c.local.body}</p>
+        </div>
+        <div class="card how reveal">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="8" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="14" y="5" width="8" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 12h4" stroke="currentColor" stroke-width="2" stroke-dasharray="1.5 2"/></svg>
+          </div>
+          <h3>{c.online.title}</h3>
+          <p class="muted">{c.online.body}</p>
+          <p class="code" aria-hidden="true">K7P2QX</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UNIVERS -->
+  <section class="section" id="univers">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">{c.universesEyebrow}</p>
+        <h2 class="display">{c.universesTitle}</h2>
+        <p class="lede">{c.universesLede}</p>
+      </div>
+      <UniverseGrid lang={lang} linkToQuiz={fr} />
+      {c.allQuiz && <p class="center-link"><a class="btn btn-ghost" href={ROUTES.quiz.fr}>{c.allQuiz} →</a></p>}
+    </div>
+  </section>
+
+  <!-- PRIX -->
+  <section class="section price">
+    <div class="wrap">
+      <div class="section-head center">
+        <p class="eyebrow">{c.priceEyebrow}</p>
+        <h2 class="display">{c.priceTitle}</h2>
+      </div>
+      <div class="stats">
+        {c.stats.map((s) => (
+          <div class="card stat reveal">
+            <b>{s.big}</b>
+            <span>{s.small}</span>
+          </div>
+        ))}
+      </div>
+      <p class="center-link"><a class="btn btn-ghost" href={ROUTES.pricing[lang]}>{c.priceLink} →</a></p>
+    </div>
+  </section>
+
+  <Faq items={c.faq} title={c.faqTitle} />
+  <CtaBand lang={lang} medium={`${medium}_footer`} />
+</Base>
+
+<style>
+  /* HERO */
+  .hero { position: relative; overflow: hidden; padding: clamp(40px, 8vw, 96px) 0 clamp(56px, 9vw, 110px); }
+  .glow {
+    position: absolute; inset: -20% -10% auto auto; width: 900px; height: 900px; max-width: 120vw;
+    background: radial-gradient(closest-side, rgba(227, 38, 61, 0.45), rgba(142, 22, 38, 0.18) 55%, transparent);
+    pointer-events: none;
+  }
+  .hero-dots { position: absolute; inset: 0; mask-image: radial-gradient(60% 60% at 75% 40%, #000, transparent); pointer-events: none; }
+  .hero-grid { position: relative; display: grid; gap: 48px; align-items: center; }
+  @media (min-width: 960px) { .hero-grid { grid-template-columns: 1.15fr 1fr; } }
+  .hero-stores { margin-top: 32px; }
+  .chips { list-style: none; padding: 0; margin: 22px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .hero-art { position: relative; justify-self: center; width: min(440px, 88vw); aspect-ratio: 0.82; }
+  .poster {
+    position: absolute; inset: 0 12% 0 12%; border-radius: 30px; overflow: hidden;
+    transform: rotate(3deg); box-shadow: var(--shadow), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+  .poster :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .float { position: absolute; border-radius: 24%; overflow: hidden; box-shadow: var(--shadow); animation: bob 6s ease-in-out infinite; }
+  .float :global(img) { width: 100%; height: auto; }
+  .f1 { width: 34%; left: -2%; top: 10%; transform: rotate(-8deg); }
+  .f2 { width: 30%; right: -2%; top: 44%; transform: rotate(7deg); animation-delay: -2s; }
+  .f3 { width: 30%; left: 4%; bottom: -2%; transform: rotate(-4deg); border-radius: 18%; animation-delay: -4s; }
+  @keyframes bob { 50% { translate: 0 -10px; } }
+  @media (prefers-reduced-motion: reduce) { .float { animation: none; } }
+
+  /* MODES */
+  .mode { overflow: hidden; display: flex; flex-direction: column; }
+  .mode-art { aspect-ratio: 16 / 10; overflow: hidden; }
+  .mode-art :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+  .mode:hover .mode-art :global(img) { transform: scale(1.04); }
+  .mode-body, .feature-body { padding: 26px 26px 28px; }
+  .mode h3, .feature h3 { font-size: 30px; margin: 14px 0 10px; }
+  .mode p, .feature p { margin: 0; color: var(--muted); }
+  .meta { margin-top: 14px !important; color: var(--gold) !important; font-weight: 650; font-size: 14px; }
+  .more { display: inline-block; margin-top: 16px; font-weight: 700; text-decoration: none; }
+
+  .feature { position: relative; overflow: hidden; min-height: 320px; display: flex; }
+  .grid-feature { align-items: center; background: radial-gradient(80% 90% at 100% 50%, rgba(245, 200, 66, 0.16), transparent), linear-gradient(180deg, var(--surface-2), var(--surface)); }
+  .grid-feature .feature-body { flex: 1.3; }
+  .grid-mark { width: 36%; max-width: 200px; height: auto; margin-right: 24px; flex: none; transform: rotate(6deg); filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.5)); }
+  @media (max-width: 520px) {
+    .grid-feature { flex-direction: column-reverse; align-items: flex-start; }
+    .grid-mark { margin: 24px 0 0 26px; width: 120px; }
+  }
+  .expedition { align-items: flex-end; }
+  .expedition .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
+  .expedition::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14, 5, 7, 0.1), rgba(14, 5, 7, 0.92) 70%); z-index: 1; }
+  .expedition .feature-body { position: relative; z-index: 2; padding-top: 120px; }
+  .expedition p { color: rgba(248, 240, 236, 0.82); }
+
+  .packs { margin-top: 22px; padding: 26px; display: grid; gap: 6px; border-style: dashed; border-color: var(--border-strong); }
+  @media (min-width: 820px) { .packs { grid-template-columns: auto 1fr; gap: 24px; align-items: center; } }
+  .packs h3 { font-size: 22px; }
+  .packs p { margin: 0; }
+
+  /* PLAY */
+  .play { overflow: hidden; }
+  .manga-bg {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    opacity: 0.08; filter: grayscale(1) contrast(1.2); pointer-events: none;
+  }
+  .play .wrap { position: relative; }
+  .how { padding: 30px; }
+  .how h3 { margin: 18px 0 8px; font-size: 22px; }
+  .how p { margin: 0; }
+  .icon {
+    width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center;
+    background: rgba(227, 38, 61, 0.15); color: var(--accent-hot);
+  }
+  .icon svg { width: 28px; height: 28px; }
+  .code {
+    margin: 20px 0 0 !important; display: inline-block;
+    font-family: ui-monospace, Menlo, monospace; font-weight: 800; font-size: 22px; letter-spacing: 0.3em;
+    color: var(--gold); border: 2px dashed rgba(245, 200, 66, 0.5); border-radius: 12px; padding: 8px 14px 8px 18px;
+  }
+
+  .center-link { text-align: center; margin: 32px 0 0; }
+
+  /* PRIX */
+  .stats { display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .stats { grid-template-columns: repeat(3, 1fr); } }
+  .stat { padding: 28px; text-align: center; }
+  .stat b { display: block; font-family: var(--font-display); font-weight: 400; font-size: 48px; color: var(--text); line-height: 1.1; }
+  .stat span { display: block; margin-top: 8px; color: var(--muted); }
+</style>

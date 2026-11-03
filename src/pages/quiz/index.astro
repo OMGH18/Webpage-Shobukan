@@ -1,0 +1,59 @@
+---
+import Base from '../../layouts/Base.astro'
+import UniverseGrid from '../../components/UniverseGrid.astro'
+import CtaBand from '../../components/CtaBand.astro'
+import Faq from '../../components/Faq.astro'
+import quizData from '../../data/quiz-fr.json'
+import { SITE, UNIVERSES } from '../../data/product'
+import { breadcrumbs, faqPage, webPage } from '../../data/schema'
+
+const counts = (quizData as { counts: Record<string, number> }).counts
+const total = Math.floor(Object.values(counts).reduce((a, b) => a + b, 0) / 100) * 100
+const path = '/quiz/'
+const title = `Quiz manga gratuits : ${UNIVERSES.length} quiz anime en 5 questions`
+const description = `Quiz manga gratuits sans inscription : Naruto, One Piece, Dragon Ball, Jujutsu Kaisen et ${UNIVERSES.length - 4} autres. 5 questions par univers.`
+const faq = [
+  { q: 'Les quiz manga sont-ils gratuits ?', a: 'Oui, tous les quiz de cette page sont gratuits et sans inscription. Chaque quiz compte 5 questions à choix multiple.' },
+  { q: 'Où trouver plus de questions ?', a: `Dans l'app Shobukan, gratuite sur iPhone et Android : plus de ${total} questions sur ${UNIVERSES.length} univers manga, à jouer seul, à plusieurs sur un même téléphone ou en ligne.` },
+  { q: 'Peut-on faire un quiz manga entre amis ?', a: "Oui. L'Otaku Quiz de Shobukan se joue jusqu'à 12 joueurs : chacun répond en secret sur son téléphone, ou on se passe un seul téléphone." },
+]
+const jsonLd = [
+  webPage(path, title, 'fr'),
+  breadcrumbs([{ name: 'Shobukan', path: '/' }, { name: 'Quiz manga', path }]),
+  {
+    '@type': 'ItemList',
+    name: 'Quiz manga',
+    itemListElement: UNIVERSES.map((u, i) => ({ '@type': 'ListItem', position: i + 1, name: `Quiz ${u.fr}`, url: `${SITE}/quiz/${u.slug}/` })),
+  },
+  faqPage(`${SITE}${path}#faq`, faq),
+]
+---
+
+<Base lang="fr" title={title} description={description} path={path} alternates={{ fr: path, en: null }} jsonLd={jsonLd}>
+  <section class="section hub">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Quiz manga gratuits</p>
+        <h1 class="display">Quel otaku es-tu ?</h1>
+        <p class="lede">
+          <strong>Choisis ton manga et réponds à 5 questions, gratuitement et sans inscription.</strong>{' '}
+          {UNIVERSES.length} univers au choix. Quand tu as fini, défie tes amis avec ton score.
+        </p>
+      </div>
+      <UniverseGrid lang="fr" linkToQuiz />
+    </div>
+  </section>
+  <Faq items={faq} title="Les quiz en bref" />
+  <CtaBand lang="fr" medium="quiz_hub_footer" title={`Plus de ${total} questions dans l’app.`} body="Joue seul, sur un seul téléphone avec tes potes ou en ligne jusqu’à 12 joueurs." />
+</Base>
+
+<style>
+  .hub { overflow: hidden; }
+  .glow {
+    position: absolute; top: -30%; right: -10%; width: 800px; height: 800px; max-width: 120vw;
+    background: radial-gradient(closest-side, rgba(227, 38, 61, 0.35), transparent);
+    pointer-events: none;
+  }
+  .hub .wrap { position: relative; }
+</style>

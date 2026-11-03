@@ -1,0 +1,64 @@
+# Construit le site Astro, le publie sur GitHub Pages, puis prévient IndexNow
+# (Bing alimente la recherche de ChatGPT : une page notifiée y apparaît plus vite).
+#
+# Prérequis (une seule fois) : Settings → Pages → Build and deployment →
+# Source = « GitHub Actions ».
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  indexnow:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Envoyer les URL du sitemap à IndexNow
+        run: |
+          urls=$(curl -s https://shobukan.djabelsolutions.fr/sitemap-0.xml | grep -oE '<loc>[^<]+</loc>' | sed -E 's#</?loc>##g' | jq -R . | jq -s -c .)
+          body=$(jq -n -c --argjson urls "$urls" '{
+            host: "shobukan.djabelsolutions.fr",
+            key: "aea40d54f8e080aad7444dbc0fd0f931",
+            keyLocation: "https://shobukan.djabelsolutions.fr/aea40d54f8e080aad7444dbc0fd0f931.txt",
+            urlList: $urls
+          }')
+          code=$(curl -s -o /dev/null -w '%{http_code}' -X POST https://api.indexnow.org/indexnow \
+            -H 'Content-Type: application/json; charset=utf-8' -d "$body")
+          echo "IndexNow HTTP $code"
+          # 200 = OK, 202 = clé en cours de validation (normal la première fois)
+          [ "$code" = "200" ] || [ "$code" = "202" ]

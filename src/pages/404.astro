@@ -1,0 +1,82 @@
+---
+// GitHub Pages sert cette page pour tout chemin inconnu, dont les invitations
+// /join/CODE partagées depuis l'app. Le script détecte un code valide et
+// affiche l'écran d'invitation ; sinon, un 404 classique.
+import { Image } from 'astro:assets'
+import Base from '../layouts/Base.astro'
+import StoreButtons from '../components/StoreButtons.astro'
+import shinobi from '../assets/art/shobukan-shinobi-back.png'
+import { APP_STORE_ID, SITE } from '../data/product'
+---
+
+<Base lang="fr" title="Rejoins ma partie Shobukan !" description="On lance une partie de Shobukan, le party game manga. Rejoins-nous avec le code d'invitation." path="/404/" noindex>
+  <section class="section page">
+    <div class="wrap center">
+      <div id="invite" hidden>
+        <p class="eyebrow">Invitation</p>
+        <h1 class="display">Rejoins la partie !</h1>
+        <p class="lede">Un ami t'invite à jouer à Shobukan, le party game manga. Voici ton code :</p>
+        <p class="code" id="code"></p>
+        <p class="muted hint">Appuie sur le code pour le sélectionner.</p>
+        <p><a class="btn btn-primary" id="open-app" href="#">J'ai déjà l'app : ouvrir</a></p>
+        <div class="dl" id="download">
+          <p class="muted">Pas encore l'app ? Elle est gratuite :</p>
+          <StoreButtons lang="fr" medium="invite" center />
+        </div>
+        <ol class="card how">
+          <li>Installe Shobukan et ouvre l'app</li>
+          <li>Appuie sur « Rejoindre une partie avec un code »</li>
+          <li>Entre le code ci-dessus</li>
+        </ol>
+      </div>
+
+      <div id="notfound">
+        <Image class="ninja" src={shinobi} alt="" width={220} />
+        <p class="eyebrow">Erreur 404</p>
+        <h1 class="display">Page introuvable</h1>
+        <p class="lede">Cette page n'existe pas ou a été déplacée.</p>
+        <p class="actions">
+          <a class="btn btn-primary" href="/">Retour à l'accueil</a>
+          <a class="btn btn-ghost" href="/en/" lang="en">English site</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script is:inline define:vars={{ appId: APP_STORE_ID, site: SITE }}>
+  // Codes de room : 6 caractères, alphabet sans ambigus (pas de O/0/I/1), même règle que l'app.
+  var m = location.pathname.match(/^\/join\/([A-HJ-NP-Za-hj-np-z2-9]{6})\/?$/)
+  if (m) {
+    var code = m[1].toUpperCase()
+    document.getElementById('code').textContent = code
+    document.getElementById('open-app').setAttribute('href', 'shobukan://join/' + code)
+    document.getElementById('invite').hidden = false
+    document.getElementById('notfound').hidden = true
+    document.title = 'Rejoins ma partie Shobukan !'
+    // Bannière iOS : ouvre directement la bonne partie si l'app est installée.
+    var banner = document.getElementById('itunes-banner')
+    if (banner) banner.setAttribute('content', 'app-id=' + appId + ', app-argument=' + site + '/join/' + code)
+  } else {
+    document.title = 'Page introuvable · Shobukan'
+  }
+</script>
+
+<style>
+  .page { min-height: 70vh; }
+  .center { text-align: center; max-width: 720px; }
+  .center .eyebrow { justify-content: center; }
+  .center .lede { margin-left: auto; margin-right: auto; }
+  .code {
+    font-family: ui-monospace, Menlo, monospace; font-weight: 800;
+    font-size: clamp(36px, 10vw, 60px); letter-spacing: 0.3em; text-indent: 0.3em;
+    color: var(--gold); border: 3px dashed rgba(245, 200, 66, 0.55); border-radius: 18px;
+    padding: 16px 8px; margin: 26px auto 8px; max-width: 440px; user-select: all;
+  }
+  .hint { font-size: 13px; margin: 0 0 26px; }
+  .dl { margin: 34px 0; }
+  .dl p { margin: 0 0 14px; }
+  .how { text-align: left; max-width: 440px; margin: 0 auto; padding: 22px 22px 22px 44px; color: var(--muted); display: grid; gap: 6px; }
+  .ninja { width: 160px; height: auto; margin: 0 auto 20px; }
+  .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
+</style>

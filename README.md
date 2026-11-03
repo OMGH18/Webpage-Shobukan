@@ -1,0 +1,37 @@
+# Site Shobukan
+
+Site vitrine de [Shobukan](https://shobukan.djabelsolutions.fr), construit avec [Astro](https://astro.build) et publié sur GitHub Pages.
+
+## Travailler sur le site
+
+```bash
+npm install      # une fois
+npm run dev      # aperçu local sur http://localhost:4321
+npm run build    # génère le site final dans dist/
+```
+
+Chaque push sur `main` construit et publie le site automatiquement
+(`.github/workflows/deploy.yml`), puis prévient Bing via IndexNow.
+
+## Où modifier quoi
+
+| Je veux changer… | Fichier |
+|---|---|
+| Un prix, un lien store, un réseau social, le nombre de joueurs | `src/data/product.ts` (source unique : pages, JSON-LD et `llms.txt` suivent) |
+| Les textes de l'accueil | `src/components/HomePage.astro` (FR et EN au même endroit) |
+| La page Prix | `src/components/PricingPage.astro` |
+| La page Undercover | `src/components/UndercoverPage.astro` |
+| Les questions des quiz web | `src/data/quiz-fr.json` |
+| Le header, le footer, les boutons stores | `src/components/` |
+| Les couleurs, les polices | `src/styles/global.css` |
+| Confidentialité, CGU, suppression de compte | `public/privacy/`, `public/terms/`, `public/account-deletion/` (HTML brut) |
+
+La fiche produit de référence est dans `docs/produit.md` : tout texte public
+(site, stores, annuaires, presse) doit rester cohérent avec elle.
+
+## Fichiers à ne pas casser
+
+- `public/.well-known/apple-app-site-association` : liens d'invitation iOS.
+- `src/pages/404.astro` : affiche aussi les invitations `/join/CODE`.
+- `public/CNAME` : le nom de domaine.
+- `public/aea40d54f8e080aad7444dbc0fd0f931.txt` : la clé IndexNow.

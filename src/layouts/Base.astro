@@ -1,0 +1,95 @@
+---
+import '@fontsource-variable/inter'
+import '@fontsource/shojumaru'
+import '../styles/global.css'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import { APP_STORE_ID, SITE, type Lang } from '../data/product'
+import { t } from '../i18n/ui'
+
+interface Props {
+  lang: Lang
+  title: string
+  description: string
+  /** Chemin canonique, ex. "/prix/". */
+  path: string
+  /** Équivalents FR / EN (null si la page n'existe que dans une langue). */
+  alternates?: { fr: string | null; en: string | null }
+  ogImage?: string
+  jsonLd?: Record<string, unknown>[]
+  noindex?: boolean
+}
+
+const { lang, title, description, path, alternates, ogImage, jsonLd = [], noindex = false } = Astro.props
+const canonical = new URL(path, SITE).href
+const og = new URL(ogImage ?? `/assets/og-${lang}.png`, SITE).href
+const ui = t(lang)
+const xDefault = alternates?.en ?? alternates?.fr
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>document.documentElement.classList.add('js')</script>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={noindex ? 'noindex' : 'index,follow,max-image-preview:large'} />
+    {!noindex && <link rel="canonical" href={canonical} />}
+    {alternates?.fr && <link rel="alternate" hreflang="fr" href={new URL(alternates.fr, SITE).href} />}
+    {alternates?.en && <link rel="alternate" hreflang="en" href={new URL(alternates.en, SITE).href} />}
+    {alternates && xDefault && <link rel="alternate" hreflang="x-default" href={new URL(xDefault, SITE).href} />}
+
+    <meta name="apple-itunes-app" content={`app-id=${APP_STORE_ID}`} id="itunes-banner" />
+    <meta name="theme-color" content="#0e0507" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Shobukan" />
+    <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_US'} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={og} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="/assets/icon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    {jsonLd.length > 0 && (
+      <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': jsonLd })} />
+    )}
+  </head>
+  <body>
+    <a class="skip" href="#main">{ui.skip}</a>
+    <Header lang={lang} path={path} alternates={alternates} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <script>
+      // Apparition douce des sections au scroll.
+      const items = document.querySelectorAll('.reveal')
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add('in')
+                io.unobserve(e.target)
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px' },
+        )
+        items.forEach((el) => io.observe(el))
+      } else {
+        items.forEach((el) => el.classList.add('in'))
+      }
+    </script>
+  </body>
+</html>

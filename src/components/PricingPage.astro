@@ -1,0 +1,160 @@
+---
+import Base from '../layouts/Base.astro'
+import CtaBand from './CtaBand.astro'
+import Faq from './Faq.astro'
+import { PRICES, SITE, UNIVERSES, formatPrice, type Lang } from '../data/product'
+import { ROUTES } from '../i18n/ui'
+import { breadcrumbs, faqPage, webPage } from '../data/schema'
+
+interface Props { lang: Lang }
+const { lang } = Astro.props
+const fr = lang === 'fr'
+const p = (v: number) => formatPrice(v, lang)
+const path = ROUTES.pricing[lang]
+
+const c = fr
+  ? {
+      title: 'Prix de Shobukan : gratuit, Premium et crédits créateur',
+      description: `Shobukan est gratuit avec publicités. Premium coûte ${p(PRICES.monthly)}/mois ou ${p(PRICES.yearly)}/an et retire les pubs pour toute la table. Détail de ce qui est gratuit et payant.`,
+      eyebrow: 'Prix',
+      h1: 'Combien coûte Shobukan ?',
+      lede: `<strong>Shobukan est gratuit : tous les modes et les ${UNIVERSES.length} univers manga se jouent sans payer, avec des publicités.</strong> L'abonnement Premium, en option, coûte ${p(PRICES.monthly)} par mois ou ${p(PRICES.yearly)} par an. Il retire les publicités et rend l'hébergement des parties en ligne illimité.`,
+      plans: [
+        { name: 'Gratuit', price: p(0), per: '', sub: 'Pour toujours', items: ['Tous les modes : Undercover, Otaku Quiz, Anime Grid, Expédition', `Les ${UNIVERSES.length} univers manga`, 'Parties sur un seul téléphone illimitées, même sans internet', 'Rejoindre des parties en ligne sans limite', `${PRICES.freeHostedGames} parties en ligne hébergées offertes`, 'Avec publicités'], hl: false },
+        { name: 'Premium annuel', price: p(PRICES.yearly), per: '/ an', sub: `soit ${p(PRICES.yearlyPerMonth)} par mois`, items: ['Zéro publicité, pour toute la table quand tu héberges', 'Parties en ligne hébergées en illimité', 'Vies illimitées en Expédition', '1 crédit créateur inclus', 'Accès anticipé aux nouveautés'], hl: true, badge: 'Le meilleur prix' },
+        { name: 'Premium mensuel', price: p(PRICES.monthly), per: '/ mois', sub: 'Sans engagement', items: ["Les mêmes avantages que l'annuel", 'Résiliable à tout moment depuis ton compte App Store ou Google Play'], hl: false },
+      ],
+      note: "Prix de référence en France, toutes taxes comprises, identiques sur iPhone et Android. Le prix exact dans ta devise est affiché par l'App Store ou Google Play avant l'achat. L'abonnement se renouvelle automatiquement sauf résiliation depuis ton compte.",
+      compareTitle: 'Gratuit ou Premium : le détail',
+      cols: ['', 'Gratuit', 'Premium'],
+      rows: [
+        ['Modes de jeu', 'Tous', 'Tous'],
+        ['Univers manga', `Les ${UNIVERSES.length}`, `Les ${UNIVERSES.length}`],
+        ['Parties sur un seul téléphone', 'Illimitées', 'Illimitées'],
+        ['Rejoindre une partie en ligne', 'Illimité', 'Illimité'],
+        ['Héberger une partie en ligne', `${PRICES.freeHostedGames} offertes`, 'Illimité'],
+        ['Publicités', 'Oui', 'Aucune'],
+        ['Vies en Expédition', 'Limitées (recharge avec le temps ou une pub)', 'Illimitées'],
+        ['Créer un pack personnalisé', `${p(PRICES.creatorCredit)} le crédit`, `1 crédit inclus, puis ${p(PRICES.creatorCredit)}`],
+      ],
+      extras: [
+        { t: 'Un seul Premium suffit pour le groupe', b: "Quand un joueur Premium héberge une partie en ligne, tous les joueurs de la table jouent sans publicité, même s'ils ne sont pas abonnés." },
+        { t: 'Les crédits créateur', b: `Un crédit coûte ${p(PRICES.creatorCredit)} et permet de créer un pack personnalisé (tes questions ou tes mots). Une fois créé, ton pack se joue et se partage gratuitement par tout le monde.` },
+      ],
+      faq: [
+        { q: 'Shobukan est-il vraiment gratuit ?', a: `Oui. Tous les modes et les ${UNIVERSES.length} univers sont jouables gratuitement, avec des publicités. Rien n'est verrouillé derrière Premium à part l'hébergement illimité, l'absence de pub et les vies illimitées en Expédition.` },
+        { q: 'Combien coûte Premium ?', a: `${p(PRICES.monthly)} par mois ou ${p(PRICES.yearly)} par an en France (soit ${p(PRICES.yearlyPerMonth)} par mois), sur iPhone comme sur Android.` },
+        { q: 'Comment résilier Premium ?', a: "Depuis les réglages d'abonnement de ton compte App Store ou Google Play, à tout moment. Premium reste actif jusqu'à la fin de la période payée." },
+        { q: 'Mes amis doivent-ils payer pour jouer avec moi ?', a: `Non. Rejoindre une partie en ligne est gratuit et illimité. Si l'hôte est Premium, toute la table joue sans pub.` },
+      ],
+    }
+  : {
+      title: 'Shobukan pricing: free, Premium and creator credits',
+      description: `Shobukan is free with ads. Premium costs ${p(PRICES.monthly)}/month or ${p(PRICES.yearly)}/year and removes ads for the whole table. See what is free and what is paid.`,
+      eyebrow: 'Pricing',
+      h1: 'How much does Shobukan cost?',
+      lede: `<strong>Shobukan is free: every mode and all ${UNIVERSES.length} manga universes can be played without paying, with ads.</strong> The optional Premium subscription costs ${p(PRICES.monthly)} per month or ${p(PRICES.yearly)} per year. It removes ads and makes online hosting unlimited.`,
+      plans: [
+        { name: 'Free', price: p(0), per: '', sub: 'Forever', items: ['Every mode: Undercover, Otaku Quiz, Anime Grid, Expedition', `All ${UNIVERSES.length} manga universes`, 'Unlimited same-phone games, even offline', 'Join online games without limit', `Host ${PRICES.freeHostedGames} online games for free`, 'With ads'], hl: false },
+        { name: 'Premium yearly', price: p(PRICES.yearly), per: '/ year', sub: `that's ${p(PRICES.yearlyPerMonth)} per month`, items: ['No ads, for the whole table when you host', 'Unlimited online hosting', 'Unlimited Expedition lives', '1 creator credit included', 'Early access to new content'], hl: true, badge: 'Best value' },
+        { name: 'Premium monthly', price: p(PRICES.monthly), per: '/ month', sub: 'No commitment', items: ['Same benefits as yearly', 'Cancel anytime from your App Store or Google Play account'], hl: false },
+      ],
+      note: 'Reference prices in France, taxes included, same on iPhone and Android. The exact price in your currency is shown by the App Store or Google Play before you buy. The subscription renews automatically unless cancelled from your account.',
+      compareTitle: 'Free vs Premium in detail',
+      cols: ['', 'Free', 'Premium'],
+      rows: [
+        ['Game modes', 'All', 'All'],
+        ['Manga universes', `All ${UNIVERSES.length}`, `All ${UNIVERSES.length}`],
+        ['Same-phone games', 'Unlimited', 'Unlimited'],
+        ['Join an online game', 'Unlimited', 'Unlimited'],
+        ['Host an online game', `${PRICES.freeHostedGames} free`, 'Unlimited'],
+        ['Ads', 'Yes', 'None'],
+        ['Expedition lives', 'Limited (refill over time or with an ad)', 'Unlimited'],
+        ['Create a custom pack', `${p(PRICES.creatorCredit)} per credit`, `1 credit included, then ${p(PRICES.creatorCredit)}`],
+      ],
+      extras: [
+        { t: 'One Premium covers the whole group', b: 'When a Premium player hosts an online game, everyone at the table plays without ads, even if they are not subscribed.' },
+        { t: 'Creator credits', b: `A credit costs ${p(PRICES.creatorCredit)} and lets you create one custom pack (your questions or words). Once created, anyone can play and share your pack for free.` },
+      ],
+      faq: [
+        { q: 'Is Shobukan really free?', a: `Yes. Every mode and all ${UNIVERSES.length} universes are free to play, with ads. Premium only adds unlimited hosting, no ads and unlimited Expedition lives.` },
+        { q: 'How much is Premium?', a: `${p(PRICES.monthly)} per month or ${p(PRICES.yearly)} per year in France (${p(PRICES.yearlyPerMonth)} per month), on iPhone and Android.` },
+        { q: 'How do I cancel Premium?', a: 'From the subscription settings of your App Store or Google Play account, at any time. Premium stays active until the end of the paid period.' },
+        { q: 'Do my friends need to pay to play with me?', a: 'No. Joining an online game is free and unlimited. If the host is Premium, the whole table plays without ads.' },
+      ],
+    }
+
+const jsonLd = [
+  webPage(path, c.title, lang),
+  breadcrumbs([{ name: 'Shobukan', path: ROUTES.home[lang] }, { name: c.eyebrow, path }]),
+  faqPage(`${SITE}${path}#faq`, c.faq),
+]
+---
+
+<Base lang={lang} title={c.title} description={c.description} path={path} alternates={{ fr: ROUTES.pricing.fr, en: ROUTES.pricing.en }} jsonLd={jsonLd}>
+  <section class="section top">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">{c.eyebrow}</p>
+        <h1 class="display">{c.h1}</h1>
+        <p class="lede" set:html={c.lede} />
+      </div>
+      <div class="plans">
+        {c.plans.map((pl) => (
+          <div class:list={['card plan reveal', { hl: pl.hl }]}>
+            {pl.hl && 'badge' in pl && <span class="tag badge">{pl.badge}</span>}
+            <h2>{pl.name}</h2>
+            <p class="price"><b>{pl.price}</b> <span>{pl.per}</span></p>
+            <p class="sub">{pl.sub}</p>
+            <ul>{pl.items.map((it) => <li>{it}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+      <p class="note">{c.note}</p>
+    </div>
+  </section>
+
+  <section class="section compare">
+    <div class="wrap">
+      <div class="section-head"><h2>{c.compareTitle}</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>{c.cols.map((col) => <th scope="col">{col}</th>)}</tr></thead>
+          <tbody>{c.rows.map((r) => <tr><td>{r[0]}</td><td>{r[1]}</td><td>{r[2]}</td></tr>)}</tbody>
+        </table>
+      </div>
+      <div class="grid-2 extras">
+        {c.extras.map((e) => <div class="card extra"><h3>{e.t}</h3><p class="muted">{e.b}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <Faq items={c.faq} title={fr ? 'Questions sur les prix' : 'Pricing questions'} />
+  <CtaBand lang={lang} medium={`pricing_${lang}`} />
+</Base>
+
+<style>
+  .top { overflow: hidden; }
+  .glow { position: absolute; top: -30%; left: 30%; width: 900px; height: 900px; max-width: 120vw; background: radial-gradient(closest-side, rgba(227, 38, 61, 0.3), transparent); pointer-events: none; }
+  .top .wrap { position: relative; }
+  .plans { display: grid; gap: 18px; grid-template-columns: 1fr; align-items: start; }
+  @media (min-width: 900px) { .plans { grid-template-columns: repeat(3, 1fr); } }
+  .plan { padding: 30px 28px; position: relative; }
+  .plan.hl { border: 2px solid var(--accent); background: radial-gradient(120% 80% at 50% 0%, rgba(227, 38, 61, 0.22), transparent), linear-gradient(180deg, var(--surface-2), var(--surface)); box-shadow: 0 20px 60px rgba(227, 38, 61, 0.2); }
+  .badge { position: absolute; top: -12px; left: 28px; }
+  .plan h2 { font-size: 20px; font-weight: 750; }
+  .price { margin: 14px 0 2px; }
+  .price b { font-family: var(--font-display); font-weight: 400; font-size: 46px; }
+  .price span { color: var(--muted); }
+  .sub { margin: 0; color: var(--gold); font-weight: 650; font-size: 14px; }
+  .plan ul { margin: 20px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+  .plan li { padding-left: 28px; position: relative; color: var(--muted); }
+  .plan li::before { content: '✓'; position: absolute; left: 0; top: 0; color: var(--good); font-weight: 800; }
+  .note { color: var(--muted); font-size: 14px; margin: 24px 0 0; max-width: 820px; }
+  .compare { padding-top: 0; }
+  .extras { margin-top: 22px; }
+  .extra { padding: 26px; }
+  .extra h3 { margin-bottom: 8px; }
+  .extra p { margin: 0; }
+</style>

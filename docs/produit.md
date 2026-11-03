@@ -1,7 +1,8 @@
 # Fiche produit Shobukan (source de vérité)
 
 > Tout texte public (site, stores, annuaires, réseaux, presse) part de cette fiche.
-> Si un chiffre change : on le corrige ici d'abord, puis partout ailleurs.
+> Si un chiffre change : on le corrige ici d'abord, puis dans `src/data/product.ts`
+> (qui alimente tout le site, le JSON-LD et llms.txt), puis sur les stores.
 > Dernière mise à jour : 3 novembre 2026.
 
 ## En une phrase
@@ -29,6 +30,7 @@
 | Pas disponible sur | PC, navigateur web, consoles |
 | Langues | Français, anglais |
 | Joueurs | 1 à 12 selon le mode |
+| Hors ligne | Oui, en mode local (un seul téléphone) |
 | Univers | 18 + mode « tous univers » |
 | Site | https://shobukan.djabelsolutions.fr/ |
 | App Store | https://apps.apple.com/app/id6778133739 |
@@ -62,8 +64,7 @@ Naruto, One Piece, Dragon Ball, My Hero Academia, Bleach, Jujutsu Kaisen, Demon 
 | Crédit créateur | 1,99 € l'unité | 1 inclus |
 | Accès anticipé | Non | Oui |
 
-Nouveaux tarifs iOS en vigueur au 4 novembre 2026. Les abonnés existants gardent 3,99 €/mois et 34,99 €/an.
-**À confirmer : le prix Android dans Google Play** (non modifié lors de la hausse iOS).
+Mêmes prix sur iOS et Android (confirmé le 3 novembre 2026). Nouveaux tarifs en vigueur au 4 novembre 2026 ; les abonnés existants gardent 3,99 €/mois et 34,99 €/an.
 
 ## Ce que Shobukan ne fait PAS
 
@@ -88,11 +89,9 @@ Nouveaux tarifs iOS en vigueur au 4 novembre 2026. Les abonnés existants garden
 
 ## Comptes officiels
 
-À compléter avec les URL exactes (ne mettre dans le site que les comptes vérifiés) :
-
-- TikTok FR : ?
-- TikTok EN : ?
-- Instagram : ?
+- TikTok FR : https://www.tiktok.com/@shobukan.app
+- TikTok EN : https://www.tiktok.com/@shobukangame
+- Instagram : https://www.instagram.com/shobukan.app/
 
 ## Mentions obligatoires
 

@@ -1,0 +1,230 @@
+---
+import StoreButtons from './StoreButtons.astro'
+import type { Lang } from '../data/product'
+
+export interface QuizQuestion { q: string; a: string; d: readonly string[] }
+
+interface Props {
+  lang: Lang
+  questions: QuizQuestion[]
+  universeName: string
+  /** Nombre de questions de cet univers dans l'app (arrondi). */
+  appCount: number
+  medium: string
+}
+const { lang, questions, universeName, appCount, medium } = Astro.props
+const fr = lang === 'fr'
+
+// Mélange déterministe : la bonne réponse ne tombe pas toujours au même endroit,
+// et le HTML reste identique d'un build à l'autre.
+function seeded(seed: number) {
+  let s = seed
+  return () => ((s = (s * 9301 + 49297) % 233280) / 233280)
+}
+const items = questions.map((qu, i) => {
+  const rnd = seeded(i * 7919 + qu.q.length)
+  const opts = [{ t: qu.a, ok: true }, ...qu.d.map((t) => ({ t, ok: false }))]
+  for (let k = opts.length - 1; k > 0; k--) {
+    const j = Math.floor(rnd() * (k + 1))
+    ;[opts[k], opts[j]] = [opts[j], opts[k]]
+  }
+  return { ...qu, opts }
+})
+
+const L = fr
+  ? {
+      question: 'Question',
+      next: 'Question suivante',
+      results: 'Voir mon score',
+      good: 'Bonne réponse !',
+      bad: 'Raté. La bonne réponse :',
+      scoreTitle: 'Ton score',
+      verdicts: ['Il est temps de relire les tomes…', 'Pas mal, mais tu peux mieux faire.', 'Solide ! Un vrai fan.', 'Parfait. Otaku confirmé.'],
+      more: `Ce n’était qu’un échauffement : l’app Shobukan contient plus de ${appCount} questions ${universeName}, à jouer seul ou contre tes amis.`,
+      challenge: 'Défier un ami',
+      copied: 'Lien copié !',
+      retry: 'Rejouer',
+      share: (s: number, n: number) => `J'ai fait ${s}/${n} au quiz ${universeName} de Shobukan. Tu fais mieux ?`,
+    }
+  : {
+      question: 'Question',
+      next: 'Next question',
+      results: 'See my score',
+      good: 'Correct!',
+      bad: 'Wrong. The answer:',
+      scoreTitle: 'Your score',
+      verdicts: ['Time to reread the volumes…', 'Not bad, but you can do better.', 'Solid! A true fan.', 'Perfect. Certified otaku.'],
+      more: `That was just a warm-up: the Shobukan app has over ${appCount} ${universeName} questions, solo or against your friends.`,
+      challenge: 'Challenge a friend',
+      copied: 'Link copied!',
+      retry: 'Play again',
+      share: (s: number, n: number) => `I scored ${s}/${n} on the Shobukan ${universeName} quiz. Can you beat me?`,
+    }
+const shareTemplates = { a: L.share(0, items.length).split('0/')[0], b: L.share(0, items.length).split(`0/${items.length}`)[1] }
+---
+
+<div class="quiz" data-total={items.length} data-verdicts={JSON.stringify(L.verdicts)} data-copied={L.copied} data-share-a={shareTemplates.a} data-share-b={shareTemplates.b}>
+  <ol class="qs">
+    {items.map((it, i) => (
+      <li class="q" data-i={i}>
+        <p class="progress"><span>{L.question} {i + 1}/{items.length}</span><span class="bar"><span style={`width:${((i + 1) / items.length) * 100}%`}></span></span></p>
+        <h3>{it.q}</h3>
+        <div class="opts">
+          {it.opts.map((o) => (
+            <button type="button" class="opt" data-ok={o.ok ? '1' : undefined}>{o.t}</button>
+          ))}
+        </div>
+        <p class="feedback" aria-live="polite" hidden>
+          <span class="fb-good">{L.good}</span>
+          <span class="fb-bad">{L.bad} <b>{it.a}</b></span>
+        </p>
+        <button type="button" class="btn btn-primary next" hidden>{i + 1 < items.length ? L.next : L.results} →</button>
+        <noscript><p class="answer">✔ {it.a}</p></noscript>
+      </li>
+    ))}
+  </ol>
+
+  <div class="result" hidden>
+    <p class="eyebrow">{L.scoreTitle}</p>
+    <p class="score"><b class="s">0</b>/{items.length}</p>
+    <p class="verdict"></p>
+    <p class="muted more">{L.more}</p>
+    <div class="result-actions">
+      <button type="button" class="btn btn-primary share">{L.challenge}</button>
+      <button type="button" class="btn btn-ghost retry">{L.retry}</button>
+    </div>
+    <div class="result-stores"><StoreButtons lang={lang} medium={medium} note={false} /></div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.quiz').forEach((quiz) => {
+    const qs = Array.from(quiz.querySelectorAll<HTMLElement>('.q'))
+    const result = quiz.querySelector<HTMLElement>('.result')!
+    const total = Number(quiz.dataset.total)
+    const verdicts: string[] = JSON.parse(quiz.dataset.verdicts || '[]')
+    let score = 0
+
+    const show = (i: number) => qs.forEach((q, k) => q.classList.toggle('active', k === i))
+    quiz.classList.add('ready')
+    show(0)
+
+    qs.forEach((q, i) => {
+      const opts = Array.from(q.querySelectorAll<HTMLButtonElement>('.opt'))
+      const feedback = q.querySelector<HTMLElement>('.feedback')!
+      const next = q.querySelector<HTMLButtonElement>('.next')!
+      opts.forEach((btn) =>
+        btn.addEventListener('click', () => {
+          if (q.dataset.done) return
+          q.dataset.done = '1'
+          const ok = btn.dataset.ok === '1'
+          if (ok) score++
+          opts.forEach((o) => {
+            o.disabled = true
+            if (o.dataset.ok === '1') o.classList.add('right')
+          })
+          if (!ok) btn.classList.add('wrong')
+          feedback.hidden = false
+          feedback.classList.toggle('is-good', ok)
+          next.hidden = false
+          next.focus({ preventScroll: true })
+        }),
+      )
+      next.addEventListener('click', () => {
+        if (i + 1 < qs.length) {
+          show(i + 1)
+        } else {
+          show(-1)
+          result.hidden = false
+          result.querySelector('.s')!.textContent = String(score)
+          const idx = score === total ? 3 : score >= total * 0.6 ? 2 : score >= total * 0.4 ? 1 : 0
+          result.querySelector('.verdict')!.textContent = verdicts[idx]
+        }
+        quiz.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    })
+
+    result.querySelector('.share')!.addEventListener('click', async () => {
+      const text = `${quiz.dataset.shareA}${score}/${total}${quiz.dataset.shareB}`
+      const url = location.href.split('#')[0]
+      try {
+        if (navigator.share) {
+          await navigator.share({ text, url })
+        } else {
+          await navigator.clipboard.writeText(`${text} ${url}`)
+          const b = result.querySelector<HTMLButtonElement>('.share')!
+          const old = b.textContent
+          b.textContent = quiz.dataset.copied || 'OK'
+          setTimeout(() => (b.textContent = old), 2000)
+        }
+      } catch {
+        /* partage annulé */
+      }
+    })
+
+    result.querySelector('.retry')!.addEventListener('click', () => {
+      score = 0
+      result.hidden = true
+      qs.forEach((q) => {
+        delete q.dataset.done
+        q.querySelectorAll<HTMLButtonElement>('.opt').forEach((o) => {
+          o.disabled = false
+          o.classList.remove('right', 'wrong')
+        })
+        q.querySelector<HTMLElement>('.feedback')!.hidden = true
+        q.querySelector<HTMLElement>('.next')!.hidden = true
+      })
+      show(0)
+    })
+  })
+</script>
+
+<style>
+  .quiz {
+    background: linear-gradient(180deg, var(--surface-2), var(--surface));
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    padding: clamp(22px, 4vw, 40px);
+    box-shadow: var(--shadow);
+    scroll-margin-top: 90px;
+  }
+  .qs { list-style: none; margin: 0; padding: 0; display: grid; gap: 36px; }
+  .ready .qs { gap: 0; }
+  .ready .q { display: none; }
+  .ready .q.active { display: block; animation: pop 0.35s ease; }
+  @keyframes pop { from { opacity: 0; transform: translateY(8px); } }
+  .progress { display: flex; align-items: center; gap: 14px; margin: 0 0 14px; font-size: 13px; font-weight: 700; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; }
+  .bar { flex: 1; height: 6px; background: rgba(255, 255, 255, 0.08); border-radius: 99px; overflow: hidden; }
+  .bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); border-radius: 99px; }
+  h3 { font-size: clamp(20px, 3vw, 26px); line-height: 1.3; margin: 0 0 22px; }
+  .opts { display: grid; gap: 10px; }
+  @media (min-width: 640px) { .opts { grid-template-columns: 1fr 1fr; } }
+  .opt {
+    font: inherit; font-size: 16px; font-weight: 650; text-align: left; color: var(--text);
+    background: rgba(255, 255, 255, 0.04); border: 1.5px solid var(--border-strong);
+    border-radius: 14px; padding: 15px 18px; cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  }
+  .opt:hover:not(:disabled) { border-color: var(--accent-hot); background: rgba(227, 38, 61, 0.1); }
+  .opt:active:not(:disabled) { transform: scale(0.98); }
+  .opt:disabled { cursor: default; opacity: 0.55; }
+  .opt.right { opacity: 1; border-color: var(--good); background: rgba(60, 207, 142, 0.16); }
+  .opt.wrong { opacity: 1; border-color: var(--bad); background: rgba(255, 90, 106, 0.16); }
+  .feedback { margin: 18px 0 0; font-weight: 650; }
+  .feedback .fb-good { display: none; color: var(--good); }
+  .feedback .fb-bad { color: var(--bad); }
+  .feedback .fb-bad b { color: var(--text); }
+  .feedback.is-good .fb-good { display: inline; }
+  .feedback.is-good .fb-bad { display: none; }
+  .next { margin-top: 20px; }
+  .answer { color: var(--good); font-weight: 650; margin: 14px 0 0; }
+
+  .result { text-align: center; padding: 10px 0; }
+  .result .eyebrow { justify-content: center; }
+  .score { font-family: var(--font-display); font-size: clamp(64px, 14vw, 104px); line-height: 1; margin: 6px 0 10px; color: var(--muted); }
+  .score b { font-weight: 400; color: var(--text); }
+  .verdict { font-size: 22px; font-weight: 750; margin: 0 0 10px; }
+  .more { max-width: 520px; margin: 0 auto 24px; }
+  .result-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px; }
+  .result-stores :global(.row) { justify-content: center; }
+</style>

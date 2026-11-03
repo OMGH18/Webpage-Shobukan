@@ -1,0 +1,65 @@
+---
+import { Image } from 'astro:assets'
+import icon from '../assets/art/icon.png'
+import { PUBLISHER, SOCIALS, type Lang } from '../data/product'
+import { ROUTES, t } from '../i18n/ui'
+
+interface Props { lang: Lang }
+const { lang } = Astro.props
+const ui = t(lang)
+const year = 2026
+const otherLang: Lang = lang === 'fr' ? 'en' : 'fr'
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="top">
+      <div class="brandcol">
+        <a class="brand" href={ROUTES.home[lang]}>
+          <Image src={icon} alt="" width={44} height={44} />
+          <span class="display">Shobukan</span>
+        </a>
+        <p class="muted">{ui.footer.tagline}</p>
+      </div>
+      <nav aria-label={ui.footer.game}>
+        <h2>{ui.footer.game}</h2>
+        <a href={`${ROUTES.home[lang]}#modes`}>{ui.nav.modes}</a>
+        {ROUTES.quiz[lang] && <a href={ROUTES.quiz[lang] as string}>{ui.nav.quiz}</a>}
+        <a href={ROUTES.undercover[lang]}>{ui.nav.undercover}</a>
+        <a href={ROUTES.pricing[lang]}>{ui.nav.pricing}</a>
+        <a href={ROUTES.home[otherLang]} hreflang={otherLang} lang={otherLang}>{ui.langSwitch}</a>
+      </nav>
+      <nav aria-label={ui.footer.help}>
+        <h2>{ui.footer.help}</h2>
+        <a href={`mailto:${PUBLISHER.email}`}>{ui.footer.contact}</a>
+        <a href="/privacy/">{ui.footer.privacy}</a>
+        <a href="/terms/">{ui.footer.terms}</a>
+        <a href="/account-deletion/">{ui.footer.deletion}</a>
+      </nav>
+      <nav aria-label={ui.footer.follow}>
+        <h2>{ui.footer.follow}</h2>
+        <a href={lang === 'fr' ? SOCIALS.tiktokFr : SOCIALS.tiktokEn} rel="me">TikTok</a>
+        <a href={lang === 'fr' ? SOCIALS.tiktokEn : SOCIALS.tiktokFr} rel="me">TikTok ({lang === 'fr' ? 'EN' : 'FR'})</a>
+        <a href={SOCIALS.instagram} rel="me">Instagram</a>
+      </nav>
+    </div>
+    <p class="legal">{ui.footer.legal}<br />© {year} {PUBLISHER.name}.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer { border-top: 1px solid var(--border); padding: 56px 0 40px; background: var(--bg-2); }
+  .top { display: grid; gap: 32px; grid-template-columns: 1fr 1fr; }
+  @media (min-width: 820px) { .top { grid-template-columns: 1.6fr 1fr 1fr 1fr; } }
+  .brandcol { grid-column: 1 / -1; }
+  @media (min-width: 820px) { .brandcol { grid-column: auto; } }
+  .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; }
+  .brand img { width: 40px; height: 40px; border-radius: 11px; }
+  .brand span { font-size: 22px; }
+  .brandcol p { margin: 12px 0 0; }
+  nav { display: grid; gap: 10px; align-content: start; }
+  nav h2 { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 15px; }
+  nav a:hover { color: var(--text); }
+  .legal { font-size: 12px; color: var(--muted); opacity: 0.8; margin: 44px 0 0; max-width: 820px; line-height: 1.7; }
+</style>

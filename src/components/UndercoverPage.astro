@@ -1,0 +1,228 @@
+---
+import { Image } from 'astro:assets'
+import Base from '../layouts/Base.astro'
+import CtaBand from './CtaBand.astro'
+import Faq from './Faq.astro'
+import StoreButtons from './StoreButtons.astro'
+import undercoverBg from '../assets/art/undercover-game-bg.jpg'
+import { PLAYERS, SITE, UNIVERSES, type Lang } from '../data/product'
+import { ROUTES } from '../i18n/ui'
+import { breadcrumbs, faqPage, webPage } from '../data/schema'
+
+interface Props { lang: Lang }
+const { lang } = Astro.props
+const fr = lang === 'fr'
+const path = ROUTES.undercover[lang]
+
+const c = fr
+  ? {
+      title: 'Undercover manga : règles du jeu et exemples de mots',
+      description: `Règles d'Undercover version manga : rôles (civils, infiltré, Mister White), déroulement, exemples de paires de mots Naruto, One Piece, Dragon Ball… De ${PLAYERS.undercoverMin} à ${PLAYERS.undercoverMax} joueurs.`,
+      eyebrow: 'Règles du jeu',
+      h1: 'Undercover manga : les règles',
+      lede: `<strong>Undercover est un jeu de bluff où chaque joueur reçoit un mot secret, sauf l'infiltré, qui reçoit un mot proche mais différent.</strong> Chacun donne un indice, puis le groupe vote pour éliminer un suspect. Dans Shobukan, tous les mots viennent des mangas : de ${PLAYERS.undercoverMin} à ${PLAYERS.undercoverMax} joueurs, sur un seul téléphone ou en ligne.`,
+      rolesTitle: 'Les trois rôles',
+      roles: [
+        { name: 'Civil', color: 'var(--good)', body: 'La majorité des joueurs. Ils ont tous le même mot et doivent démasquer l’infiltré sans trop en dire.' },
+        { name: 'Infiltré', color: 'var(--accent-hot)', body: 'Il a un mot proche de celui des civils. Il ne sait pas qu’il est l’infiltré : il doit le deviner en écoutant les indices, puis se fondre dans la masse.' },
+        { name: 'Mister White', color: 'var(--gold)', body: 'Il n’a aucun mot. Il doit improviser un indice crédible à partir de ceux des autres, sans se faire repérer.' },
+      ],
+      stepsTitle: 'Comment se déroule une partie',
+      steps: [
+        { t: 'Distribution secrète', b: "Chaque joueur découvre son mot en secret, en se passant le téléphone ou sur son propre écran. Personne ne sait dans quel camp il est, pas même l'infiltré." },
+        { t: 'Tour des indices', b: "À tour de rôle, chacun donne un indice sur son mot sans le dire. Trop précis, tu aides l'infiltré. Trop vague, tu deviens suspect." },
+        { t: 'Le vote', b: 'Tout le monde vote pour éliminer un joueur. Son rôle est révélé, puis un nouveau tour commence.' },
+        { t: 'La fin', b: "Les civils gagnent s'ils éliminent les infiltrés. Les infiltrés gagnent s'ils deviennent aussi nombreux que les civils." },
+      ],
+      pairsTitle: 'Exemples de paires de mots manga',
+      pairsLede: 'Une bonne paire, ce sont deux mots assez proches pour semer le doute. Voici quelques exemples tirés du jeu :',
+      pairsCols: ['Mot des civils', "Mot de l'infiltré", 'Univers'],
+      pairs: [
+        ['Naruto Uzumaki', 'Sasuke Uchiha', 'Naruto'],
+        ['Monkey D. Luffy', 'Trafalgar Law', 'One Piece'],
+        ['Gear Fourth', 'Gear Second', 'One Piece'],
+        ['Son Goku', 'Vegeta', 'Dragon Ball'],
+        ['Gon Freecss', 'Killua Zoldyck', 'Hunter x Hunter'],
+        ['Katsuki Bakugo', 'Shoto Todoroki', 'My Hero Academia'],
+        ['Yuji Itadori', 'Megumi Fushiguro', 'Jujutsu Kaisen'],
+        ['Saitama', 'Genos', 'One Punch Man'],
+        ['Power', 'Aki Hayakawa', 'Chainsaw Man'],
+        ['Yor Forger', 'Anya Forger', 'Spy x Family'],
+      ],
+      pairsNote: `L'app contient plus de 250 paires réparties sur ${UNIVERSES.length} univers, et tu peux créer les tiennes.`,
+      tipsTitle: 'Trois conseils pour gagner',
+      tips: [
+        "Écoute les premiers indices avant de parler : si tu es l'infiltré, c'est là que tu le comprends.",
+        'Donne des indices qui marchent pour les deux mots possibles : tu restes crédible quel que soit ton camp.',
+        "Méfie-toi du joueur qui répète l'idée d'un autre : c'est souvent Mister White.",
+      ],
+      appTitle: 'Joue à Undercover manga dans Shobukan',
+      appBody: "Shobukan distribue les mots, gère les rôles, les votes et les éliminations. Vous n'avez qu'à parler. Gratuit sur iPhone et Android.",
+      faq: [
+        { q: 'À combien de joueurs se joue Undercover ?', a: `Dans Shobukan, Undercover se joue de ${PLAYERS.undercoverMin} à ${PLAYERS.undercoverMax} joueurs, sur un seul téléphone qu'on se passe ou en ligne, chacun sur son téléphone.` },
+        { q: "L'infiltré sait-il qu'il est l'infiltré ?", a: "Non. L'infiltré reçoit simplement un mot, proche de celui des autres. Il doit comprendre qu'il est dans l'autre camp en écoutant les indices." },
+        { q: 'Qui est Mister White ?', a: "Mister White est un joueur qui ne reçoit aucun mot. Il doit improviser des indices crédibles à partir de ceux des autres joueurs." },
+        { q: 'Peut-on jouer à Undercover manga sans internet ?', a: 'Oui. En mode local, sur un seul téléphone, la partie fonctionne sans connexion.' },
+      ],
+    }
+  : {
+      title: 'Anime Undercover: rules and word examples',
+      description: `How to play Undercover with anime words: roles (civilians, impostor, Mister White), game flow and word pairs from Naruto, One Piece… ${PLAYERS.undercoverMin} to ${PLAYERS.undercoverMax} players.`,
+      eyebrow: 'How to play',
+      h1: 'Anime Undercover: the rules',
+      lede: `<strong>Undercover is a bluffing game where every player gets a secret word, except the impostor, who gets a word that is close but different.</strong> Everyone gives a clue, then the group votes someone out. In Shobukan, every word comes from manga: ${PLAYERS.undercoverMin} to ${PLAYERS.undercoverMax} players, on one phone or online.`,
+      rolesTitle: 'The three roles',
+      roles: [
+        { name: 'Civilian', color: 'var(--good)', body: 'Most players. They all share the same word and must unmask the impostor without giving too much away.' },
+        { name: 'Impostor', color: 'var(--accent-hot)', body: 'Has a word close to the civilians’ one. They don’t know they’re the impostor: they have to figure it out from the clues, then blend in.' },
+        { name: 'Mister White', color: 'var(--gold)', body: 'Gets no word at all. They must improvise a believable clue from what others said, without getting caught.' },
+      ],
+      stepsTitle: 'How a game works',
+      steps: [
+        { t: 'Secret words', b: 'Each player sees their word in secret, by passing the phone around or on their own screen. Nobody knows which side they’re on, not even the impostor.' },
+        { t: 'Clue round', b: 'In turn, everyone gives a clue about their word without saying it. Too precise and you help the impostor. Too vague and you look suspicious.' },
+        { t: 'The vote', b: 'Everyone votes to eliminate a player. Their role is revealed, then a new round starts.' },
+        { t: 'The end', b: 'Civilians win if they eliminate the impostors. Impostors win if they become as many as the civilians.' },
+      ],
+      pairsTitle: 'Anime word pair examples',
+      pairsLede: 'A good pair is two words close enough to create doubt. Here are a few examples from the game:',
+      pairsCols: ['Civilian word', 'Impostor word', 'Universe'],
+      pairs: [
+        ['Jiraiya', 'Orochimaru', 'Naruto'],
+        ['Ninjutsu', 'Genjutsu', 'Naruto'],
+        ['Nami', 'Nico Robin', 'One Piece'],
+        ['Android 17', 'Android 18', 'Dragon Ball'],
+        ['Kame House', 'Capsule Corporation', 'Dragon Ball'],
+        ['All Might', 'Endeavor', 'My Hero Academia'],
+        ['Water Breathing', 'Thunder Breathing', 'Demon Slayer'],
+        ['Hisoka', 'Illumi Zoldyck', 'Hunter x Hunter'],
+        ['Light Yagami', 'Teru Mikami', 'Death Note'],
+        ['Yor Forger', 'Fiona Frost', 'Spy x Family'],
+      ],
+      pairsNote: `The app has 300+ pairs across ${UNIVERSES.length} universes, and you can create your own.`,
+      tipsTitle: 'Three tips to win',
+      tips: [
+        'Listen to the first clues before speaking: if you’re the impostor, that’s when you’ll realize it.',
+        'Give clues that work for both possible words: you stay believable whichever side you’re on.',
+        'Watch the player who echoes someone else’s idea: it’s often Mister White.',
+      ],
+      appTitle: 'Play anime Undercover in Shobukan',
+      appBody: 'Shobukan deals the words and handles roles, votes and eliminations. All you have to do is talk. Free on iPhone and Android.',
+      faq: [
+        { q: 'How many players do you need for Undercover?', a: `In Shobukan, Undercover is played with ${PLAYERS.undercoverMin} to ${PLAYERS.undercoverMax} players, on one phone passed around or online, each on their own phone.` },
+        { q: 'Does the impostor know they are the impostor?', a: 'No. The impostor just gets a word, close to everyone else’s. They have to work out they’re on the other side by listening to the clues.' },
+        { q: 'Who is Mister White?', a: 'Mister White is a player who gets no word. They must improvise believable clues from what the other players say.' },
+        { q: 'Can you play anime Undercover offline?', a: 'Yes. In local mode, on a single phone, the game works without a connection.' },
+      ],
+    }
+
+const jsonLd = [
+  webPage(path, c.title, lang),
+  breadcrumbs([{ name: 'Shobukan', path: ROUTES.home[lang] }, { name: 'Undercover', path }]),
+  faqPage(`${SITE}${path}#faq`, c.faq),
+]
+---
+
+<Base lang={lang} title={c.title} description={c.description} path={path} alternates={{ fr: ROUTES.undercover.fr, en: ROUTES.undercover.en }} jsonLd={jsonLd}>
+  <section class="uhero">
+    <Image class="bg" src={undercoverBg} alt="" width={900} loading="eager" />
+    <div class="wrap uhero-inner">
+      <p class="eyebrow">{c.eyebrow}</p>
+      <h1 class="display">{c.h1}</h1>
+      <p class="lede" set:html={c.lede} />
+      <div class="hero-stores"><StoreButtons lang={lang} medium={`undercover_${lang}`} note={false} /></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><h2 class="display">{c.rolesTitle}</h2></div>
+      <div class="roles">
+        {c.roles.map((r) => (
+          <div class="card role reveal" style={`--rc:${r.color}`}>
+            <span class="dot" aria-hidden="true"></span>
+            <h3>{r.name}</h3>
+            <p class="muted">{r.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section steps-section">
+    <div class="wrap">
+      <div class="section-head"><h2 class="display">{c.stepsTitle}</h2></div>
+      <ol class="steps">
+        {c.steps.map((s, i) => (
+          <li class="card reveal">
+            <span class="num">{i + 1}</span>
+            <div><h3>{s.t}</h3><p class="muted">{s.b}</p></div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="display">{c.pairsTitle}</h2>
+        <p class="lede">{c.pairsLede}</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>{c.pairsCols.map((col) => <th scope="col">{col}</th>)}</tr></thead>
+          <tbody>{c.pairs.map((pr) => <tr><td class="w">{pr[0]}</td><td class="w imp">{pr[1]}</td><td>{pr[2]}</td></tr>)}</tbody>
+        </table>
+      </div>
+      <p class="muted pnote">{c.pairsNote}</p>
+    </div>
+  </section>
+
+  <section class="section tips-section">
+    <div class="wrap">
+      <div class="section-head"><h2 class="display">{c.tipsTitle}</h2></div>
+      <div class="tips">
+        {c.tips.map((tip, i) => <div class="card tip reveal"><span class="big">0{i + 1}</span><p>{tip}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <Faq items={c.faq} title={fr ? 'Undercover en bref' : 'Undercover FAQ'} />
+  <CtaBand lang={lang} medium={`undercover_${lang}_footer`} title={c.appTitle} body={c.appBody} />
+</Base>
+
+<style>
+  .uhero { position: relative; overflow: hidden; padding: clamp(56px, 10vw, 120px) 0; }
+  .uhero .bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; opacity: 0.45; }
+  .uhero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg) 20%, rgba(14, 5, 7, 0.6) 60%, rgba(14, 5, 7, 0.2)), linear-gradient(0deg, var(--bg), transparent 40%); }
+  .uhero-inner { position: relative; z-index: 1; }
+  .uhero h1 { max-width: 760px; }
+  .hero-stores { margin-top: 30px; }
+
+  .roles { display: grid; gap: 16px; }
+  @media (min-width: 820px) { .roles { grid-template-columns: repeat(3, 1fr); } }
+  .role { padding: 28px; }
+  .role .dot { display: block; width: 14px; height: 14px; border-radius: 50%; background: var(--rc); box-shadow: 0 0 18px var(--rc); margin-bottom: 16px; }
+  .role h3 { font-size: 22px; margin-bottom: 8px; }
+  .role p { margin: 0; }
+
+  .steps-section { padding-top: 0; }
+  .steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+  @media (min-width: 820px) { .steps { grid-template-columns: 1fr 1fr; } }
+  .steps li { padding: 24px; display: flex; gap: 18px; align-items: flex-start; }
+  .num { flex: none; width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font-family: var(--font-display); font-size: 22px; background: var(--accent); color: #fff; }
+  .steps h3 { margin-bottom: 6px; }
+  .steps p { margin: 0; }
+
+  td.w { color: var(--text) !important; font-weight: 650; }
+  td.imp { color: var(--accent-hot) !important; }
+  .pnote { margin: 16px 0 0; }
+
+  .tips-section { padding-top: 0; }
+  .tips { display: grid; gap: 16px; }
+  @media (min-width: 820px) { .tips { grid-template-columns: repeat(3, 1fr); } }
+  .tip { padding: 26px; }
+  .big { font-family: var(--font-display); font-size: 40px; color: var(--accent-hot); line-height: 1; }
+  .tip p { margin: 12px 0 0; color: var(--text); }
+</style>

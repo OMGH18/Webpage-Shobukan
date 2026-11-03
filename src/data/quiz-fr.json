@@ -1,0 +1,871 @@
+{
+ "questions": {
+  "naruto": [
+   {
+    "q": "Quel est le rêve de Naruto Uzumaki ?",
+    "a": "Devenir Hokage",
+    "d": [
+     "Devenir Kazekage",
+     "Devenir chef de l'Akatsuki",
+     "Devenir le plus grand Uchiha"
+    ]
+   },
+   {
+    "q": "Quel est le prenom du démon à 9 queues scellé dans Naruto ?",
+    "a": "Kurama",
+    "d": [
+     "Shukaku",
+     "Gyuki",
+     "Saiken"
+    ]
+   },
+   {
+    "q": "Qui est le sensei de l'équipe 7 dans Naruto ?",
+    "a": "Kakashi Hatake",
+    "d": [
+     "Jiraiya",
+     "Iruka Umino",
+     "Asuma Sarutobi"
+    ]
+   },
+   {
+    "q": "Qui a créé la technique du Rasengan ?",
+    "a": "Minato Namikaze",
+    "d": [
+     "Jiraiya",
+     "Tobirama Senju",
+     "Kakashi Hatake"
+    ]
+   },
+   {
+    "q": "Comment s'appelle l'organisation criminelle de ninjas dans Naruto Shippuden ?",
+    "a": "L'Akatsuki",
+    "d": [
+     "ANBU",
+     "Racine",
+     "Les Sept Épéistes de la Brume"
+    ]
+   }
+  ],
+  "one_piece": [
+   {
+    "q": "Combien de sabres Roronoa Zoro utilise-t-il simultanément ?",
+    "a": "3",
+    "d": [
+     "2",
+     "4",
+     "5"
+    ]
+   },
+   {
+    "q": "Quel est l'objectif ultime de Luffy ?",
+    "a": "Devenir le Roi des Pirates",
+    "d": [
+     "Trouver le All Blue",
+     "Devenir Empereur des mers",
+     "Diriger la Marine"
+    ]
+   },
+   {
+    "q": "Quel bateau remplace le Vogue Merry ?",
+    "a": "Thousand Sunny",
+    "d": [
+     "Oro Jackson",
+     "Red Force",
+     "Moby Dick"
+    ]
+   },
+   {
+    "q": "Quel royaume désertique est gouverné par la famille de Vivi ?",
+    "a": "Alabasta",
+    "d": [
+     "Dressrosa",
+     "Drum",
+     "Water Seven"
+    ]
+   },
+   {
+    "q": "Quel arc de One Piece se déroule dans la grande prison sous-marine ?",
+    "a": "Impel Down",
+    "d": [
+     "Enies Lobby",
+     "Marineford",
+     "Punk Hazard"
+    ]
+   }
+  ],
+  "dragon_ball": [
+   {
+    "q": "Quelle est l'attaque signature de Goku dans Dragon Ball ?",
+    "a": "Kamehameha",
+    "d": [
+     "Final Flash",
+     "Makankosappo",
+     "Big Bang Attack"
+    ]
+   },
+   {
+    "q": "Quel Dieu de la Destruction est accompagné de l'ange Whis ?",
+    "a": "Beerus",
+    "d": [
+     "Champa",
+     "Zeno",
+     "Quitela"
+    ]
+   },
+   {
+    "q": "Sur quelle planète Goku affronte-t-il Freezer ?",
+    "a": "Namek",
+    "d": [
+     "Terre",
+     "Yardrat",
+     "Vegeta"
+    ]
+   },
+   {
+    "q": "Combien de Dragon Balls doivent être réunies pour invoquer Shenron ?",
+    "a": "Sept",
+    "d": [
+     "Cinq",
+     "Six",
+     "Neuf"
+    ]
+   },
+   {
+    "q": "Comment s'appelle le frère aîné de Freezer ?",
+    "a": "Cooler",
+    "d": [
+     "Le Roi Cold",
+     "Zarbon",
+     "Dodoria"
+    ]
+   }
+  ],
+  "my_hero_academia": [
+   {
+    "q": "Quel est le surnom d'Izuku Midoriya dans My Hero Academia ?",
+    "a": "Deku",
+    "d": [
+     "All Might",
+     "Dynamight",
+     "Shoto"
+    ]
+   },
+   {
+    "q": "Qui est le héros numéro 1 au début de My Hero Academia ?",
+    "a": "All Might",
+    "d": [
+     "Endeavor",
+     "Hawks",
+     "Best Jeanist"
+    ]
+   },
+   {
+    "q": "Quel est le vrai nom du héros All Might ?",
+    "a": "Yagi Toshinori",
+    "d": [
+     "Enji Todoroki",
+     "Keigo Takami",
+     "Shota Aizawa"
+    ]
+   },
+   {
+    "q": "Quel est l'Alter d'Ochaco Uraraka dans My Hero Academia ?",
+    "a": "Antigravité",
+    "d": [
+     "Création",
+     "Explosion",
+     "Half-Cold Half-Hot"
+    ]
+   },
+   {
+    "q": "Quel alter permet à Aizawa Shota d'annuler celui des autres ?",
+    "a": "L'Effacement",
+    "d": [
+     "Zero Gravity",
+     "Explosion",
+     "One For All"
+    ]
+   }
+  ],
+  "bleach": [
+   {
+    "q": "Dans Bleach, que signifie le terme Shinigami ?",
+    "a": "Dieu de la mort",
+    "d": [
+     "Démon",
+     "Chasseur de Hollows",
+     "Âme errante"
+    ]
+   },
+   {
+    "q": "Que reçoit Ichigo de Rukia pour affronter les Hollows ?",
+    "a": "Ses pouvoirs de Shinigami",
+    "d": [
+     "Ses pouvoirs de Quincy",
+     "Son Fullbring",
+     "Un Hōgyoku"
+    ]
+   },
+   {
+    "q": "Comment s'appelle le zanpakuto d'Ichigo Kurosaki ?",
+    "a": "Zangetsu",
+    "d": [
+     "Benihime",
+     "Senbonzakura",
+     "Hyōrinmaru"
+    ]
+   },
+   {
+    "q": "Quel capitaine de la 6e division commande Renji Abarai dans Bleach ?",
+    "a": "Byakuya Kuchiki",
+    "d": [
+     "Retsu Unohana",
+     "Toshiro Hitsugaya",
+     "Tetsuzaemon Iba"
+    ]
+   },
+   {
+    "q": "Quelle sœur d’Ichigo est passionnée de football ?",
+    "a": "Karin Kurosaki",
+    "d": [
+     "Yuzu Kurosaki",
+     "Rukia Kuchiki",
+     "Orihime Inoue"
+    ]
+   }
+  ],
+  "jujutsu_kaisen": [
+   {
+    "q": "Quel est le nom du fléau spécial que Yuji Itadori a ingéré ?",
+    "a": "Ryomen Sukuna",
+    "d": [
+     "Mahito",
+     "Jogo",
+     "Hanami"
+    ]
+   },
+   {
+    "q": "Dans Jujutsu Kaisen, combien de doigts maudits Ryomen Sukuna possède-t-il en tout ?",
+    "a": "20",
+    "d": [
+     "10",
+     "15",
+     "24"
+    ]
+   },
+   {
+    "q": "Dans Jujutsu Kaisen, quel est le nom de l'extension de territoire de Gojo Satoru ?",
+    "a": "Vide Infini",
+    "d": [
+     "Jardin des Ombres Chimériques",
+     "Cercueil de la Montagne de Fer",
+     "Sanctuaire Malveillant"
+    ]
+   },
+   {
+    "q": "Quelle technique naît de la fusion du Bleu et du Rouge de Gojo dans Jujutsu Kaisen ?",
+    "a": "Hollow Purple",
+    "d": [
+     "Démantèlement",
+     "Black Flash",
+     "Résonance"
+    ]
+   },
+   {
+    "q": "Quelle technique Toge Inumaki utilise-t-il avec ses mots ?",
+    "a": "La Parole Maudite",
+    "d": [
+     "La Technique du Ratio",
+     "La Manipulation du Sang",
+     "La Projection Sorcery"
+    ]
+   }
+  ],
+  "demon_slayer": [
+   {
+    "q": "Comment s'appellent les épées des Demon Slayers ?",
+    "a": "Katana de Nichirin",
+    "d": [
+     "Katana de Kusanagi",
+     "Épées de Zanpakutō",
+     "Lames de Breathing"
+    ]
+   },
+   {
+    "q": "Quel Pilier de la Flamme meurt à bord du train de l'Infini ?",
+    "a": "Kyojuro Rengoku",
+    "d": [
+     "Giyu Tomioka",
+     "Sakonji Urokodaki",
+     "Gyomei Himejima"
+    ]
+   },
+   {
+    "q": "Quel est le nom du chef ultime des démons ?",
+    "a": "Muzan Kibutsuji",
+    "d": [
+     "Kokushibo",
+     "Doma",
+     "Akaza"
+    ]
+   },
+   {
+    "q": "Quel type de fleur donne son nom au poison utilisé pour affaiblir les démons ?",
+    "a": "Glycine",
+    "d": [
+     "Camélia",
+     "Chrysanthème",
+     "Lys"
+    ]
+   },
+   {
+    "q": "Quel oiseau messager accompagne Zenitsu Agatsuma ?",
+    "a": "Un moineau",
+    "d": [
+     "Un corbeau",
+     "Un faucon",
+     "Une chouette"
+    ]
+   }
+  ],
+  "attack_on_titan": [
+   {
+    "q": "Quel nom porte l'apocalypse déclenchée par le Titan Fondateur d'Eren ?",
+    "a": "Grand Terrassement",
+    "d": [
+     "La Coordonnée",
+     "La Retraite de Mahr",
+     "Le Projet Euthanasie"
+    ]
+   },
+   {
+    "q": "Quel Titan est incarné par Pieck Finger ?",
+    "a": "Titan Charrette",
+    "d": [
+     "Titan Féminin",
+     "Titan Cuirassé",
+     "Titan Bestial"
+    ]
+   },
+   {
+    "q": "Comment s'appelle la sœur adoptive d'Eren ?",
+    "a": "Mikasa",
+    "d": [
+     "Louise",
+     "Sasha Blaus",
+     "Flegel Reeves"
+    ]
+   },
+   {
+    "q": "Quelle recrue est surnommée la « fille à la patate » ?",
+    "a": "Sasha Blaus",
+    "d": [
+     "Flegel Reeves",
+     "Louise",
+     "Mikasa"
+    ]
+   },
+   {
+    "q": "Quel est le nom de famille d'Annie ?",
+    "a": "Leonhart",
+    "d": [
+     "Braun",
+     "Reiss",
+     "Galliard"
+    ]
+   }
+  ],
+  "hunter_x_hunter": [
+   {
+    "q": "Quel maître Nen enseigne les bases à Gon et Killua à la Tour Céleste ?",
+    "a": "Wing",
+    "d": [
+     "Biscuit Krueger",
+     "Zushi",
+     "Hisoka"
+    ]
+   },
+   {
+    "q": "Quel est le nom du grand-père paternel de Killua ?",
+    "a": "Zeno",
+    "d": [
+     "Silva",
+     "Illumi",
+     "Milluki"
+    ]
+   },
+   {
+    "q": "Quel élément Killua reproduit-il en transformant son aura ?",
+    "a": "L’électricité",
+    "d": [
+     "Le feu",
+     "L’eau",
+     "La pierre"
+    ]
+   },
+   {
+    "q": "Quelle famille forme les assassins les plus réputés de Hunter x Hunter ?",
+    "a": "Les Zoldyck",
+    "d": [
+     "Les Kujo",
+     "Les Nostrade",
+     "Les Kurta"
+    ]
+   },
+   {
+    "q": "Quelle technique de vitesse Killua débloque-t-il contre Youpi ?",
+    "a": "Godspeed",
+    "d": [
+     "Rhythm Echo",
+     "Jajanken",
+     "Bungee Gum"
+    ]
+   }
+  ],
+  "death_note": [
+   {
+    "q": "Comment s'appelle le carnet magique de Light Yagami ?",
+    "a": "Death Note",
+    "d": [
+     "Black Notebook",
+     "Shinigami Journal",
+     "Kira Files"
+    ]
+   },
+   {
+    "q": "Quel Shinigami est amoureux de Misa Amane et sacrifie sa vie pour elle ?",
+    "a": "Rem",
+    "d": [
+     "Ryuk",
+     "Sidoh",
+     "Gelus"
+    ]
+   },
+   {
+    "q": "Quel est le vrai nom de Kira ?",
+    "a": "Light Yagami",
+    "d": [
+     "Nate River",
+     "L Lawliet",
+     "Hideki Ryuga"
+    ]
+   },
+   {
+    "q": "Quel Shinigami laisse tomber le premier Death Note ?",
+    "a": "Ryuk",
+    "d": [
+     "Rem",
+     "Gelus",
+     "Misa Amane"
+    ]
+   },
+   {
+    "q": "Quelle cause de décès frappe les victimes lorsque Light ne précise aucun détail ?",
+    "a": "Une crise cardiaque",
+    "d": [
+     "Un accident de voiture",
+     "Une noyade",
+     "Une chute"
+    ]
+   }
+  ],
+  "jojo": [
+   {
+    "q": "Quel est le Stand de Josuke Higashikata ?",
+    "a": "Crazy Diamond",
+    "d": [
+     "Star Platinum",
+     "Gold Experience",
+     "The Hand"
+    ]
+   },
+   {
+    "q": "Qui est le tueur en série de la partie 4 propriétaire de Killer Queen ?",
+    "a": "Yoshikage Kira",
+    "d": [
+     "Rohan Kishibe",
+     "Okuyasu Nijimura",
+     "Akira Otoishi"
+    ]
+   },
+   {
+    "q": "Quel est le Stand de Jolyne Cujoh ?",
+    "a": "Stone Free",
+    "d": [
+     "Hermit Purple",
+     "Star Platinum",
+     "Strength"
+    ]
+   },
+   {
+    "q": "Quel est le Stand de Dio Brando ?",
+    "a": "The World",
+    "d": [
+     "Scary Monsters",
+     "Mandom",
+     "Strength"
+    ]
+   },
+   {
+    "q": "Quel Stand appartient à Jotaro Kujo ?",
+    "a": "Star Platinum",
+    "d": [
+     "Heaven's Door",
+     "King Crimson",
+     "Tower of Gray"
+    ]
+   }
+  ],
+  "fullmetal_alchemist": [
+   {
+    "q": "Dans Fullmetal Alchemist, qu'est-ce que l'alchimie nécessite comme loi fondamentale ?",
+    "a": "Un échange équivalent",
+    "d": [
+     "Le sacrifice humain",
+     "La conservation de masse",
+     "Un cercle de transmutation"
+    ]
+   },
+   {
+    "q": "Quelle mécanicienne blonde de Rush Valley répare l'automail d'Edward ?",
+    "a": "Winry Rockbell",
+    "d": [
+     "Riza Hawkeye",
+     "Paninya",
+     "Sheska"
+    ]
+   },
+   {
+    "q": "Quel Ishvalien à cicatrice en X traque les alchimistes d'État ?",
+    "a": "Scar",
+    "d": [
+     "Kimblee",
+     "Basque Grand",
+     "Giolio Comanche"
+    ]
+   },
+   {
+    "q": "Dans Fullmetal Alchemist, quel homonculus se cache derrière King Bradley ?",
+    "a": "Wrath",
+    "d": [
+     "Envy",
+     "Lust",
+     "Sloth"
+    ]
+   },
+   {
+    "q": "Dans FMA Brotherhood, quel pays est le cadre principal de l'histoire ?",
+    "a": "Amestris",
+    "d": [
+     "Xing",
+     "Ishval",
+     "Drachma"
+    ]
+   }
+  ],
+  "chainsaw_man": [
+   {
+    "q": "Quel diable devient le cœur de Denji ?",
+    "a": "Pochita",
+    "d": [
+     "Power",
+     "Makima",
+     "Le Diable Renard"
+    ]
+   },
+   {
+    "q": "Quelle collègue de Denji est possédée par le Diable Sang ?",
+    "a": "Power",
+    "d": [
+     "Makima",
+     "Himeno",
+     "Kobeni"
+    ]
+   },
+   {
+    "q": "Dans quelle ville se déroule la première partie de Chainsaw Man ?",
+    "a": "Tokyo",
+    "d": [
+     "Kyoto",
+     "Osaka",
+     "Yokohama"
+    ]
+   },
+   {
+    "q": "Quel diable répond à l'invocation d'Aki Hayakawa ?",
+    "a": "Le Diable-Renard",
+    "d": [
+     "Le Diable-Fantôme",
+     "Le Diable-Avenir",
+     "Le Diable-Malédiction"
+    ]
+   },
+   {
+    "q": "Dans Chainsaw Man, comment Denji déclenche-t-il sa transformation ?",
+    "a": "En tirant la corde de sa poitrine",
+    "d": [
+     "En touchant sa cicatrice",
+     "En prononçant un contrat",
+     "En buvant du sang"
+    ]
+   }
+  ],
+  "one_punch_man": [
+   {
+    "q": "Quel est le nom du cyborg qui devient le disciple de Saitama ?",
+    "a": "Genos",
+    "d": [
+     "Sonic",
+     "Metal Bat",
+     "Mumen Rider"
+    ]
+   },
+   {
+    "q": "Quel monstre extraterrestre à peau violette affronte Saitama sur le vaisseau des Sombres Envahisseurs ?",
+    "a": "Boros",
+    "d": [
+     "Gouketsu",
+     "Orochi",
+     "Roi des Profondeurs"
+    ]
+   },
+   {
+    "q": "Quel roi des monstres à plusieurs têtes dirige l'Association des Monstres ?",
+    "a": "Orochi",
+    "d": [
+     "Boros",
+     "Psykos",
+     "Gouketsu"
+    ]
+   },
+   {
+    "q": "Quel surnom Garou reçoit-il lorsqu’il traque les héros ?",
+    "a": "Le Chasseur de héros",
+    "d": [
+     "Le Loup d’argent",
+     "Le Poing de l’Eau",
+     "Le Chasseur de monstres"
+    ]
+   },
+   {
+    "q": "Quel moyen de transport Mumen Rider utilise-t-il ?",
+    "a": "Un vélo",
+    "d": [
+     "Une moto",
+     "Un scooter",
+     "Une voiture"
+    ]
+   }
+  ],
+  "spy_x_family": [
+   {
+    "q": "Quel est le nom de code d'espion de Loid Forger ?",
+    "a": "Twilight",
+    "d": [
+     "Nightfall",
+     "Daybreak",
+     "Garden"
+    ]
+   },
+   {
+    "q": "Quel pouvoir possède Anya Forger ?",
+    "a": "Télépathie",
+    "d": [
+     "Téléportation",
+     "Précognition",
+     "Invisibilité"
+    ]
+   },
+   {
+    "q": "Comment s'appelle le frère de Yor Forger qui travaille pour la police secrète ?",
+    "a": "Yuri Briar",
+    "d": [
+     "Franky Franklin",
+     "Damian Desmond",
+     "Henry Henderson"
+    ]
+   },
+   {
+    "q": "Quel est le nom du chien des Forger ?",
+    "a": "Bond",
+    "d": [
+     "Chester",
+     "Max",
+     "Rocky"
+    ]
+   },
+   {
+    "q": "Quelle profession Loid utilise-t-il comme couverture ?",
+    "a": "Psychiatre",
+    "d": [
+     "Professeur",
+     "Médecin généraliste",
+     "Journaliste"
+    ]
+   }
+  ],
+  "tokyo_ghoul": [
+   {
+    "q": "Comment s'appelle le ghoul gourmet aux longs cheveux violets rival de Kaneki ?",
+    "a": "Shu Tsukiyama",
+    "d": [
+     "Nishiki Nishio",
+     "Ayato Kirishima",
+     "Uta"
+    ]
+   },
+   {
+    "q": "Quelle arme de goule est portée par le CCG pour combattre les goules ?",
+    "a": "Quinque",
+    "d": [
+     "Kagune",
+     "Kakuja",
+     "Coffin"
+    ]
+   },
+   {
+    "q": "Quelle boisson les goules peuvent-elles consommer normalement ?",
+    "a": "Du café",
+    "d": [
+     "Du thé",
+     "Du lait",
+     "Du jus d’orange"
+    ]
+   },
+   {
+    "q": "Qui est le meilleur ami humain de Kaneki ?",
+    "a": "Hideyoshi Nagachika",
+    "d": [
+     "Yamori",
+     "Haise Sasaki",
+     "Kuki Urie"
+    ]
+   },
+   {
+    "q": "Quel enquêteur du CCG au rang de premier classe spécial est surnommé le Faucheur ?",
+    "a": "Kishou Arima",
+    "d": [
+     "Koutarou Amon",
+     "Juuzou Suzuya",
+     "Kuki Urie"
+    ]
+   }
+  ],
+  "black_clover": [
+   {
+    "q": "Qui est le capitaine du Taureau Noir dans Black Clover ?",
+    "a": "Yami Sukehiro",
+    "d": [
+     "Nozel Silva",
+     "Julius Novachrono",
+     "Yuno"
+    ]
+   },
+   {
+    "q": "Qui est le rival d'Asta détenteur d'un grimoire à quatre feuilles ?",
+    "a": "Yuno",
+    "d": [
+     "Julius Novachrono",
+     "Nozel Silva",
+     "Yami Sukehiro"
+    ]
+   },
+   {
+    "q": "Quelle magie utilise Yuno ?",
+    "a": "Vent",
+    "d": [
+     "Feu",
+     "Eau",
+     "Lumière"
+    ]
+   },
+   {
+    "q": "Quelle magie Julius Novachrono maîtrise-t-il ?",
+    "a": "La magie du Temps",
+    "d": [
+     "La magie des ténèbres",
+     "Magie de miroir",
+     "Magie d'os"
+    ]
+   },
+   {
+    "q": "Quel capitaine des Aigles d'Argent est le frère aîné de Noelle Silva ?",
+    "a": "Nozel Silva",
+    "d": [
+     "Solid Silva",
+     "Fuegoleon Vermillion",
+     "Langris Vaude"
+    ]
+   }
+  ],
+  "kingdom": [
+   {
+    "q": "Dans Kingdom, quel royaume Ei Sei dirige-t-il ?",
+    "a": "Qin",
+    "d": [
+     "Zhao",
+     "Chu",
+     "Wei"
+    ]
+   },
+   {
+    "q": "Quel est le nom du roi de Qin que Shin aide à restaurer sur le trône ?",
+    "a": "Ei Sei",
+    "d": [
+     "Ouki",
+     "Ri Boku",
+     "Ren Pa"
+    ]
+   },
+   {
+    "q": "Quel général donne son nom à l’unité Hi Shin ?",
+    "a": "Ouki",
+    "d": [
+     "Mou Bu",
+     "Kan Ki",
+     "Tou"
+    ]
+   },
+   {
+    "q": "Quel royaume Riboku sert-il comme stratège ?",
+    "a": "Zhao",
+    "d": [
+     "Qin",
+     "Chu",
+     "Wei"
+    ]
+   },
+   {
+    "q": "Quel peuple Yotanwa dirige-t-elle ?",
+    "a": "Les tribus des montagnes",
+    "d": [
+     "Les Xiongnu",
+     "Le peuple de Zhao",
+     "Les nomades de Chu"
+    ]
+   }
+  ]
+ },
+ "counts": {
+  "naruto": 159,
+  "death_note": 66,
+  "dragon_ball": 177,
+  "one_piece": 172,
+  "my_hero_academia": 118,
+  "attack_on_titan": 213,
+  "one_punch_man": 68,
+  "fullmetal_alchemist": 81,
+  "bleach": 169,
+  "demon_slayer": 140,
+  "hunter_x_hunter": 128,
+  "jujutsu_kaisen": 132,
+  "jojo": 91,
+  "spy_x_family": 56,
+  "tokyo_ghoul": 58,
+  "black_clover": 65,
+  "kingdom": 65,
+  "mixed": 14,
+  "chainsaw_man": 93
+ }
+}
