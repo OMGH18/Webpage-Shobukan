@@ -42,6 +42,12 @@ export const PRICES = {
   freeHostedGames: 5,
 } as const
 
+/** Volume de contenu dans l'app (arrondi vers le bas pour rester vrai). */
+export const CONTENT = {
+  questions: { fr: 2000, en: 1300 },
+  wordPairs: { fr: 250, en: 300 },
+} as const
+
 export const PLAYERS = { min: 1, max: 12, undercoverMin: 3, undercoverMax: 8, quizMax: 12 } as const
 
 export type Lang = 'fr' | 'en'
@@ -50,6 +56,8 @@ export interface Universe {
   id: string
   /** Segment d'URL des pages quiz FR. */
   slug: string
+  /** Segment d'URL des pages quiz EN, si différent. */
+  slugEn?: string
   fr: string
   en: string
   /** Dégradé repris de l'app (lib/content/universeArt.ts). */
@@ -64,7 +72,7 @@ export const UNIVERSES: readonly Universe[] = [
   { id: 'bleach', slug: 'bleach', fr: 'Bleach', en: 'Bleach', colors: ['#FA796F', '#D83D4C', '#96243D'] },
   { id: 'jujutsu_kaisen', slug: 'jujutsu-kaisen', fr: 'Jujutsu Kaisen', en: 'Jujutsu Kaisen', colors: ['#AE96EC', '#7052AF', '#414D92'] },
   { id: 'demon_slayer', slug: 'demon-slayer', fr: 'Demon Slayer', en: 'Demon Slayer', colors: ['#65C7B2', '#2D8C7A', '#235262'] },
-  { id: 'attack_on_titan', slug: 'attaque-des-titans', fr: "L'Attaque des Titans", en: 'Attack on Titan', colors: ['#D5CAA1', '#A99A70', '#8C755B'] },
+  { id: 'attack_on_titan', slug: 'attaque-des-titans', slugEn: 'attack-on-titan', fr: "L'Attaque des Titans", en: 'Attack on Titan', colors: ['#D5CAA1', '#A99A70', '#8C755B'] },
   { id: 'hunter_x_hunter', slug: 'hunter-x-hunter', fr: 'Hunter x Hunter', en: 'Hunter x Hunter', colors: ['#8ED982', '#52976F', '#68509F'] },
   { id: 'death_note', slug: 'death-note', fr: 'Death Note', en: 'Death Note', colors: ['#DE5961', '#A22C3D', '#622033'] },
   { id: 'jojo', slug: 'jojo', fr: 'JoJo', en: "JoJo's Bizarre Adventure", colors: ['#F6D18C', '#D786B1', '#AB76B8'] },
@@ -76,6 +84,10 @@ export const UNIVERSES: readonly Universe[] = [
   { id: 'black_clover', slug: 'black-clover', fr: 'Black Clover', en: 'Black Clover', colors: ['#91C894', '#4F976F', '#376F6A'] },
   { id: 'kingdom', slug: 'kingdom', fr: 'Kingdom', en: 'Kingdom', colors: ['#DFC287', '#B58B50', '#946044'] },
 ]
+
+export function quizPath(u: Universe, lang: Lang): string {
+  return lang === 'fr' ? `/quiz/${u.slug}/` : `/en/quiz/${u.slugEn ?? u.slug}/`
+}
 
 export function universeName(u: Universe, lang: Lang): string {
   return lang === 'fr' ? u.fr : u.en

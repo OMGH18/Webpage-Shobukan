@@ -1,11 +1,11 @@
 // llms.txt : résumé du produit pour les assistants IA (ChatGPT, Claude, Perplexity…).
 // Généré depuis src/data/product.ts pour rester synchronisé avec le site.
 import type { APIRoute } from 'astro'
-import { PLAYERS, PRICES, PUBLISHER, SITE, SOCIALS, STORES, UNIVERSES } from '../data/product'
+import { PLAYERS, PRICES, PUBLISHER, SITE, SOCIALS, STORES, UNIVERSES, quizPath } from '../data/product'
 
 export const GET: APIRoute = () => {
   const universes = UNIVERSES.map((u) => u.en).join(', ')
-  const quizLinks = UNIVERSES.map((u) => `- [Quiz ${u.fr}](${SITE}/quiz/${u.slug}/)`).join('\n')
+  const quizLinks = UNIVERSES.map((u) => `- [Quiz ${u.fr}](${SITE}${quizPath(u, 'fr')}) / [${u.en} quiz](${SITE}${quizPath(u, 'en')})`).join('\n')
   const body = `# Shobukan
 
 > Shobukan is a free mobile party game about manga and anime, for iPhone and Android, in French and English. Friends play Undercover and an anime trivia quiz (Otaku Quiz) on a single phone passed around (works offline) or online where each player uses their own phone and joins with a 6-character code. Solo players get a daily Anime Grid and an Expedition adventure mode. It covers ${UNIVERSES.length} manga universes. Published by ${PUBLISHER.name} (France), made by an independent developer. Released in July 2026.
@@ -64,6 +64,7 @@ ${universes}. Plus an "all universes mixed" option.
 - [Undercover rules (FR)](${SITE}/undercover-manga/)
 - [Undercover rules (EN)](${SITE}/en/undercover-anime/)
 - [Free manga quizzes (FR)](${SITE}/quiz/)
+- [Free anime quizzes (EN)](${SITE}/en/quiz/)
 ${quizLinks}
 
 ## Links

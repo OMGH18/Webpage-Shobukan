@@ -71,5 +71,5 @@ export const ROUTES = {
   home: { fr: '/', en: '/en/' },
   pricing: { fr: '/prix/', en: '/en/pricing/' },
   undercover: { fr: '/undercover-manga/', en: '/en/undercover-anime/' },
-  quiz: { fr: '/quiz/', en: null },
+  quiz: { fr: '/quiz/', en: '/en/quiz/' },
 } as const

@@ -1,11 +1,11 @@
 ---
 import { Image } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
-import { UNIVERSES, universeName, type Lang } from '../data/product'
+import { UNIVERSES, quizPath, universeName, type Lang } from '../data/product'
 
 interface Props {
   lang: Lang
-  /** Lien vers les pages quiz (FR uniquement pour l'instant). */
+  /** Lien vers les pages quiz de la langue. */
   linkToQuiz?: boolean
   exclude?: string
 }
@@ -28,7 +28,7 @@ const items = UNIVERSES.filter((u) => u.id !== exclude)
     )
     return (
       <li style={style}>
-        {linkToQuiz ? <a href={`/quiz/${u.slug}/`}>{inner}</a> : <div>{inner}</div>}
+        {linkToQuiz ? <a href={quizPath(u, lang)}>{inner}</a> : <div>{inner}</div>}
       </li>
     )
   })}

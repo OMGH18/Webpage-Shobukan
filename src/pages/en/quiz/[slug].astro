@@ -1,0 +1,10 @@
+---
+import QuizUniversePage from '../../../components/QuizUniversePage.astro'
+import { UNIVERSES, type Universe } from '../../../data/product'
+
+export function getStaticPaths() {
+  return UNIVERSES.map((u) => ({ params: { slug: u.slugEn ?? u.slug }, props: { universe: u } }))
+}
+const { universe } = Astro.props as { universe: Universe }
+---
+<QuizUniversePage lang="en" universe={universe} />

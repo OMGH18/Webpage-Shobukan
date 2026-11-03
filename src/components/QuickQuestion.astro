@@ -1,0 +1,76 @@
+---
+// Une seule question jouable directement sur l'accueil : un avant-goût du quiz.
+import type { Lang } from '../data/product'
+import { ROUTES } from '../i18n/ui'
+
+interface Props { lang: Lang }
+const { lang } = Astro.props
+const fr = lang === 'fr'
+const q = fr
+  ? { label: 'Question Naruto', q: 'Qui a créé la technique du Rasengan ?', opts: ['Jiraiya', 'Minato Namikaze', 'Kakashi Hatake', 'Tobirama Senju'], ok: 1, good: 'Bien joué. Prêt pour les 4 suivantes ?', bad: 'Raté : c’est Minato Namikaze. Revanche ?', cta: 'Faire le quiz Naruto complet', href: '/quiz/naruto/' }
+  : { label: 'Naruto question', q: 'Who created the Rasengan technique?', opts: ['Jiraiya', 'Minato Namikaze', 'Kakashi Hatake', 'Tobirama Senju'], ok: 1, good: 'Nice. Ready for 4 more?', bad: 'Wrong: it was Minato Namikaze. Rematch?', cta: 'Take the full Naruto quiz', href: '/en/quiz/naruto/' }
+const hub = ROUTES.quiz[lang]
+---
+
+<div class="qq" data-good={q.good} data-bad={q.bad}>
+  <p class="label">{q.label}</p>
+  <p class="question">{q.q}</p>
+  <div class="opts">
+    {q.opts.map((o, i) => <button type="button" data-ok={i === q.ok ? '1' : undefined}>{o}</button>)}
+  </div>
+  <p class="msg" aria-live="polite"></p>
+  <a class="btn btn-primary go" href={q.href}>{q.cta} →</a>
+  <a class="all" href={hub}>{fr ? 'Ou choisis un autre manga' : 'Or pick another anime'}</a>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.qq').forEach((box) => {
+    const btns = Array.from(box.querySelectorAll<HTMLButtonElement>('button'))
+    btns.forEach((b) =>
+      b.addEventListener('click', () => {
+        if (box.dataset.done) return
+        box.dataset.done = '1'
+        const ok = b.dataset.ok === '1'
+        btns.forEach((x) => {
+          x.disabled = true
+          if (x.dataset.ok === '1') x.classList.add('right')
+        })
+        if (!ok) b.classList.add('wrong')
+        box.querySelector('.msg')!.textContent = ok ? box.dataset.good! : box.dataset.bad!
+        box.classList.add('answered')
+      }),
+    )
+  })
+</script>
+
+<style>
+  .qq {
+    position: relative;
+    background: #fff; color: #120609;
+    border-radius: 6px; padding: 30px 28px 28px;
+    box-shadow: 10px 10px 0 var(--accent), 0 30px 60px rgba(0, 0, 0, 0.5);
+    transform: rotate(-1.2deg);
+  }
+  .label {
+    position: absolute; top: -16px; left: 22px; margin: 0;
+    background: var(--gold); color: #120609; font-weight: 800; font-size: 12px;
+    letter-spacing: 0.14em; text-transform: uppercase; padding: 6px 12px; border-radius: 4px;
+  }
+  .question { font-size: 22px; font-weight: 800; line-height: 1.25; margin: 6px 0 18px; }
+  .opts { display: grid; gap: 8px; grid-template-columns: 1fr 1fr; }
+  button {
+    font: inherit; font-weight: 700; font-size: 15px; text-align: left;
+    background: #f4efe9; color: #120609; border: 2px solid #120609; border-radius: 10px;
+    padding: 12px 14px; cursor: pointer; transition: transform 0.1s, background 0.15s;
+  }
+  button:hover:not(:disabled) { background: #ffe6ea; transform: translate(-1px, -1px); box-shadow: 3px 3px 0 #120609; }
+  button:disabled { cursor: default; opacity: 0.45; }
+  button.right { opacity: 1; background: #c7f5df; border-color: #0d7a4b; }
+  button.wrong { opacity: 1; background: #ffd3d8; border-color: var(--accent); }
+  .msg { min-height: 1.5em; font-weight: 750; margin: 16px 0 0; }
+  .go { display: none; margin-top: 12px; }
+  .answered .go { display: inline-flex; }
+  .all { display: block; margin-top: 14px; color: #6b5a5f; font-size: 14px; font-weight: 600; }
+  .all:hover { color: var(--accent); }
+  @media (max-width: 420px) { .opts { grid-template-columns: 1fr; } }
+</style>

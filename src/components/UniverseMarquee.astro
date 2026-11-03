@@ -1,0 +1,67 @@
+---
+// Bandeau défilant des univers (deux rangées en sens inverse), chaque univers
+// mène à son quiz. Sans animation (prefers-reduced-motion), il devient une grille.
+import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
+import { UNIVERSES, quizPath, universeName, type Lang } from '../data/product'
+
+interface Props { lang: Lang }
+const { lang } = Astro.props
+const art = import.meta.glob<{ default: ImageMetadata }>('../assets/universes/*.png', { eager: true })
+const artFor = (id: string) => art[`../assets/universes/${id.replaceAll('_', '-')}.png`]?.default
+const half = Math.ceil(UNIVERSES.length / 2)
+const rows = [UNIVERSES.slice(0, half), UNIVERSES.slice(half)]
+---
+
+<div class="marquee">
+  {rows.map((row, r) => (
+    <div class:list={['track', { reverse: r === 1 }]}>
+      {[0, 1].map((copy) => (
+        <ul class="lane" aria-hidden={copy === 1 ? 'true' : undefined}>
+          {row.map((u) => {
+            const img = artFor(u.id)
+            return (
+              <li style={`--c1:${u.colors[0]};--c3:${u.colors[2]}`}>
+                <a href={quizPath(u, lang)} tabindex={copy === 1 ? -1 : undefined}>
+                  {img && <Image src={img} alt="" width={96} height={96} loading="lazy" />}
+                  <span>{universeName(u, lang)}</span>
+                </a>
+              </li>
+            )
+          })}
+        </ul>
+      ))}
+    </div>
+  ))}
+</div>
+
+<style>
+  .marquee {
+    display: grid; gap: 14px; overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .track { display: flex; width: max-content; animation: slide 60s linear infinite; }
+  .track.reverse { animation-direction: reverse; animation-duration: 70s; }
+  .marquee:hover .track { animation-play-state: paused; }
+  @keyframes slide { to { transform: translateX(-50%); } }
+  .lane { display: flex; gap: 14px; list-style: none; margin: 0; padding: 0 14px 0 0; }
+  a {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 26px 10px 10px; border-radius: 999px;
+    background: linear-gradient(120deg, color-mix(in srgb, var(--c1) 30%, var(--surface-2)), var(--surface));
+    border: 1px solid var(--border-strong);
+    color: var(--text); text-decoration: none; font-weight: 750; font-size: 18px; white-space: nowrap;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  a:hover { border-color: var(--c1); transform: translateY(-2px); color: var(--text); }
+  a :global(img) {
+    width: 52px; height: 52px; object-fit: contain; border-radius: 50%;
+    background: radial-gradient(circle, var(--c1), var(--c3)); padding: 6px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee { mask-image: none; }
+    .track { animation: none; width: auto; }
+    .lane { flex-wrap: wrap; }
+    .lane[aria-hidden] { display: none; }
+  }
+</style>

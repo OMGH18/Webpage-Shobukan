@@ -9,18 +9,18 @@ import shinobi from '../assets/art/shobukan-shinobi-back.png'
 import { APP_STORE_ID, SITE } from '../data/product'
 ---
 
-<Base lang="fr" title="Rejoins ma partie Shobukan !" description="On lance une partie de Shobukan, le party game manga. Rejoins-nous avec le code d'invitation." path="/404/" noindex>
+<Base lang="fr" title="Rejoins ma partie Shobukan !" description="On lance une partie de Shobukan, le party game manga. Rejoins-nous avec le code d'invitation." path="/404/" noindex>
   <section class="section page">
     <div class="wrap center">
       <div id="invite" hidden>
         <p class="eyebrow">Invitation</p>
-        <h1 class="display">Rejoins la partie !</h1>
-        <p class="lede">Un ami t'invite à jouer à Shobukan, le party game manga. Voici ton code :</p>
+        <h1 class="display">Rejoins la partie !</h1>
+        <p class="lede">Un ami t'invite à jouer à Shobukan, le party game manga. Voici ton code :</p>
         <p class="code" id="code"></p>
         <p class="muted hint">Appuie sur le code pour le sélectionner.</p>
         <p><a class="btn btn-primary" id="open-app" href="#">J'ai déjà l'app : ouvrir</a></p>
         <div class="dl" id="download">
-          <p class="muted">Pas encore l'app ? Elle est gratuite :</p>
+          <p class="muted">Pas encore l'app ? Elle est gratuite :</p>
           <StoreButtons lang="fr" medium="invite" center />
         </div>
         <ol class="card how">
@@ -53,7 +53,7 @@ import { APP_STORE_ID, SITE } from '../data/product'
     document.getElementById('open-app').setAttribute('href', 'shobukan://join/' + code)
     document.getElementById('invite').hidden = false
     document.getElementById('notfound').hidden = true
-    document.title = 'Rejoins ma partie Shobukan !'
+    document.title = 'Rejoins ma partie Shobukan !'
     // Bannière iOS : ouvre directement la bonne partie si l'app est installée.
     var banner = document.getElementById('itunes-banner')
     if (banner) banner.setAttribute('content', 'app-id=' + appId + ', app-argument=' + site + '/join/' + code)

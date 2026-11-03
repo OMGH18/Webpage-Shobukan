@@ -21,7 +21,7 @@ Chaque push sur `main` construit et publie le site automatiquement
 | Les textes de l'accueil | `src/components/HomePage.astro` (FR et EN au même endroit) |
 | La page Prix | `src/components/PricingPage.astro` |
 | La page Undercover | `src/components/UndercoverPage.astro` |
-| Les questions des quiz web | `src/data/quiz-fr.json` |
+| Les questions des quiz web | `src/data/quiz-fr.json` et `src/data/quiz-en.json` |
 | Le header, le footer, les boutons stores | `src/components/` |
 | Les couleurs, les polices | `src/styles/global.css` |
 | Confidentialité, CGU, suppression de compte | `public/privacy/`, `public/terms/`, `public/account-deletion/` (HTML brut) |
