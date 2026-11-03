@@ -25,24 +25,26 @@ const ui = t(lang)
 </section>
 
 <style>
-  .cta-section { padding-top: 24px; }
+  .cta-section { padding-top: 8px; }
   .band {
     position: relative; overflow: hidden;
-    border-radius: var(--radius-lg);
-    background: radial-gradient(120% 140% at 85% 20%, #d12139 0%, #8e1626 42%, #3a0b16 100%);
-    padding: clamp(32px, 6vw, 64px);
+    border-radius: var(--radius-lg); border: 1px solid rgba(227, 38, 61, 0.35);
+    background:
+      radial-gradient(70% 120% at 85% 30%, rgba(227, 38, 61, 0.55), transparent 65%),
+      linear-gradient(135deg, #1a0a0e, #120609 60%, #0b0b0d);
+    padding: clamp(28px, 5vw, 56px);
     display: grid; gap: 24px; align-items: center;
-    box-shadow: var(--shadow);
+    box-shadow: var(--elev-2);
   }
   @media (min-width: 820px) { .band { grid-template-columns: 1.4fr 1fr; } }
-  .dots { position: absolute; inset: 0; opacity: 0.6; mask-image: linear-gradient(90deg, transparent, #000); }
+  .dots { position: absolute; inset: 0; opacity: 0.8; mask-image: linear-gradient(90deg, transparent, #000); }
   .copy { position: relative; z-index: 1; }
-  h2 { font-size: clamp(30px, 5vw, 46px); }
-  p { color: rgba(255, 255, 255, 0.85); font-size: 18px; margin: 16px 0 28px; max-width: 520px; }
+  h2 { font-size: clamp(28px, 4vw, 44px); }
+  p { color: #d4d4d8; font-size: 17px; margin: 14px 0 26px; max-width: 520px; }
   .ninja {
     position: relative; z-index: 1; justify-self: center;
-    width: min(320px, 70%); height: auto;
-    filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.45));
+    width: min(280px, 70%); height: auto;
+    filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.6));
   }
   @media (max-width: 819px) { .ninja { display: none; } }
 </style>

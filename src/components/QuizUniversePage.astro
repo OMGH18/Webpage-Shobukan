@@ -127,7 +127,7 @@ const style = `--c1:${u.colors[0]};--c2:${u.colors[1]};--c3:${u.colors[2]}`
 
 <style>
   .qhero {
-    position: relative; overflow: hidden;
+    position: relative; overflow: hidden; isolation: isolate; margin: 16px max(var(--gutter), calc((100% - var(--wrap)) / 2 + var(--gutter))) 0; border-radius: var(--radius-lg); border: 1px solid var(--border); 
     padding: clamp(36px, 7vw, 80px) 0 clamp(40px, 7vw, 72px);
     background:
       radial-gradient(60% 90% at 85% 30%, color-mix(in srgb, var(--c2) 55%, transparent), transparent 70%),
@@ -144,4 +144,5 @@ const style = `--c1:${u.colors[0]};--c2:${u.colors[1]};--c3:${u.colors[2]}`
   @media (max-width: 819px) { .uart { width: 150px; justify-self: start; order: -1; } }
   .quiz-section { padding-top: 8px; }
   .narrow { max-width: 820px; }
+  .qhero-grid { padding-inline: clamp(20px, 3.5vw, 48px); }
 </style>

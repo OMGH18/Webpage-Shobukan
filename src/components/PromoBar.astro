@@ -1,0 +1,41 @@
+---
+import type { Lang } from '../data/product'
+import { ROUTES } from '../i18n/ui'
+
+interface Props { lang: Lang }
+const { lang } = Astro.props
+const fr = lang === 'fr'
+const c = fr
+  ? { badge: 'Gratuit', long: '18 quiz manga jouables directement sur le site, sans inscription.', short: '18 quiz manga gratuits', cta: 'Tester', close: 'Fermer' }
+  : { badge: 'Free', long: '18 anime quizzes you can play right here, no sign-up.', short: '18 free anime quizzes', cta: 'Try it', close: 'Close' }
+---
+
+<div class="promo" id="promo">
+  <div class="row">
+    <span class="badge">{c.badge}</span>
+    <span class="txt"><span class="long">{c.long}</span><span class="short">{c.short}</span></span>
+    <a class="go" href={ROUTES.quiz[lang]}>{c.cta} →</a>
+    <button type="button" class="x" aria-label={c.close}>×</button>
+  </div>
+</div>
+
+<script>
+  const bar = document.getElementById('promo')
+  try { if (sessionStorage.getItem('promo-closed')) bar?.remove() } catch { /* stockage indisponible */ }
+  bar?.querySelector('.x')?.addEventListener('click', () => {
+    bar.remove()
+    try { sessionStorage.setItem('promo-closed', '1') } catch { /* stockage indisponible */ }
+  })
+</script>
+
+<style>
+  .promo { background: linear-gradient(90deg, #c81d34, var(--accent) 40%, #ff4a5f); color: #fff; }
+  .row { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); height: 40px; display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 500; }
+  .badge { flex: none; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; background: rgba(0, 0, 0, 0.22); border: 1px solid rgba(255, 255, 255, 0.35); border-radius: 6px; padding: 3px 7px; }
+  .txt { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .short { display: none; }
+  @media (max-width: 720px) { .long { display: none; } .short { display: inline; } }
+  .go { flex: none; background: #0b0b0d; color: #fff; text-decoration: none; font-weight: 600; font-size: 13px; padding: 6px 12px; border-radius: 999px; }
+  .go:hover { color: #fff; background: #000; }
+  .x { flex: none; background: none; border: 0; color: #fff; font-size: 22px; line-height: 1; cursor: pointer; opacity: 0.85; padding: 0 2px; }
+</style>

@@ -1,18 +1,22 @@
 ---
 import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
 import Base from '../layouts/Base.astro'
 import StoreButtons from './StoreButtons.astro'
-import UniverseMarquee from './UniverseMarquee.astro'
 import QuickQuestion from './QuickQuestion.astro'
+import PricingPanel from './PricingPanel.astro'
 import Faq from './Faq.astro'
 import CtaBand from './CtaBand.astro'
-import arena from '../assets/art/arena-shonen-pop.jpg'
-import undercoverArt from '../assets/art/undercover.jpg'
+import icon from '../assets/art/icon.png'
 import undercoverBg from '../assets/art/undercover-game-bg.jpg'
 import quizArt from '../assets/art/otaku-quiz.jpg'
+import undercoverArt from '../assets/art/undercover.jpg'
 import gridMark from '../assets/art/anime-grid-mark.png'
 import village from '../assets/art/campaign-village.jpg'
-import { CONTENT, PLAYERS, PRICES, SITE, UNIVERSES, formatPrice, type Lang } from '../data/product'
+import shinobi from '../assets/art/shobukan-shinobi-back.png'
+import quizFr from '../data/quiz-fr.json'
+import quizEn from '../data/quiz-en.json'
+import { CONTENT, PLAYERS, PRICES, SITE, UNIVERSES, formatPrice, quizPath, universeName, type Lang } from '../data/product'
 import { ROUTES } from '../i18n/ui'
 import { app, faqPage, organization, website } from '../data/schema'
 
@@ -20,122 +24,94 @@ interface Props { lang: Lang }
 const { lang } = Astro.props
 const fr = lang === 'fr'
 const p = (v: number) => formatPrice(v, lang)
-const universeList = UNIVERSES.map((u) => (fr ? u.fr : u.en)).join(', ')
 const nf = new Intl.NumberFormat(fr ? 'fr-FR' : 'en-US')
+const universeList = UNIVERSES.map((u) => universeName(u, lang)).join(', ')
+const counts = ((fr ? quizFr : quizEn) as { counts: Record<string, number> }).counts
+const art = import.meta.glob<{ default: ImageMetadata }>('../assets/universes/*.png', { eager: true })
+const artFor = (id: string) => art[`../assets/universes/${id.replaceAll('_', '-')}.png`]?.default
+const byId = (id: string) => UNIVERSES.find((u) => u.id === id)!
+const fanLeft = ['naruto', 'one_piece', 'jujutsu_kaisen'].map(byId)
+const fanRight = ['demon_slayer', 'dragon_ball', 'chainsaw_man'].map(byId)
 
 const c = fr
   ? {
       title: 'Shobukan : quiz manga et Undercover anime entre amis',
       description: 'Jeu mobile gratuit de soirée sur le manga (iPhone, Android) : Undercover, Otaku Quiz, Anime Grid du jour. Sur un seul téléphone ou en ligne avec un code.',
-      eyebrow: 'Party game manga · gratuit sur iPhone & Android',
-      h1a: 'Ce soir,',
-      h1b: "l'un de vous ment.",
-      lede: `<strong>Shobukan est un party game manga gratuit sur iPhone et Android.</strong> Démasque l'infiltré, prouve que tu connais vraiment One Piece et règle enfin le débat : qui est le plus otaku du groupe ?`,
-      bubble1: "C'est pas moi !",
-      bubble2: 'Trop facile.',
-      sfx: 'DOKI !',
-      storyEyebrow: 'Une soirée Shobukan',
-      storyTitle: 'Comment ça se passe, en vrai.',
-      s1t: 'Un seul téléphone sur la table.',
-      s1b: 'Pas de console, pas de compte à créer. Ça marche même sans réseau, en soirée, en convention ou dans le train.',
-      s2t: 'Chacun découvre son mot en secret.',
-      s2b: "Tout le monde a le même… sauf l'infiltré. Le pire ? Il ne sait pas que c'est lui.",
-      word: 'Ton mot',
-      wordA: 'Kakashi Hatake',
-      wordB: 'Itachi Uchiha',
-      s3t: 'Un indice chacun. Les regards changent.',
-      s3b: "Trop précis, tu aides l'infiltré. Trop vague, tu deviens suspect.",
-      clues: ['Cheveux blancs.', 'Il lit beaucoup.', 'Euh… il est fort ?'],
-      s4t: 'Le vote tombe.',
-      s4b: "L'infiltré était ton meilleur pote depuis le début. Revanche ?",
-      stamp: 'Démasqué',
-      s4link: "Les règles complètes d'Undercover",
-      quizEyebrow: 'Et pour départager tout le monde',
-      quizTitle: 'Le quiz qui met fin aux débats.',
-      quizBody: `Une question, quatre réponses, une seule bonne. Plus de ${nf.format(CONTENT.questions.fr)} questions sur ${UNIVERSES.length} mangas, à jouer :`,
-      quizWays: ['seul, pour monter en grade', 'à plusieurs sur un même téléphone', `en ligne jusqu'à ${PLAYERS.quizMax}, chacun sur son téléphone`],
-      quizTry: 'Essaie, là, tout de suite :',
-      soloEyebrow: 'Quand tout le monde est rentré',
-      soloTitle: 'De quoi revenir chaque jour.',
-      gridT: 'Une grille par jour.',
-      gridB: 'Trois mangas, trois critères, neuf cases. Trouve le bon personnage pour chaque croisement, et vise la réponse que personne n’a osé : plus elle est rare, plus tu grimpes au classement.',
-      expT: 'Une aventure où ta culture est ta seule arme.',
-      expB: 'L’Expédition t’emmène de chapitre en chapitre : réponds juste pour vaincre tes ennemis, choisis ta route et va le plus loin possible.',
-      packsT: 'Et si vos private jokes devenaient un jeu ?',
-      packsB: 'Crée ton propre pack de questions ou de mots, sur ton anime de niche ou sur ton groupe. Une fois créé, il se joue gratuitement par tout le monde.',
-      numbers: [
-        { n: String(UNIVERSES.length), l: 'univers manga' },
-        { n: `${nf.format(CONTENT.questions.fr)}+`, l: 'questions de quiz' },
-        { n: `${CONTENT.wordPairs.fr}+`, l: 'paires de mots Undercover' },
-        { n: `1-${PLAYERS.max}`, l: 'joueurs' },
+      h1a: 'Party game', h1b: 'manga',
+      lede: `Shobukan est un jeu mobile gratuit de soirée sur le thème du manga. Undercover, quiz et défis quotidiens sur ${UNIVERSES.length} univers.`,
+      lede2: 'Sur un seul téléphone, même sans réseau, ou en ligne avec tes potes.',
+      qLabel: 'questions',
+      ucA: "Ce soir, l'un de vous", ucB: 'ment.',
+      ucList: ['Chacun reçoit un mot secret tiré d’un manga', "L'infiltré a un mot proche… et ne le sait pas", 'Un indice chacun, un vote, un démasqué'],
+      ucCta: 'Les règles du jeu', ucChip: `${PLAYERS.undercoverMin} à ${PLAYERS.undercoverMax} joueurs · en ligne ou même téléphone`,
+      tiles: [
+        { t: 'Otaku Quiz', s: `Solo ou jusqu'à ${PLAYERS.quizMax} joueurs`, img: 'quiz' },
+        { t: 'Anime Grid', s: 'Une grille par jour, un classement', img: 'grid', tag: 'Chaque jour' },
+        { t: 'Expédition', s: 'L’aventure solo en chapitres', img: 'shinobi' },
+        { t: 'Packs perso', s: 'Tes questions, tes mots, ton groupe', svg: 'M12 5v14M5 12h14' },
+        { t: 'Hors ligne', s: 'Un seul téléphone, sans réseau', svg: 'M7 3h10a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm4 15h2' },
+        { t: 'En ligne', s: 'Un code à 6 caractères suffit', svg: 'M9 15 15 9M8 12l-2 2a3 3 0 0 0 4 4l2-2m4-4 2-2a3 3 0 0 0-4-4l-2 2' },
       ],
-      univEyebrow: 'Ton manga est dedans',
-      univTitle: 'De Naruto à Kingdom.',
-      univBody: 'Choisis un univers ou mélange-les tous. Touche un manga pour tester son quiz gratuit.',
-      freeTitle: 'Gratuit. Pour de vrai.',
-      freeBody: `Tous les modes et tous les univers se jouent sans payer, avec des pubs. Premium (${p(PRICES.monthly)}/mois) retire les pubs pour toute la table et rend les parties en ligne illimitées.`,
-      freeLink: 'Voir les prix',
+      shows: [
+        { a: 'Otaku', b: 'Quiz', capT: 'Le quiz qui met fin aux débats', capS: `${nf.format(CONTENT.questions.fr)}+ questions, seul ou jusqu'à ${PLAYERS.quizMax} joueurs.`, href: ROUTES.quiz.fr },
+        { a: 'Anime', b: 'Grid', capT: 'Une grille par jour', capS: 'Plus ta réponse est rare, plus tu grimpes au classement.' },
+        { a: 'Expédition', b: 'solo', capT: 'Ta culture est ta seule arme', capS: 'Une aventure solo, de chapitre en chapitre.' },
+      ],
+      rare: ['Ultra rare', 'Rare', 'Commun'],
+      storyTitleA: 'Ta soirée', storyTitleB: 'Undercover', storySub: `${CONTENT.wordPairs.fr}+ paires de mots, ${UNIVERSES.length} univers`,
+      steps: [
+        { n: '01', t: 'Un seul téléphone sur la table', s: 'Ou chacun le sien, en ligne' },
+        { n: '02', t: 'Chacun découvre son mot', s: 'Kakashi Hatake… ou Itachi Uchiha ?' },
+        { n: '03', t: 'Un indice chacun', s: '« Cheveux blancs. » « Il lit beaucoup. »' },
+        { n: '04', t: 'Le vote tombe', s: "L'infiltré était ton meilleur pote" },
+      ],
+      quizTitleA: 'Tes quiz', quizTitleB: 'manga', quizSub: `${UNIVERSES.length} quiz gratuits sur le site, sans inscription`,
+      quizCta: 'Voir les 18 quiz',
+      priceTitleA: 'Gratuit.', priceTitleB: 'Pour de vrai.',
       faqTitle: 'Questions fréquentes',
       faq: [
-        { q: 'Shobukan est-il gratuit ?', a: `Oui. Tous les modes et les ${UNIVERSES.length} univers manga sont jouables gratuitement, avec des publicités. L'abonnement Premium (${p(PRICES.monthly)} par mois ou ${p(PRICES.yearly)} par an, prix en France) retire les publicités et rend l'hébergement des parties en ligne illimité.` },
-        { q: 'À combien de joueurs peut-on jouer ?', a: `De 1 à ${PLAYERS.max} joueurs selon le mode : Otaku Quiz se joue seul ou jusqu'à ${PLAYERS.quizMax}, Undercover de ${PLAYERS.undercoverMin} à ${PLAYERS.undercoverMax} joueurs. L'Anime Grid et l'Expédition se jouent en solo.` },
-        { q: 'Peut-on jouer sans internet ?', a: 'Oui, en mode local : le téléphone passe de main en main et la partie fonctionne sans connexion. Les parties en ligne, l’Anime Grid et le classement ont besoin d’internet.' },
-        { q: 'Peut-on jouer à distance avec des amis ?', a: 'Oui, à Undercover comme au quiz. Crée une partie en ligne et partage le code à 6 caractères ou le lien d’invitation : chacun joue sur son propre téléphone.' },
-        { q: 'Quels mangas sont dans le jeu ?', a: `${UNIVERSES.length} univers : ${universeList}, plus un mode tous univers mélangés.` },
-        { q: 'Sur quels téléphones Shobukan est-il disponible ?', a: 'Sur iPhone (App Store) et Android (Google Play), en français et en anglais.' },
+        { q: 'Shobukan est-il gratuit ?', a: `Oui. Tous les modes et les ${UNIVERSES.length} univers manga sont jouables gratuitement, avec des publicités. L'abonnement Premium (${p(PRICES.monthly)} par mois ou ${p(PRICES.yearly)} par an, prix en France) retire les publicités et rend l'hébergement des parties en ligne illimité.` },
+        { q: 'À combien de joueurs peut-on jouer ?', a: `De 1 à ${PLAYERS.max} joueurs selon le mode : Otaku Quiz se joue seul ou jusqu'à ${PLAYERS.quizMax}, Undercover de ${PLAYERS.undercoverMin} à ${PLAYERS.undercoverMax} joueurs. L'Anime Grid et l'Expédition se jouent en solo.` },
+        { q: 'Peut-on jouer sans internet ?', a: 'Oui, en mode local : le téléphone passe de main en main et la partie fonctionne sans connexion. Les parties en ligne, l’Anime Grid et le classement ont besoin d’internet.' },
+        { q: 'Peut-on jouer à distance avec des amis ?', a: 'Oui, à Undercover comme au quiz. Crée une partie en ligne et partage le code à 6 caractères ou le lien d’invitation : chacun joue sur son propre téléphone.' },
+        { q: 'Quels mangas sont dans le jeu ?', a: `${UNIVERSES.length} univers : ${universeList}, plus un mode tous univers mélangés.` },
+        { q: 'Sur quels téléphones Shobukan est-il disponible ?', a: 'Sur iPhone (App Store) et Android (Google Play), en français et en anglais.' },
       ],
     }
   : {
       title: 'Shobukan: anime quiz and Undercover party game with friends',
       description: 'Free mobile party game about manga (iPhone, Android): Undercover, Otaku Quiz and a daily Anime Grid. Play on one phone or online with a code.',
-      eyebrow: 'Manga party game · free on iPhone & Android',
-      h1a: 'Tonight,',
-      h1b: 'one of you is lying.',
-      lede: `<strong>Shobukan is a free manga party game for iPhone and Android.</strong> Unmask the impostor, prove you really know One Piece and finally settle it: who's the biggest otaku in the group?`,
-      bubble1: 'It wasn’t me!',
-      bubble2: 'Too easy.',
-      sfx: 'DOKI!',
-      storyEyebrow: 'A Shobukan night',
-      storyTitle: 'How it actually goes.',
-      s1t: 'One phone on the table.',
-      s1b: 'No console, no account to create. It even works offline, at parties, conventions or on the train.',
-      s2t: 'Everyone sees their word in secret.',
-      s2b: 'Everyone has the same one… except the impostor. The worst part? They don’t know it’s them.',
-      word: 'Your word',
-      wordA: 'Kakashi Hatake',
-      wordB: 'Itachi Uchiha',
-      s3t: 'One clue each. The looks change.',
-      s3b: 'Too precise and you help the impostor. Too vague and you look suspicious.',
-      clues: ['White hair.', 'Reads a lot.', 'Uh… he’s strong?'],
-      s4t: 'The vote drops.',
-      s4b: 'The impostor was your best friend all along. Rematch?',
-      stamp: 'Busted',
-      s4link: 'Full Undercover rules',
-      quizEyebrow: 'And to settle every argument',
-      quizTitle: 'The quiz that ends debates.',
-      quizBody: `One question, four answers, only one is right. Over ${nf.format(CONTENT.questions.en)} questions across ${UNIVERSES.length} anime, played:`,
-      quizWays: ['solo, to rank up', 'with friends on a single phone', `online with up to ${PLAYERS.quizMax}, each on their own phone`],
-      quizTry: 'Try it right now:',
-      soloEyebrow: 'When everyone has gone home',
-      soloTitle: 'Something to come back to every day.',
-      gridT: 'One grid a day.',
-      gridB: 'Three anime, three criteria, nine cells. Find the right character for each crossing, and go for the answer nobody dared: the rarer it is, the higher you climb.',
-      expT: 'An adventure where your knowledge is your only weapon.',
-      expB: 'Expedition takes you from chapter to chapter: answer right to defeat enemies, pick your route and push as far as you can.',
-      packsT: 'What if your inside jokes became a game?',
-      packsB: 'Create your own pack of questions or words, about your niche anime or your friend group. Once created, anyone can play it for free.',
-      numbers: [
-        { n: String(UNIVERSES.length), l: 'manga universes' },
-        { n: `${nf.format(CONTENT.questions.en)}+`, l: 'quiz questions' },
-        { n: `${CONTENT.wordPairs.en}+`, l: 'Undercover word pairs' },
-        { n: `1-${PLAYERS.max}`, l: 'players' },
+      h1a: 'Party game', h1b: 'manga',
+      lede: `Shobukan is a free mobile party game about manga and anime. Undercover, quizzes and daily challenges across ${UNIVERSES.length} universes.`,
+      lede2: 'On a single phone, even offline, or online with your friends.',
+      qLabel: 'questions',
+      ucA: 'Tonight, one of you', ucB: 'is lying.',
+      ucList: ['Everyone gets a secret word from a manga', 'The impostor has a close word… and doesn’t know it', 'One clue each, one vote, one busted'],
+      ucCta: 'How to play', ucChip: `${PLAYERS.undercoverMin} to ${PLAYERS.undercoverMax} players · online or one phone`,
+      tiles: [
+        { t: 'Otaku Quiz', s: `Solo or up to ${PLAYERS.quizMax} players`, img: 'quiz' },
+        { t: 'Anime Grid', s: 'One grid a day, one leaderboard', img: 'grid', tag: 'Daily' },
+        { t: 'Expedition', s: 'A solo adventure in chapters', img: 'shinobi' },
+        { t: 'Custom packs', s: 'Your questions, your words', svg: 'M12 5v14M5 12h14' },
+        { t: 'Offline', s: 'One phone, no network needed', svg: 'M7 3h10a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm4 15h2' },
+        { t: 'Online', s: 'A 6-character code is all it takes', svg: 'M9 15 15 9M8 12l-2 2a3 3 0 0 0 4 4l2-2m4-4 2-2a3 3 0 0 0-4-4l-2 2' },
       ],
-      univEyebrow: 'Your anime is in there',
-      univTitle: 'From Naruto to Kingdom.',
-      univBody: 'Pick one universe or mix them all. Tap an anime to try its free quiz.',
-      freeTitle: 'Free. For real.',
-      freeBody: `Every mode and every universe can be played without paying, with ads. Premium (${p(PRICES.monthly)}/month) removes ads for the whole table and makes online games unlimited.`,
-      freeLink: 'See pricing',
+      shows: [
+        { a: 'Otaku', b: 'Quiz', capT: 'The quiz that ends debates', capS: `${nf.format(CONTENT.questions.en)}+ questions, solo or up to ${PLAYERS.quizMax} players.`, href: ROUTES.quiz.en },
+        { a: 'Anime', b: 'Grid', capT: 'One grid a day', capS: 'The rarer your answer, the higher you climb.' },
+        { a: 'Expedition', b: 'solo', capT: 'Your knowledge is your weapon', capS: 'A solo adventure, chapter after chapter.' },
+      ],
+      rare: ['Ultra rare', 'Rare', 'Common'],
+      storyTitleA: 'Your', storyTitleB: 'Undercover night', storySub: `${CONTENT.wordPairs.en}+ word pairs, ${UNIVERSES.length} universes`,
+      steps: [
+        { n: '01', t: 'One phone on the table', s: 'Or everyone on their own, online' },
+        { n: '02', t: 'Everyone sees their word', s: 'Kakashi Hatake… or Itachi Uchiha?' },
+        { n: '03', t: 'One clue each', s: '“White hair.” “Reads a lot.”' },
+        { n: '04', t: 'The vote drops', s: 'The impostor was your best friend' },
+      ],
+      quizTitleA: 'Your anime', quizTitleB: 'quizzes', quizSub: `${UNIVERSES.length} free quizzes on the site, no sign-up`,
+      quizCta: 'See all 18 quizzes',
+      priceTitleA: 'Free.', priceTitleB: 'For real.',
       faqTitle: 'FAQ',
       faq: [
         { q: 'Is Shobukan free?', a: `Yes. Every mode and all ${UNIVERSES.length} manga universes are free to play, with ads. The optional Premium subscription (${p(PRICES.monthly)} per month or ${p(PRICES.yearly)} per year, prices in France) removes ads and makes online hosting unlimited.` },
@@ -147,295 +123,282 @@ const c = fr
       ],
     }
 
+const tileImg: Record<string, ImageMetadata> = { quiz: quizArt, grid: gridMark, shinobi }
 const path = ROUTES.home[lang]
 const medium = `home_${lang}`
 const jsonLd = [organization(), website(), app(lang), faqPage(`${SITE}${path}#faq`, c.faq)]
+const fanCard = (u: (typeof UNIVERSES)[number]) => ({ u, img: artFor(u.id), n: Math.floor((counts[u.id] ?? 0) / 10) * 10 })
 ---
 
 <Base lang={lang} title={c.title} description={c.description} path={path} alternates={{ fr: ROUTES.home.fr, en: ROUTES.home.en }} jsonLd={jsonLd}>
-  <!-- HERO : une planche de manga -->
-  <section class="hero">
-    <div class="glow" aria-hidden="true"></div>
-    <div class="wrap hero-grid">
-      <div class="hero-copy">
-        <p class="eyebrow">{c.eyebrow}</p>
-        <h1 class="display"><span>{c.h1a}</span> <span class="accent">{c.h1b}</span></h1>
-        <p class="lede" set:html={c.lede} />
-        <div class="hero-stores"><StoreButtons lang={lang} medium={medium} /></div>
+  <div class="wrap stack">
+    <!-- HERO : bannière avec cartes en éventail -->
+    <section class="hero">
+      <div class="fan left" aria-hidden="true">
+        {fanLeft.map(fanCard).map(({ u, img, n }, i) => (
+          <a class={`fcard f${i}`} href={quizPath(u, lang)} tabindex="-1" style={`--c1:${u.colors[0]};--c2:${u.colors[1]};--c3:${u.colors[2]}`}>
+            <span class="fhead">{universeName(u, lang)}</span>
+            {img && <Image src={img} alt="" width={200} loading="eager" />}
+            <span class="fstat"><b>{n}+</b> {c.qLabel}</span>
+            <span class="fok">QUIZ ✓</span>
+          </a>
+        ))}
       </div>
-      <div class="page" aria-hidden="true">
-        <div class="panel pa"><Image src={arena} alt="" width={560} loading="eager" fetchpriority="high" /></div>
-        <div class="panel pb">
-          <Image src={undercoverArt} alt="" width={360} loading="eager" />
-          <span class="bubble b1">{c.bubble1}</span>
-        </div>
-        <div class="panel pc">
-          <Image src={quizArt} alt="" width={360} loading="eager" />
-          <span class="bubble b2">{c.bubble2}</span>
-        </div>
-        <span class="sfx">{c.sfx}</span>
+      <div class="fan right" aria-hidden="true">
+        {fanRight.map(fanCard).map(({ u, img, n }, i) => (
+          <a class={`fcard f${i}`} href={quizPath(u, lang)} tabindex="-1" style={`--c1:${u.colors[0]};--c2:${u.colors[1]};--c3:${u.colors[2]}`}>
+            <span class="fhead">{universeName(u, lang)}</span>
+            {img && <Image src={img} alt="" width={200} loading="eager" />}
+            <span class="fstat"><b>{n}+</b> {c.qLabel}</span>
+            <span class="fok">QUIZ ✓</span>
+          </a>
+        ))}
       </div>
-    </div>
-  </section>
+      <svg class="wires" viewBox="0 0 1400 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <path d="M250 200 C 420 170, 470 250, 560 250" />
+        <path d="M300 330 C 430 340, 470 280, 560 268" />
+        <path d="M1150 190 C 980 170, 930 250, 840 250" />
+        <path d="M1100 340 C 970 340, 930 280, 840 268" />
+      </svg>
+      <div class="vignette" aria-hidden="true"></div>
+      <div class="hero-center">
+        <h1>
+          <span class="brandline"><Image src={icon} alt="" width={48} height={48} loading="eager" />Shobukan</span>
+          <span class="display mix"><b>{c.h1a}</b> <i>{c.h1b}</i></span>
+        </h1>
+        <p class="hero-lede">{c.lede}<br /><span>{c.lede2}</span></p>
+        <StoreButtons lang={lang} medium={medium} center />
+      </div>
+    </section>
 
-  <!-- RÉCIT : une soirée en 4 cases -->
-  <section class="section story" id="modes">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">{c.storyEyebrow}</p>
-        <h2 class="display">{c.storyTitle}</h2>
-      </div>
-      <ol class="strip">
-        <li class="cell c1 reveal">
-          <span class="num">01</span>
-          <div class="visual phone" aria-hidden="true">
-            <svg viewBox="0 0 64 96"><rect x="4" y="4" width="56" height="88" rx="10" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="32" cy="80" r="4" fill="currentColor"/><path d="M20 38h24M20 48h16" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
+    <!-- BENTO : Undercover + grille de fonctionnalités -->
+    <section class="bento" id="modes">
+      <article class="uc reveal">
+        <Image class="uc-bg" src={undercoverBg} alt="" width={900} loading="eager" />
+        <div class="uc-body">
+          <h2 class="display">{c.ucA}<br /><span class="hl">{c.ucB}</span></h2>
+          <ul class="check">{c.ucList.map((li) => <li>{li}</li>)}</ul>
+          <div class="uc-actions">
+            <a class="btn btn-primary" href={ROUTES.undercover[lang]}>{c.ucCta}</a>
+            <span class="chip">{c.ucChip}</span>
           </div>
-          <h3>{c.s1t}</h3>
-          <p>{c.s1b}</p>
-        </li>
-        <li class="cell c2 reveal">
-          <span class="num">02</span>
-          <div class="visual words" aria-hidden="true">
-            <span class="wcard"><small>{c.word}</small>{c.wordA}</span>
-            <span class="wcard odd"><small>{c.word}</small>{c.wordB}</span>
-          </div>
-          <h3>{c.s2t}</h3>
-          <p>{c.s2b}</p>
-        </li>
-        <li class="cell c3 reveal">
-          <span class="num">03</span>
-          <div class="visual clues" aria-hidden="true">
-            {c.clues.map((cl, i) => <span class:list={['clue', `k${i}`]}>{cl}</span>)}
-          </div>
-          <h3>{c.s3t}</h3>
-          <p>{c.s3b}</p>
-        </li>
-        <li class="cell c4 reveal">
-          <Image class="cell-bg" src={undercoverBg} alt="" width={700} loading="lazy" />
-          <span class="num">04</span>
-          <div class="visual stampbox" aria-hidden="true"><span class="stamp">{c.stamp}</span></div>
-          <h3>{c.s4t}</h3>
-          <p>{c.s4b}</p>
-          <a href={ROUTES.undercover[lang]}>{c.s4link} →</a>
-        </li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- QUIZ : question jouable -->
-  <section class="section quiz">
-    <div class="halftone quiz-dots" aria-hidden="true"></div>
-    <div class="wrap quiz-grid">
-      <div>
-        <p class="eyebrow">{c.quizEyebrow}</p>
-        <h2 class="display">{c.quizTitle}</h2>
-        <p class="lede">{c.quizBody}</p>
-        <ul class="ways">{c.quizWays.map((w) => <li>{w}</li>)}</ul>
-      </div>
-      <div class="try">
-        <p class="try-label">{c.quizTry}</p>
-        <QuickQuestion lang={lang} />
-      </div>
-    </div>
-  </section>
-
-  <!-- SOLO : éditorial -->
-  <section class="section solo">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow">{c.soloEyebrow}</p>
-        <h2 class="display">{c.soloTitle}</h2>
-      </div>
-      <div class="feature-row reveal">
-        <div class="feature-text">
-          <span class="kicker">Anime Grid</span>
-          <h3 class="display">{c.gridT}</h3>
-          <p>{c.gridB}</p>
         </div>
-        <div class="feature-visual grid-visual"><Image src={gridMark} alt={fr ? "Logo de l'Anime Grid : une grille de 3 par 3" : 'Anime Grid logo: a 3 by 3 grid'} width={420} loading="lazy" /></div>
+      </article>
+      <div class="tiles">
+        {c.tiles.map((t) => (
+          <div class="card tile reveal">
+            <span class="ticon">
+              {t.img ? <Image src={tileImg[t.img]} alt="" width={64} height={64} loading="lazy" /> : (
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d={t.svg} fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              )}
+            </span>
+            <h3>{t.t} {t.tag && <span class="tag">{t.tag}</span>}</h3>
+            <p>{t.s}</p>
+          </div>
+        ))}
       </div>
-      <div class="banner reveal">
-        <Image class="banner-bg" src={village} alt="" width={1200} loading="lazy" />
-        <div class="banner-text">
-          <span class="kicker">{fr ? 'Expédition' : 'Expedition'}</span>
-          <h3 class="display">{c.expT}</h3>
-          <p>{c.expB}</p>
+    </section>
+
+    <!-- VITRINES : 3 cartes colorées -->
+    <section class="shows">
+      <figure class="show reveal">
+        <div class="art a-quiz">
+          <p class="display mix stitle"><b>{c.shows[0].a}</b> <i>{c.shows[0].b}</i></p>
+          <div class="mini">
+            <span class="mq">{fr ? 'Combien de sabres utilise Zoro ?' : 'How many swords does Zoro use?'}</span>
+            <span class="mo">2</span><span class="mo ok">3</span><span class="mo">4</span><span class="mo">5</span>
+          </div>
+          <Image class="brain" src={quizArt} alt="" width={220} loading="lazy" />
         </div>
-      </div>
-      <div class="packs reveal">
-        <h3>{c.packsT}</h3>
-        <p>{c.packsB}</p>
-      </div>
-    </div>
-  </section>
+        <figcaption><a href={c.shows[0].href}><b>{c.shows[0].capT}</b></a><span>{c.shows[0].capS}</span></figcaption>
+      </figure>
+      <figure class="show reveal">
+        <div class="art a-grid">
+          <p class="display mix stitle"><b>{c.shows[1].a}</b> <i>{c.shows[1].b}</i></p>
+          <Image class="gmark" src={gridMark} alt="" width={280} loading="lazy" />
+          <span class="rar r1">{c.rare[0]}</span><span class="rar r2">{c.rare[1]}</span><span class="rar r3">{c.rare[2]}</span>
+        </div>
+        <figcaption><b>{c.shows[1].capT}</b><span>{c.shows[1].capS}</span></figcaption>
+      </figure>
+      <figure class="show reveal">
+        <div class="art a-exp">
+          <p class="display mix stitle"><b>{c.shows[2].a}</b> <i>{c.shows[2].b}</i></p>
+          <div class="frame"><Image src={village} alt="" width={420} loading="lazy" /></div>
+          <Image class="ninja" src={shinobi} alt="" width={160} loading="lazy" />
+        </div>
+        <figcaption><b>{c.shows[2].capT}</b><span>{c.shows[2].capS}</span></figcaption>
+      </figure>
+    </section>
 
-  <!-- CHIFFRES -->
-  <section class="numbers" aria-label={fr ? 'Shobukan en chiffres' : 'Shobukan in numbers'}>
-    <div class="wrap nums">
-      {c.numbers.map((n) => <div class="numcell"><b>{n.n}</b><span>{n.l}</span></div>)}
-    </div>
-  </section>
+    <!-- DEUX GRANDS PANNEAUX -->
+    <section class="duo">
+      <article class="panel big reveal">
+        <header class="big-head">
+          <Image class="bh-icon" src={undercoverArt} alt="" width={64} height={64} loading="lazy" />
+          <div><h2 class="display">Undercover</h2><p>{c.storySub}</p></div>
+        </header>
+        <div class="well">
+          <ol class="steps">
+            {c.steps.map((s) => (
+              <li><span class="sn">{s.n}</span><span class="st"><b>{s.t}</b><small>{s.s}</small></span></li>
+            ))}
+          </ol>
+          <p class="well-title display">{c.storyTitleA} <span class="hl">{c.storyTitleB}</span></p>
+          <span class="pager">01 / 04</span>
+        </div>
+        <a class="btn btn-primary" href={ROUTES.undercover[lang]}>{c.ucCta}</a>
+      </article>
+      <article class="panel big reveal">
+        <header class="big-head">
+          <Image class="bh-icon" src={quizArt} alt="" width={64} height={64} loading="lazy" />
+          <div><h2 class="display">Otaku Quiz</h2><p>{c.quizSub}</p></div>
+        </header>
+        <div class="well">
+          <QuickQuestion lang={lang} />
+          <p class="well-title display">{c.quizTitleA} <span class="hl">{c.quizTitleB}</span></p>
+          <span class="pager">01 / 18</span>
+        </div>
+        <a class="btn btn-primary" href={ROUTES.quiz[lang]}>{c.quizCta}</a>
+      </article>
+    </section>
 
-  <!-- UNIVERS -->
-  <section class="section univ">
-    <div class="wrap">
-      <div class="section-head center">
-        <p class="eyebrow">{c.univEyebrow}</p>
-        <h2 class="display">{c.univTitle}</h2>
-        <p class="lede">{c.univBody}</p>
-      </div>
-    </div>
-    <UniverseMarquee lang={lang} />
-  </section>
-
-  <!-- GRATUIT -->
-  <section class="section free">
-    <div class="wrap free-inner reveal">
-      <h2 class="display">{c.freeTitle}</h2>
-      <p>{c.freeBody}</p>
-      <a class="btn btn-ghost" href={ROUTES.pricing[lang]}>{c.freeLink} →</a>
-    </div>
-  </section>
+    <!-- PRIX -->
+    <section class="price-sec" id="prix">
+      <h2 class="display">{c.priceTitleA} <span class="hl">{c.priceTitleB}</span></h2>
+      <PricingPanel lang={lang} />
+    </section>
+  </div>
 
   <Faq items={c.faq} title={c.faqTitle} />
   <CtaBand lang={lang} medium={`${medium}_footer`} />
 </Base>
 
 <style>
+  .stack { display: grid; gap: clamp(16px, 2.4vw, 28px); padding-top: 16px; }
+
   /* ---------- HERO ---------- */
-  .hero { position: relative; overflow: hidden; padding: clamp(36px, 7vw, 88px) 0 clamp(64px, 9vw, 112px); }
-  .glow {
-    position: absolute; top: -25%; right: -15%; width: 1000px; height: 1000px; max-width: 140vw;
-    background: radial-gradient(closest-side, rgba(227, 38, 61, 0.42), rgba(142, 22, 38, 0.15) 60%, transparent);
-    pointer-events: none;
+  .hero {
+    position: relative; overflow: hidden; isolation: isolate;
+    border-radius: var(--radius-lg); border: 1px solid var(--border);
+    min-height: clamp(460px, 44vw, 560px);
+    display: grid; place-items: center;
+    background:
+      radial-gradient(50% 70% at 50% 45%, rgba(227, 38, 61, 0.28), transparent 70%),
+      radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1.4px) 0 0 / 14px 14px,
+      linear-gradient(180deg, #121214, #0a0a0b);
   }
-  .hero-grid { position: relative; display: grid; gap: 56px; align-items: center; }
-  @media (min-width: 980px) { .hero-grid { grid-template-columns: 1fr 1fr; gap: 40px; } }
-  .hero h1 { font-size: clamp(42px, 8vw, 78px); line-height: 1.02; }
-  .hero h1 span { display: block; }
-  .hero-stores { margin-top: 34px; }
-
-  /* Planche de manga : 3 cases aux gouttières inclinées */
-  .page {
-    position: relative; width: min(520px, 100%); justify-self: center;
-    aspect-ratio: 1 / 1.08;
-    display: grid; grid-template-columns: 1.15fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px;
-    transform: rotate(2deg);
+  .fan { position: absolute; top: 0; bottom: 0; width: 42%; perspective: 900px; z-index: -1; }
+  .fan.left { left: -4%; }
+  .fan.right { right: -4%; }
+  .fcard {
+    position: absolute; top: 50%; width: clamp(150px, 15vw, 210px); aspect-ratio: 0.62;
+    border-radius: 18px; padding: 12px; text-decoration: none; color: #fff;
+    display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start;
+    background: radial-gradient(90% 60% at 50% 40%, var(--c1), transparent 70%), linear-gradient(170deg, var(--c2), var(--c3));
+    border: 3px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 30px 50px rgba(0, 0, 0, 0.55);
   }
-  .panel {
-    position: relative; overflow: hidden; background: #000;
-    outline: 4px solid #fff; outline-offset: -2px;
-    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
-  }
-  .panel :global(img) { width: 100%; height: 100%; object-fit: cover; }
-  .pa { grid-row: 1 / 3; clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%); }
-  .pb { clip-path: polygon(8% 0, 100% 0, 100% 100%, 4% 94%); margin-left: -6%; }
-  .pc { clip-path: polygon(4% 0, 100% 6%, 100% 100%, 0 100%); margin-left: -10%; }
-  .bubble {
-    position: absolute; z-index: 2; background: #fff; color: #120609;
-    font-weight: 800; font-size: clamp(13px, 1.6vw, 17px); line-height: 1.2;
-    padding: 10px 14px; border-radius: 50% / 45%; border: 3px solid #120609;
-    white-space: nowrap;
-  }
-  .bubble::after {
-    content: ''; position: absolute; width: 14px; height: 14px; background: #fff;
-    border-right: 3px solid #120609; border-bottom: 3px solid #120609;
-  }
-  .b1 { left: 14%; bottom: 10%; transform: rotate(-4deg); }
-  .b1::after { top: -9px; right: 26px; transform: rotate(225deg); }
-  .b2 { right: 6%; top: 10%; transform: rotate(5deg); }
-  .b2::after { bottom: -9px; left: 24px; transform: rotate(45deg); }
-  .sfx {
-    position: absolute; left: -4%; top: 6%; z-index: 3;
-    font-family: var(--font-display); font-size: clamp(34px, 5vw, 56px); color: var(--gold);
-    -webkit-text-stroke: 3px #120609; paint-order: stroke fill;
-    transform: rotate(-12deg); text-shadow: 4px 4px 0 var(--accent);
-  }
-
-  /* ---------- RÉCIT ---------- */
-  .strip { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; grid-template-columns: 1fr; }
-  @media (min-width: 760px) { .strip { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 1080px) { .strip { grid-template-columns: 1.1fr 1fr 1fr 1.25fr; } }
-  .cell {
-    position: relative; overflow: hidden; min-height: 380px;
-    display: flex; flex-direction: column; justify-content: flex-end;
-    padding: 26px; border: 3px solid #f8f0ec; background: var(--surface);
-  }
-  .cell h3 { font-size: 21px; line-height: 1.2; position: relative; }
-  .cell p { color: var(--muted); margin: 10px 0 0; position: relative; }
-  .cell a { position: relative; margin-top: 14px; font-weight: 700; text-decoration: none; }
-  .num { position: absolute; top: 18px; left: 22px; font-family: var(--font-display); font-size: 22px; color: var(--accent-hot); z-index: 1; }
-  .visual { flex: 1; display: grid; place-items: center; position: relative; margin: 34px 0 18px; }
-  .c1 { background: radial-gradient(circle at 50% 35%, rgba(227, 38, 61, 0.35), transparent 60%), var(--surface); }
-  .phone svg { width: 84px; color: var(--text); transform: rotate(-8deg); filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.5)); }
-  .words { display: grid; gap: 10px; place-items: center; }
-  .wcard {
-    display: block; text-align: center; background: #fff; color: #120609; font-weight: 800; font-size: 17px;
-    padding: 10px 18px; border-radius: 10px; box-shadow: 5px 5px 0 var(--gold); transform: rotate(-3deg);
-  }
-  .wcard small { display: block; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #8a7a7f; }
-  .wcard.odd { box-shadow: 5px 5px 0 var(--accent); transform: rotate(4deg); }
-  .clues { display: grid; gap: 10px; justify-items: start; width: 100%; }
-  .clue {
-    background: #fff; color: #120609; font-weight: 750; font-size: 15px; padding: 8px 14px;
-    border-radius: 18px 18px 18px 4px; border: 2px solid #120609;
-  }
-  .k1 { justify-self: end; border-radius: 18px 18px 4px 18px; }
-  .k2 { background: var(--gold); transform: rotate(-3deg); }
-  .c4 { border-color: var(--accent); }
-  .cell-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; }
-  .c4::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 20%, rgba(14, 5, 7, 0.95) 75%); }
-  .stamp {
-    font-family: var(--font-display); font-size: clamp(26px, 3vw, 34px); color: var(--accent-hot);
-    border: 4px solid var(--accent-hot); border-radius: 8px; padding: 4px 16px;
-    transform: rotate(-14deg); text-transform: uppercase; letter-spacing: 0.04em;
-    box-shadow: inset 0 0 0 2px rgba(255, 74, 92, 0.3);
-    background: rgba(14, 5, 7, 0.4);
+  .fcard :global(img) { width: 78%; height: auto; align-self: center; filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.35)); }
+  .fhead { background: rgba(0, 0, 0, 0.55); border-radius: 999px; padding: 5px 10px; font-weight: 700; font-size: 13px; white-space: nowrap; }
+  .fstat { font-size: 13px; font-weight: 600; background: rgba(0, 0, 0, 0.45); border-radius: 8px; padding: 4px 8px; }
+  .fstat b { font-family: var(--font-display); font-size: 17px; }
+  .fok { position: absolute; bottom: 44px; left: 12px; font-family: var(--font-display); font-weight: 700; font-size: 18px; color: #fff; background: #12a35b; border: 2px solid #fff; border-radius: 8px; padding: 2px 8px; transform: rotate(-6deg); }
+  .left .f0 { left: 0; transform: translateY(-50%) rotateY(28deg) rotateZ(-4deg); }
+  .left .f1 { left: 24%; transform: translateY(-46%) rotateY(26deg) rotateZ(-2deg) scale(0.95); }
+  .left .f2 { left: 48%; transform: translateY(-42%) rotateY(24deg) scale(0.9); }
+  .right .f0 { right: 0; transform: translateY(-50%) rotateY(-28deg) rotateZ(4deg); }
+  .right .f1 { right: 24%; transform: translateY(-46%) rotateY(-26deg) rotateZ(2deg) scale(0.95); }
+  .right .f2 { right: 48%; transform: translateY(-42%) rotateY(-24deg) scale(0.9); }
+  /* Voile sombre derrière le texte central : les cartes et les pointillés passent dessous. */
+  .vignette { position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse 30% 58% at 50% 50%, rgba(10, 10, 11, 0.96), rgba(10, 10, 11, 0.75) 55%, transparent 100%); }
+  @media (max-width: 860px) { .vignette { background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(10, 10, 11, 0.95), rgba(10, 10, 11, 0.6) 70%, transparent 100%); } }
+  .wires { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; fill: none; stroke: rgba(255, 255, 255, 0.55); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 0.5 9; }
+  .hero-center { text-align: center; padding: 40px 16px; max-width: 640px; }
+  .hero-center h1 { margin: 0; display: grid; gap: 14px; justify-items: center; }
+  .brandline { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-brand); font-size: 22px; font-weight: 400; letter-spacing: 0.02em; }
+  .brandline :global(img) { width: 30px; height: 30px; border-radius: 8px; }
+  .hero-center .mix { font-size: clamp(38px, 6vw, 72px); line-height: 1; text-shadow: 0 6px 30px rgba(0, 0, 0, 0.6); }
+  .hero-lede { color: #d4d4d8; font-size: clamp(15px, 1.5vw, 17px); margin: 18px auto 26px; max-width: 520px; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8); }
+  .hero-lede span { color: #fff; }
+  @media (max-width: 860px) {
+    .fan { width: 60%; opacity: 0.45; }
+    .fan.left { left: -28%; } .fan.right { right: -28%; }
+    .wires { display: none; }
   }
 
-  /* ---------- QUIZ ---------- */
-  .quiz { overflow: hidden; background: linear-gradient(180deg, var(--bg), #1b0810 50%, var(--bg)); }
-  .quiz-dots { position: absolute; inset: 0; mask-image: radial-gradient(50% 60% at 75% 50%, #000, transparent); }
-  .quiz-grid { position: relative; display: grid; gap: 48px; align-items: center; }
-  @media (min-width: 940px) { .quiz-grid { grid-template-columns: 1.1fr 1fr; } }
-  .ways { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 10px; }
-  .ways li { padding-left: 30px; position: relative; font-weight: 650; }
-  .ways li::before { content: '→'; position: absolute; left: 0; color: var(--gold); font-weight: 800; }
-  .try { max-width: 480px; justify-self: center; width: 100%; }
-  .try-label { font-family: var(--font-display); color: var(--gold); font-size: 20px; margin: 0 0 28px; transform: rotate(-2deg); }
+  /* ---------- BENTO ---------- */
+  .bento { display: grid; gap: 12px; }
+  @media (min-width: 1000px) { .bento { grid-template-columns: 1fr 1.05fr; gap: 16px; } }
+  .uc { position: relative; overflow: hidden; border-radius: var(--radius-lg); border: 1px solid var(--border); min-height: 300px; display: flex; align-items: flex-end; background: #111; }
+  .uc-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; filter: grayscale(0.85) contrast(1.1); opacity: 0.55; }
+  .uc::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(11, 11, 13, 0.95) 0%, rgba(11, 11, 13, 0.7) 55%, rgba(11, 11, 13, 0.25)); }
+  .uc-body { position: relative; z-index: 2; padding: clamp(22px, 3vw, 32px); }
+  .uc h2 { font-size: clamp(28px, 3.4vw, 42px); }
+  .uc-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 22px; }
+  .tiles { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+  @media (min-width: 640px) { .tiles { grid-template-columns: repeat(3, 1fr); gap: 12px; } }
+  .tile { padding: 16px; display: flex; flex-direction: column; justify-content: flex-end; min-height: 138px; transition: background 0.15s, transform 0.15s; }
+  .tile:hover { background: var(--card-hover); }
+  .ticon { width: 34px; height: 34px; border-radius: 9px; overflow: hidden; display: grid; place-items: center; background: var(--well); border: 1px solid var(--border-strong); color: var(--accent-hot); margin-bottom: auto; }
+  .ticon :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .ticon svg { width: 18px; height: 18px; }
+  .tile h3 { font-size: 15px; margin-top: 18px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .tile p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
 
-  /* ---------- SOLO ---------- */
-  .kicker { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
-  .feature-row { display: grid; gap: 28px; align-items: center; margin-bottom: 28px; }
-  @media (min-width: 860px) { .feature-row { grid-template-columns: 1.2fr 1fr; gap: 56px; } }
-  .feature-text h3, .banner-text h3 { font-size: clamp(28px, 4vw, 40px); }
-  .feature-text p, .banner-text p { color: var(--muted); font-size: 18px; margin: 16px 0 0; max-width: 560px; }
-  .grid-visual { justify-self: center; }
-  .grid-visual :global(img) { width: min(320px, 70vw); height: auto; transform: rotate(6deg); filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.55)); }
-  .banner { position: relative; overflow: hidden; border-radius: var(--radius-lg); min-height: 420px; display: flex; align-items: flex-end; }
-  .banner-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .banner::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(14, 5, 7, 0.92) 0%, rgba(14, 5, 7, 0.55) 55%, rgba(14, 5, 7, 0.1)); }
-  .banner-text { position: relative; z-index: 2; padding: clamp(28px, 5vw, 56px); max-width: 640px; }
-  .banner-text p { color: rgba(248, 240, 236, 0.85); }
-  .packs { margin-top: 28px; padding: 28px 0 0; border-top: 1px dashed var(--border-strong); display: grid; gap: 8px; }
-  @media (min-width: 860px) { .packs { grid-template-columns: 1fr 1.4fr; gap: 40px; align-items: baseline; } }
-  .packs h3 { font-size: 22px; }
-  .packs p { color: var(--muted); margin: 0; }
+  /* ---------- VITRINES ---------- */
+  .shows { display: grid; gap: 16px; }
+  @media (min-width: 900px) { .shows { grid-template-columns: repeat(3, 1fr); } }
+  .show { margin: 0; }
+  .art { position: relative; overflow: hidden; border-radius: var(--radius-lg); aspect-ratio: 1.3; border: 1px solid var(--border); }
+  .stitle { position: absolute; left: 22px; top: 18px; margin: 0; font-size: clamp(20px, 2vw, 26px); color: #fff; z-index: 2; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); }
+  .a-quiz { background: radial-gradient(70% 70% at 70% 80%, #ff7ac3, transparent 60%), linear-gradient(135deg, #7a1c8f, #c2186b 60%, #ff5b7f); }
+  .mini {
+    position: absolute; left: 22px; bottom: 22px; width: 58%; z-index: 2;
+    background: #fff; color: #120609; border-radius: 12px; padding: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+    box-shadow: 0 16px 30px rgba(0, 0, 0, 0.3); transform: rotate(-3deg);
+  }
+  .mq { grid-column: 1 / -1; font-weight: 700; font-size: 13px; margin-bottom: 2px; }
+  .mo { font-size: 13px; font-weight: 600; border: 1.5px solid #e5e0e2; border-radius: 7px; padding: 5px 8px; }
+  .mo.ok { border-color: #12a35b; background: #d8f6e7; }
+  .brain { position: absolute; right: -6%; bottom: -8%; width: 52%; border-radius: 22%; transform: rotate(8deg); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35); }
+  .a-grid { background: radial-gradient(60% 60% at 50% 60%, #ffe58a, transparent 70%), linear-gradient(135deg, #b8650f, #e59a1a 55%, #ffd34d); }
+  .gmark { position: absolute; left: 50%; top: 56%; width: 46%; transform: translate(-50%, -50%) rotate(6deg); filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.35)); }
+  .rar { position: absolute; z-index: 2; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; border-radius: 999px; padding: 5px 10px; border: 2px solid #120609; box-shadow: 3px 3px 0 #120609; }
+  .r1 { left: 8%; top: 42%; background: #ff3b5c; color: #fff; transform: rotate(-8deg); }
+  .r2 { right: 8%; top: 36%; background: #fff; color: #120609; transform: rotate(6deg); }
+  .r3 { right: 12%; bottom: 12%; background: #2b2b30; color: #fff; transform: rotate(-4deg); }
+  .a-exp { background: radial-gradient(70% 60% at 30% 70%, #6fe3d1, transparent 60%), linear-gradient(135deg, #0e3f5c, #127a8a 55%, #33c4b0); }
+  .frame { position: absolute; left: 22px; right: 30%; bottom: 22px; top: 70px; border-radius: 14px; overflow: hidden; border: 3px solid #fff; transform: rotate(-2deg); box-shadow: 0 18px 30px rgba(0, 0, 0, 0.35); }
+  .frame :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .ninja { position: absolute; right: 2%; bottom: -4%; width: 34%; filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.4)); }
+  figcaption { margin-top: 12px; display: grid; gap: 3px; }
+  figcaption b, figcaption a b { font-family: var(--font-display); text-transform: uppercase; letter-spacing: -0.02em; color: var(--accent-hot); font-size: 16px; }
+  figcaption a { text-decoration: none; }
+  figcaption span { color: var(--muted); font-size: 15px; }
 
-  /* ---------- CHIFFRES ---------- */
-  .numbers { background: var(--accent); color: #fff; padding: 44px 0; transform: skewY(-2deg); margin: 30px 0; }
-  .nums { transform: skewY(2deg); display: grid; gap: 24px; grid-template-columns: repeat(2, 1fr); text-align: center; }
-  @media (min-width: 820px) { .nums { grid-template-columns: repeat(4, 1fr); } }
-  .numcell b { display: block; font-family: var(--font-display); font-weight: 400; font-size: clamp(38px, 5vw, 56px); line-height: 1; }
-  .numcell span { display: block; margin-top: 8px; font-weight: 650; opacity: 0.9; }
+  /* ---------- DUO ---------- */
+  .duo { display: grid; gap: 16px; }
+  @media (min-width: 1000px) { .duo { grid-template-columns: 1fr 1fr; } }
+  .big { padding: clamp(20px, 3vw, 28px); display: grid; gap: 18px; justify-items: start; align-content: start; }
+  .big-head { display: flex; align-items: center; gap: 14px; }
+  .bh-icon { width: 46px; height: 46px; border-radius: 12px; border: 1px solid var(--border-strong); }
+  .big-head h2 { font-size: clamp(24px, 2.6vw, 32px); }
+  .big-head p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+  .well {
+    position: relative; width: 100%; background: var(--well); border: 1px solid var(--border); border-radius: 16px;
+    padding: 22px 22px 70px; box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.5);
+  }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .steps li { display: flex; align-items: center; gap: 14px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+  .steps li:nth-child(2) { border-color: rgba(227, 38, 61, 0.55); background: linear-gradient(90deg, var(--brand-tint), var(--surface-2)); }
+  .sn { font-family: var(--font-display); font-weight: 700; color: var(--accent-hot); font-size: 15px; width: 26px; }
+  .st { display: grid; }
+  .st b { font-weight: 600; font-size: 15px; }
+  .st small { color: var(--muted); font-size: 13px; }
+  .well-title { position: absolute; left: 22px; bottom: 18px; margin: 0; font-size: clamp(20px, 2.2vw, 26px); }
+  .pager { position: absolute; right: 22px; bottom: 22px; font-size: 11px; letter-spacing: 0.2em; color: var(--faint); }
 
-  /* ---------- UNIVERS ---------- */
-  .univ .section-head { margin-bottom: 36px; }
-
-  /* ---------- GRATUIT ---------- */
-  .free { padding-top: 0; }
-  .free-inner { text-align: center; max-width: 760px; }
-  .free h2 { font-size: clamp(34px, 6vw, 60px); }
-  .free p { color: var(--muted); font-size: 18px; margin: 18px auto 26px; }
+  /* ---------- PRIX ---------- */
+  .price-sec { display: grid; gap: 16px; }
+  .price-sec h2 { font-size: clamp(28px, 3.6vw, 40px); }
 </style>
