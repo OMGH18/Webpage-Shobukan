@@ -7,8 +7,8 @@ interface Props { lang: Lang }
 const { lang } = Astro.props
 const fr = lang === 'fr'
 const q = fr
-  ? { label: 'Question Naruto', q: 'Qui a créé la technique du Rasengan ?', opts: ['Jiraiya', 'Minato Namikaze', 'Kakashi Hatake', 'Tobirama Senju'], ok: 1, good: 'Bien joué. Prêt pour les 4 suivantes ?', bad: 'Raté : c’est Minato Namikaze. Revanche ?', cta: 'Faire le quiz Naruto complet', href: '/quiz/naruto/' }
-  : { label: 'Naruto question', q: 'Who created the Rasengan technique?', opts: ['Jiraiya', 'Minato Namikaze', 'Kakashi Hatake', 'Tobirama Senju'], ok: 1, good: 'Nice. Ready for 4 more?', bad: 'Wrong: it was Minato Namikaze. Rematch?', cta: 'Take the full Naruto quiz', href: '/en/quiz/naruto/' }
+  ? { label: 'Quiz Naruto', q: 'Qui a créé la technique du Rasengan ?', opts: ['Jiraiya', 'Minato Namikaze', 'Kakashi Hatake', 'Tobirama Senju'], ok: 1, good: 'Bien joué. Prêt pour les 4 suivantes ?', bad: 'Raté : c’est Minato Namikaze. Revanche ?', cta: 'Faire le quiz Naruto complet', href: '/quiz/naruto/' }
+  : { label: 'Naruto quiz', q: 'Who created the Rasengan technique?', opts: ['Jiraiya', 'Minato Namikaze', 'Kakashi Hatake', 'Tobirama Senju'], ok: 1, good: 'Nice. Ready for 4 more?', bad: 'Wrong: it was Minato Namikaze. Rematch?', cta: 'Take the full Naruto quiz', href: '/en/quiz/naruto/' }
 const hub = ROUTES.quiz[lang]
 ---
 
@@ -44,12 +44,9 @@ const hub = ROUTES.quiz[lang]
 </script>
 
 <style>
-  .qq { position: relative; background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: 14px; padding: 26px 20px 20px; box-shadow: var(--elev-2); }
-  .label {
-    position: absolute; top: -12px; left: 18px; margin: 0;
-    background: var(--accent); color: #fff; font-weight: 700; font-size: 11px;
-    letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px;
-  }
+  .qq { position: relative; background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: 14px; padding: 20px; box-shadow: var(--elev-2); }
+  .label { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 10px; color: var(--muted); font-size: 14px; font-weight: 500; }
+  .label::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
   .question { font-size: 19px; font-weight: 650; line-height: 1.3; margin: 4px 0 16px; letter-spacing: -0.01em; }
   .opts { display: grid; gap: 8px; grid-template-columns: 1fr 1fr; }
   button {

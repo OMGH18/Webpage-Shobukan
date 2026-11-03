@@ -67,7 +67,7 @@ const shareTemplates = { a: L.share(0, items.length).split('0/')[0], b: L.share(
   <ol class="qs">
     {items.map((it, i) => (
       <li class="q" data-i={i}>
-        <p class="progress"><span>{L.question} {i + 1}/{items.length}</span><span class="bar"><span style={`width:${((i + 1) / items.length) * 100}%`}></span></span></p>
+        <p class="progress"><span>{L.question} {i + 1} {fr ? 'sur' : 'of'} {items.length}</span><span class="bar"><span style={`width:${((i + 1) / items.length) * 100}%`}></span></span></p>
         <h3>{it.q}</h3>
         <div class="opts">
           {it.opts.map((o) => (
@@ -85,7 +85,7 @@ const shareTemplates = { a: L.share(0, items.length).split('0/')[0], b: L.share(
   </ol>
 
   <div class="result" hidden>
-    <p class="eyebrow">{L.scoreTitle}</p>
+    <p class="score-label">{L.scoreTitle}</p>
     <p class="score"><b class="s">0</b>/{items.length}</p>
     <p class="verdict"></p>
     <p class="muted more">{L.more}</p>
@@ -193,7 +193,7 @@ const shareTemplates = { a: L.share(0, items.length).split('0/')[0], b: L.share(
   .ready .q { display: none; }
   .ready .q.active { display: block; animation: pop 0.35s ease; }
   @keyframes pop { from { opacity: 0; transform: translateY(8px); } }
-  .progress { display: flex; align-items: center; gap: 14px; margin: 0 0 14px; font-size: 13px; font-weight: 700; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; }
+  .progress { display: flex; align-items: center; gap: 14px; margin: 0 0 14px; font-size: 14px; font-weight: 500; color: var(--muted); }
   .bar { flex: 1; height: 6px; background: rgba(255, 255, 255, 0.08); border-radius: 99px; overflow: hidden; }
   .bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); border-radius: 99px; }
   h3 { font-size: clamp(20px, 3vw, 26px); line-height: 1.3; margin: 0 0 22px; }
@@ -220,7 +220,7 @@ const shareTemplates = { a: L.share(0, items.length).split('0/')[0], b: L.share(
   .answer { color: var(--good); font-weight: 650; margin: 14px 0 0; }
 
   .result { text-align: center; padding: 10px 0; }
-  .result .eyebrow { justify-content: center; }
+  .score-label { margin: 0; color: var(--muted); font-size: 15px; }
   .score { font-family: var(--font-display); font-size: clamp(64px, 14vw, 104px); line-height: 1; margin: 6px 0 10px; color: var(--muted); }
   .score b { font-weight: 400; color: var(--text); }
   .verdict { font-size: 22px; font-weight: 750; margin: 0 0 10px; }

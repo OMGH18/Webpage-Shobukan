@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro'
 import CtaBand from './CtaBand.astro'
 import Faq from './Faq.astro'
 import StoreButtons from './StoreButtons.astro'
-import undercoverBg from '../assets/art/undercover-game-bg.jpg'
+import undercoverBg from '../assets/art/chapter-rain.jpg'
 import { PLAYERS, SITE, UNIVERSES, type Lang } from '../data/product'
 import { ROUTES } from '../i18n/ui'
 import { breadcrumbs, faqPage, webPage } from '../data/schema'
@@ -127,7 +127,6 @@ const jsonLd = [
   <section class="uhero">
     <Image class="bg" src={undercoverBg} alt="" width={900} loading="eager" />
     <div class="wrap uhero-inner">
-      <p class="eyebrow">{c.eyebrow}</p>
       <h1 class="display">{c.h1}</h1>
       <p class="lede" set:html={c.lede} />
       <div class="hero-stores"><StoreButtons lang={lang} medium={`undercover_${lang}`} note={false} /></div>
