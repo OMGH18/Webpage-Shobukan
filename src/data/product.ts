@@ -27,6 +27,7 @@ export const SOCIALS = {
   tiktokFr: 'https://www.tiktok.com/@shobukan.app',
   tiktokEn: 'https://www.tiktok.com/@shobukangame',
   instagram: 'https://www.instagram.com/shobukan.app/',
+  discord: 'https://discord.gg/fzFYrevmpe',
 } as const
 
 export const PUBLISHER = {

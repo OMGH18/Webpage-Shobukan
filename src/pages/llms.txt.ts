@@ -75,6 +75,7 @@ ${quizLinks}
 - TikTok (FR): ${SOCIALS.tiktokFr}
 - TikTok (EN): ${SOCIALS.tiktokEn}
 - Instagram: ${SOCIALS.instagram}
+- Discord community: ${SOCIALS.discord}
 - Support: ${PUBLISHER.email}
 `
   return new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } })

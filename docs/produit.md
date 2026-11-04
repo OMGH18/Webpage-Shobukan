@@ -93,6 +93,7 @@ Mêmes prix sur iOS et Android (confirmé le 3 novembre 2026). Nouveaux tarifs e
 - TikTok FR : https://www.tiktok.com/@shobukan.app
 - TikTok EN : https://www.tiktok.com/@shobukangame
 - Instagram : https://www.instagram.com/shobukan.app/
+- Discord : https://discord.gg/fzFYrevmpe
 
 ## Mentions obligatoires
 
