@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets'
 import icon from '../assets/art/icon.png'
+import wordmark from '../assets/brand/shobukan-wordmark.png'
 import { PUBLISHER, SOCIALS, UNIVERSES, quizPath, universeName, type Lang } from '../data/product'
 import { ROUTES, t } from '../i18n/ui'
 
@@ -16,7 +17,7 @@ const half = Math.ceil(UNIVERSES.length / 2)
   <div class="top">
     <div class="wrap">
       <div class="head">
-        <a class="logo" href={ROUTES.home[lang]}><Image src={icon} alt="" width={64} height={64} /><span>Shobukan</span></a>
+        <a class="logo" href={ROUTES.home[lang]} aria-label="Shobukan"><Image src={icon} alt="" width={64} height={64} /><Image class="wm" src={wordmark} alt="" width={320} /></a>
         <p class="sub">{fr ? 'Le party game manga' : 'The manga party game'} · Undercover · Otaku Quiz · Anime Grid · {fr ? 'Mode Histoire' : 'Story Mode'}</p>
       </div>
       <div class="cols">
@@ -73,8 +74,8 @@ const half = Math.ceil(UNIVERSES.length / 2)
   }
   .head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin-bottom: 32px; }
   .logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
-  .logo img { width: 36px; height: 36px; border-radius: 10px; }
-  .logo span { font-family: var(--font-brand); font-size: 24px; }
+  .logo img:not(.wm) { width: 36px; height: 36px; border-radius: 10px; }
+  .logo :global(.wm) { height: 28px; width: auto; }
   .sub { margin: 0; font-size: 14px; color: var(--faint); }
   .cols { display: grid; gap: 28px 24px; grid-template-columns: 1fr 1fr; }
   @media (min-width: 900px) { .cols { grid-template-columns: 1fr 1.6fr 1fr 1fr; } }

@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets'
 import icon from '../assets/art/icon.png'
+import wordmark from '../assets/brand/shobukan-wordmark.png'
 import { UNIVERSES, quizPath, universeName, type Lang } from '../data/product'
 import { KANJI_PATHS } from '../data/kanji'
 import { ROUTES, t } from '../i18n/ui'
@@ -31,7 +32,7 @@ const isCurrent = (href: string) => !href.includes('#') && href !== home && path
   <div class="bar">
     <a class="brand" href={home} aria-label="Shobukan">
       <Image src={icon} alt="" width={64} height={64} loading="eager" />
-      <span>Shobukan</span>
+      <Image class="wm" src={wordmark} alt="" width={260} loading="eager" />
     </a>
     <nav class="links" aria-label={ui.navLabel}>
       <div class="dd">
@@ -79,8 +80,8 @@ const isCurrent = (href: string) => !href.includes('#') && href !== home && path
   }
   .bar { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); height: 56px; display: flex; align-items: center; gap: 8px; }
   .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); flex: none; margin-right: 14px; }
-  .brand img { width: 32px; height: 32px; border-radius: 9px; }
-  .brand span { font-family: var(--font-brand); font-size: 19px; letter-spacing: 0.02em; }
+  .brand img:not(.wm) { width: 32px; height: 32px; border-radius: 9px; }
+  .brand :global(.wm) { height: 22px; width: auto; }
   .links { display: none; gap: 4px; }
   .links a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: 15px; padding: 7px 12px; border-radius: 8px; }
   .links a:hover { color: var(--text); background: rgba(255, 255, 255, 0.04); }
@@ -121,5 +122,5 @@ const isCurrent = (href: string) => !href.includes('#') && href !== home && path
   .cta { height: 36px; padding: 0 14px; font-size: 14px; }
   @media (min-width: 900px) { .links { display: flex; } }
   @media (max-width: 899px) { .cta { display: none; } }
-  @media (max-width: 359px) { .brand span { display: none; } }
+  @media (max-width: 359px) { .brand :global(.wm) { display: none; } }
 </style>
