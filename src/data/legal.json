@@ -1,7 +1,7 @@
 {
  "updated": {
-  "terms": "2026-07-05",
-  "privacy": "2026-07-10"
+  "terms": "2026-11-04",
+  "privacy": "2026-11-04"
  },
  "fr": {
   "terms": {
@@ -13,7 +13,7 @@
     },
     {
      "title": "2. Description du service",
-     "body": "Shobukan est une application mobile de mini-jeux sociaux à thème manga, jouable en groupe (présentiel ou à distance). La version de base est gratuite, financée par la publicité. Un abonnement Premium retire les publicités pour tout le groupe, permet d'héberger en illimité et inclut un crédit créateur. Chaque pack créé consomme ensuite un crédit acheté ponctuellement. Voir la section 5."
+     "body": "Shobukan est une application mobile de mini-jeux sociaux à thème manga, jouable en groupe (présentiel ou à distance). La version de base est gratuite, financée par la publicité. Un abonnement Premium retire les publicités pour tout le groupe, permet d'héberger en illimité et inclut un crédit créateur. Chaque pack créé consomme ensuite un crédit acheté ponctuellement. Le Mode Histoire (Expédition) propose aussi, en option, des packs de cartes et des recharges de vies. Voir la section 5."
     },
     {
      "title": "3. Utilisation acceptable",
@@ -24,8 +24,8 @@
      "body": "Les packs que tu crées restent ta propriété intellectuelle. En les créant tu garantis détenir les droits sur le contenu. Nous nous réservons le droit de supprimer tout pack signalé ou détecté comme illégal, haineux, sexuel ou contraire aux CGU, sans préavis. Tes packs sont privés par défaut ; tu peux choisir de les publier, ils deviennent alors visibles et jouables par la communauté."
     },
     {
-     "title": "5. Achats (Premium & crédits créateur)",
-     "body": "Les achats se font via l'App Store (Apple) ou Google Play.\n\n• Premium annuel : 90 €/an, avec renouvellement automatique sauf résiliation.\n• Premium mensuel : 10 €/mois, avec renouvellement automatique sauf résiliation.\n• Crédit créateur : achat ponctuel consommable (1 crédit = 1 pack créé), y compris après utilisation du crédit Premium inclus.\n• Tarifs : affichés clairement dans l'app avant tout achat.\n• Facturation et résiliation : gérées par Apple / Google via ton compte.\n• Restauration : « Restaurer mes achats » dans l'app si tu changes d'appareil ou réinstalles.\n• Remboursements : gérés par Apple / Google — contacte leur support pour toute demande."
+     "title": "5. Achats (Premium, crédits créateur et Mode Histoire)",
+     "body": "Les achats se font via l'App Store (Apple) ou Google Play.\n\n• Premium annuel : 90 €/an, avec renouvellement automatique sauf résiliation.\n• Premium mensuel : 10 €/mois, avec renouvellement automatique sauf résiliation.\n• Crédit créateur : achat ponctuel consommable (1 crédit = 1 pack créé), y compris après utilisation du crédit Premium inclus.\n• Packs de cartes du Mode Histoire (Expédition) : achats uniques non consommables qui débloquent un ensemble de cartes, avec un bonus de Ryō, en accès à vie. Chaque carte reste aussi gagnable gratuitement en jouant.\n• Recharge de vies du Mode Histoire : achat ponctuel consommable qui remplit ta réserve de vies. Les vies se rechargent aussi gratuitement avec le temps ou en regardant une publicité, et sont illimitées avec Premium.\n• Ryō : monnaie virtuelle du jeu, gagnée en jouant ou offerte avec certains packs. Elle n'a aucune valeur monétaire et ne peut être ni échangée, ni revendue, ni convertie en argent réel.\n• Tarifs : affichés clairement dans l'app avant tout achat.\n• Facturation et résiliation : gérées par Apple / Google via ton compte.\n• Restauration : « Restaurer mes achats » dans l'app si tu changes d'appareil ou réinstalles (Premium et packs de cartes ; les crédits et recharges de vies déjà utilisés ne sont pas restaurés).\n• Remboursements : gérés par Apple / Google — contacte leur support pour toute demande."
     },
     {
      "title": "6. Compte et liaison Apple / Google",
@@ -81,8 +81,8 @@
      "body": "iOS te demande l'autorisation de suivi via la pop-up système (ATT). Si tu refuses, PostHog et RevenueCat n'utilisent pas ton IDFA. Tu gardes accès à toutes les fonctions, seules les métriques d'usage agrégées en pâtissent."
     },
     {
-     "title": "Achats (Premium & crédits)",
-     "body": "Les abonnements Premium et les crédits de création sont gérés par Apple / Google. Premium se renouvelle automatiquement selon la formule choisie sauf résiliation depuis ton compte App Store ou Google Play ; les crédits sont des achats ponctuels. Tu peux restaurer Premium depuis Réglages → « Restaurer mes achats ». Aucun remboursement n'est traité par Shobukan : passe par le support Apple / Google."
+     "title": "Achats (Premium, crédits et Mode Histoire)",
+     "body": "Les abonnements Premium et les crédits de création sont gérés par Apple / Google. Premium se renouvelle automatiquement selon la formule choisie sauf résiliation depuis ton compte App Store ou Google Play ; les crédits sont des achats ponctuels. Les packs de cartes du Mode Histoire (Expédition) sont des achats uniques, restaurables ; les recharges de vies sont des achats consommables. Ta réserve de vies et ta progression du Mode Histoire sont enregistrées sur ton appareil et sauvegardées sur nos serveurs (Supabase) quand c'est possible, pour les retrouver sur un autre appareil. Tu peux restaurer Premium et tes packs de cartes depuis Réglages → « Restaurer mes achats ». Aucun remboursement n'est traité par Shobukan : passe par le support Apple / Google."
     },
     {
      "title": "Conservation des données",
@@ -128,7 +128,7 @@
     },
     {
      "title": "2. Service description",
-     "body": "Shobukan is a mobile app of manga-themed social mini-games, played in groups (in person or remotely). The base version is free and ad-supported. A Premium subscription removes ads for the whole group, unlocks unlimited hosting, and includes one creator credit. Each pack created after that consumes a separately purchased credit. See section 5."
+     "body": "Shobukan is a mobile app of manga-themed social mini-games, played in groups (in person or remotely). The base version is free and ad-supported. A Premium subscription removes ads for the whole group, unlocks unlimited hosting, and includes one creator credit. Each pack created after that consumes a separately purchased credit. Story Mode (Expedition) also offers optional card packs and life refills. See section 5."
     },
     {
      "title": "3. Acceptable use",
@@ -139,8 +139,8 @@
      "body": "The packs you create remain your intellectual property. By creating them you warrant that you hold the rights to the content. We reserve the right to remove any pack reported or detected as illegal, hateful, sexual or contrary to the Terms, without notice. Your packs are private by default; you may choose to publish them, after which they become visible and playable by the community."
     },
     {
-     "title": "5. Purchases (Premium & creator credits)",
-     "body": "Purchases are made via the App Store (Apple) or Google Play.\n\n• Annual Premium: €90/year, automatically renewing unless cancelled.\n• Monthly Premium: €10/month, automatically renewing unless cancelled.\n• Creator credit: one-off consumable purchase (1 credit = 1 created pack), including after the included Premium credit has been used.\n• Prices: shown clearly in the app before purchase.\n• Billing and cancellation: handled by Apple / Google via your account.\n• Restore: \"Restore purchases\" in the app if you change device or reinstall.\n• Refunds: handled by Apple / Google — contact their support for any request."
+     "title": "5. Purchases (Premium, creator credits and Story Mode)",
+     "body": "Purchases are made via the App Store (Apple) or Google Play.\n\n• Annual Premium: €90/year, automatically renewing unless cancelled.\n• Monthly Premium: €10/month, automatically renewing unless cancelled.\n• Creator credit: one-off consumable purchase (1 credit = 1 created pack), including after the included Premium credit has been used.\n• Story Mode (Expedition) card packs: one-time non-consumable purchases that unlock a set of cards, with a Ryō bonus, with lifetime access. Every card can also be earned for free by playing.\n• Story Mode life refill: one-off consumable purchase that fills up your lives. Lives also refill for free over time or by watching an ad, and are unlimited with Premium.\n• Ryō: the game's virtual currency, earned by playing or included with some packs. It has no monetary value and cannot be exchanged, resold or converted into real money.\n• Prices: shown clearly in the app before purchase.\n• Billing and cancellation: handled by Apple / Google via your account.\n• Restore: \"Restore purchases\" in the app if you change device or reinstall (Premium and card packs; credits and life refills already used are not restored).\n• Refunds: handled by Apple / Google — contact their support for any request."
     },
     {
      "title": "6. Account and Apple / Google linking",
@@ -196,8 +196,8 @@
      "body": "iOS asks for tracking permission via the system pop-up (ATT). If you decline, PostHog and RevenueCat do not use your IDFA. You keep access to all features; only aggregated usage metrics are affected."
     },
     {
-     "title": "Purchases (Premium & credits)",
-     "body": "Premium subscriptions and creation credits are handled by Apple / Google. Premium renews automatically according to the selected plan unless cancelled from your App Store or Google Play account; credits are one-time purchases. You can restore Premium from Settings → \"Restore purchases\". No refund is processed by Shobukan: please go through Apple / Google support."
+     "title": "Purchases (Premium, credits and Story Mode)",
+     "body": "Premium subscriptions and creation credits are handled by Apple / Google. Premium renews automatically according to the selected plan unless cancelled from your App Store or Google Play account; credits are one-time purchases. Story Mode (Expedition) card packs are one-time, restorable purchases; life refills are consumable purchases. Your lives and Story Mode progress are stored on your device and backed up to our servers (Supabase) when possible, so you can pick them up on another device. You can restore Premium and your card packs from Settings → \"Restore purchases\". No refund is processed by Shobukan: please go through Apple / Google support."
     },
     {
      "title": "Data retention",
