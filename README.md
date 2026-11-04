@@ -35,3 +35,16 @@ La fiche produit de référence est dans `docs/produit.md` : tout texte public
 - `src/pages/404.astro` : affiche aussi les invitations `/join/CODE`.
 - `public/CNAME` : le nom de domaine.
 - `public/aea40d54f8e080aad7444dbc0fd0f931.txt` : la clé IndexNow.
+
+## Chiffres par univers (pages quiz, tuiles)
+
+Les compteurs par univers (questions par difficulté, paires Undercover,
+personnages Anime Grid) viennent de `src/data/stats.json`. Pour les mettre à
+jour après un import de contenu dans l'app :
+
+```bash
+python3 scripts/build-stats.py ../shobukan-app/scripts/csv
+```
+
+Les kanji décoratifs des tuiles sont stockés en contours SVG dans
+`src/data/kanji.ts` (aucune police japonaise n'est chargée par le visiteur).

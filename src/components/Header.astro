@@ -1,7 +1,8 @@
 ---
 import { Image } from 'astro:assets'
 import icon from '../assets/art/icon.png'
-import type { Lang } from '../data/product'
+import { UNIVERSES, quizPath, universeName, type Lang } from '../data/product'
+import { KANJI_PATHS } from '../data/kanji'
 import { ROUTES, t } from '../i18n/ui'
 
 interface Props {
@@ -15,8 +16,11 @@ const home = ROUTES.home[lang]
 const otherLang: Lang = lang === 'fr' ? 'en' : 'fr'
 const switchHref = alternates?.[otherLang] ?? ROUTES.home[otherLang]
 
+// Univers les plus recherchés, mis en avant dans le menu Quiz.
+const popular = ['naruto', 'one_piece', 'dragon_ball', 'jujutsu_kaisen', 'demon_slayer', 'attack_on_titan']
+  .map((id) => UNIVERSES.find((u) => u.id === id)!)
+const allQuiz = lang === 'fr' ? `Les ${UNIVERSES.length} quiz` : `All ${UNIVERSES.length} quizzes`
 const links = [
-  { href: ROUTES.quiz[lang], label: ui.nav.quiz },
   { href: ROUTES.undercover[lang], label: ui.nav.undercover },
   { href: `${home}#modes`, label: ui.nav.modes },
 ]
@@ -30,6 +34,25 @@ const isCurrent = (href: string) => !href.includes('#') && href !== home && path
       <span>Shobukan</span>
     </a>
     <nav class="links" aria-label={ui.navLabel}>
+      <div class="dd">
+        <a href={ROUTES.quiz[lang]} aria-current={isCurrent(ROUTES.quiz[lang]) ? 'page' : undefined}>
+          {ui.nav.quiz}
+          <svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="panel-dd">
+          <ul>
+            {popular.map((u) => (
+              <li>
+                <a href={quizPath(u, lang)} style={`--c1:${u.colors[0]};--c3:${u.colors[2]}`}>
+                  <span class="k"><svg viewBox="0 0 1000 1000" aria-hidden="true"><path d={KANJI_PATHS[u.kanji]} /></svg></span>
+                  {lang === 'fr' ? `Quiz ${universeName(u, lang)}` : `${universeName(u, lang)} quiz`}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a class="all" href={ROUTES.quiz[lang]}>{allQuiz} →</a>
+        </div>
+      </div>
       {links.map((l) => <a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a>)}
     </nav>
     <div class="actions">
@@ -62,6 +85,28 @@ const isCurrent = (href: string) => !href.includes('#') && href !== home && path
   .links a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: 15px; padding: 7px 12px; border-radius: 8px; }
   .links a:hover { color: var(--text); background: rgba(255, 255, 255, 0.04); }
   .links a[aria-current='page'] { color: var(--accent-hot); }
+  /* Menu déroulant des quiz (survol ou focus clavier) */
+  .dd { position: relative; }
+  .dd > a { display: inline-flex; align-items: center; gap: 4px; }
+  .chev { width: 14px; height: 14px; transition: transform 0.2s; }
+  .dd:hover .chev, .dd:focus-within .chev { transform: rotate(180deg); }
+  .panel-dd {
+    position: absolute; left: -8px; top: 100%; padding-top: 10px; width: 420px;
+    opacity: 0; visibility: hidden; transform: translateY(-4px); transition: opacity 0.15s, transform 0.15s, visibility 0.15s;
+  }
+  .dd:hover .panel-dd, .dd:focus-within .panel-dd { opacity: 1; visibility: visible; transform: none; }
+  .panel-dd ul {
+    list-style: none; margin: 0; padding: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+    background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: 14px 14px 0 0; border-bottom: 0;
+    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55);
+  }
+  .panel-dd li a { display: flex; align-items: center; gap: 10px; padding: 8px 10px; color: var(--text); font-size: 14px; }
+  .k { width: 30px; height: 30px; flex: none; display: grid; place-items: center; border-radius: 8px; background: linear-gradient(150deg, var(--c1), var(--c3)); }
+  .k svg { width: 19px; height: 19px; fill: #fff; }
+  .all {
+    display: block; padding: 11px 18px; font-size: 14px; font-weight: 600; color: var(--accent-hot) !important;
+    background: var(--surface); border: 1px solid var(--border-strong); border-top: 1px solid var(--border); border-radius: 0 0 14px 14px;
+  }
   .actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
   .pill {
     display: inline-flex; align-items: center; gap: 7px; height: 36px; padding: 0 13px;

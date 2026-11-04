@@ -1,7 +1,8 @@
 ---
 import { Image } from 'astro:assets'
 import type { ImageMetadata } from 'astro'
-import { UNIVERSES, quizPath, universeName, type Lang } from '../data/product'
+import { UNIVERSES, quizPath, universeName, universeStats, type Lang } from '../data/product'
+import { KANJI_PATHS } from '../data/kanji'
 
 interface Props {
   lang: Lang
@@ -10,6 +11,8 @@ interface Props {
   exclude?: string
 }
 const { lang, linkToQuiz = false, exclude } = Astro.props
+const fr = lang === 'fr'
+const nf = new Intl.NumberFormat(fr ? 'fr-FR' : 'en-US')
 const art = import.meta.glob<{ default: ImageMetadata }>('../assets/universes/*.png', { eager: true })
 const artFor = (id: string) => art[`../assets/universes/${id.replaceAll('_', '-')}.png`]?.default
 const items = UNIVERSES.filter((u) => u.id !== exclude)
@@ -18,12 +21,19 @@ const items = UNIVERSES.filter((u) => u.id !== exclude)
 <ul class="universes">
   {items.map((u) => {
     const img = artFor(u.id)
+    const s = universeStats(u, lang)
     const style = `--c1:${u.colors[0]};--c2:${u.colors[1]};--c3:${u.colors[2]}`
     const inner = (
       <>
-        {img && <Image src={img} alt="" width={160} height={160} loading="lazy" />}
-        <span class="name">{universeName(u, lang)}</span>
-        {linkToQuiz && <span class="go">Quiz →</span>}
+        <svg class="kanji" viewBox="0 0 1000 1000" aria-hidden="true"><path d={KANJI_PATHS[u.kanji]} /></svg>
+        {img && <Image class="obj" src={img} alt="" width={160} height={160} loading="lazy" />}
+        <span class="txt">
+          <span class="name">{universeName(u, lang)}</span>
+          <span class="meta">
+            {nf.format(s.questions)} questions
+            {s.pairs > 0 && <span class="pairs"> · {s.pairs} {fr ? 'paires' : 'pairs'}</span>}
+          </span>
+        </span>
       </>
     )
     return (
@@ -37,38 +47,47 @@ const items = UNIVERSES.filter((u) => u.id !== exclude)
 <style>
   .universes {
     list-style: none; margin: 0; padding: 0;
-    display: grid; gap: 12px;
+    display: grid; gap: 10px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  @media (min-width: 640px) { .universes { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-  @media (min-width: 980px) { .universes { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; } }
+  @media (min-width: 640px) { .universes { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; } }
+  @media (min-width: 1040px) { .universes { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; } }
   li > a, li > div {
-    position: relative; overflow: hidden;
-    display: flex; flex-direction: column; justify-content: flex-end;
-    aspect-ratio: 1 / 1.08;
-    border-radius: 20px; padding: 14px;
+    position: relative; overflow: hidden; isolation: isolate;
+    display: flex; align-items: flex-end;
+    aspect-ratio: 1.15;
+    border-radius: 18px; padding: 14px 16px;
     text-decoration: none; color: #fff;
     background:
-      radial-gradient(90% 70% at 50% 30%, var(--c1) 0%, transparent 70%),
-      linear-gradient(160deg, var(--c2), var(--c3));
-    border: 1px solid rgba(255, 255, 255, 0.12);
+      radial-gradient(70% 80% at 85% 20%, color-mix(in srgb, var(--c1) 70%, transparent), transparent 70%),
+      linear-gradient(150deg, var(--c2), color-mix(in srgb, var(--c3) 70%, #050508));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
-  li > a:hover { transform: translateY(-4px) rotate(-0.6deg); box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45); }
-  li img {
-    position: absolute; top: 8%; left: 50%; transform: translateX(-50%);
-    width: 62%; height: auto; filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.35));
-    transition: transform 0.25s ease;
+  @media (min-width: 640px) { li > a, li > div { aspect-ratio: 1.45; } }
+  li > a:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.2); }
+  /* Grand kanji en filigrane, à cheval sur le bord droit */
+  .kanji {
+    position: absolute; z-index: -1; right: -10%; top: -14%; height: 112%; width: auto;
+    fill: rgba(255, 255, 255, 0.16); transition: transform 0.35s ease;
   }
-  li > a:hover img { transform: translateX(-50%) scale(1.07) rotate(4deg); }
-  .name {
-    position: relative; font-weight: 800; font-size: 15px; line-height: 1.2;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+  li > a:hover .kanji { transform: scale(1.05) rotate(-3deg); }
+  li :global(.obj) {
+    position: absolute; z-index: 0; right: 6%; top: 10%;
+    width: 38%; height: auto; filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.35));
+    transform: rotate(8deg); transition: transform 0.25s ease;
   }
-  .go { position: relative; font-size: 12px; font-weight: 700; opacity: 0.9; margin-top: 2px; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); }
+  li > a:hover :global(.obj) { transform: rotate(14deg) scale(1.06); }
   li > a::after, li > div::after {
-    content: ''; position: absolute; inset: 0; pointer-events: none;
-    background: linear-gradient(180deg, transparent 45%, rgba(0, 0, 0, 0.45));
+    content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background: linear-gradient(180deg, transparent 40%, rgba(5, 5, 8, 0.55));
   }
-  .name, .go { z-index: 1; }
+  .txt { position: relative; z-index: 1; display: grid; gap: 2px; }
+  .name {
+    font-family: var(--font-display); font-weight: 800; font-size: clamp(15px, 1.4vw, 18px); line-height: 1.15;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+  @media (max-width: 639px) { .pairs { display: none; } }
+  .meta { font-size: 12.5px; font-weight: 500; color: rgba(255, 255, 255, 0.82); text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5); }
 </style>

@@ -5,7 +5,7 @@ import CtaBand from './CtaBand.astro'
 import Faq from './Faq.astro'
 import quizFr from '../data/quiz-fr.json'
 import quizEn from '../data/quiz-en.json'
-import { SITE, UNIVERSES, quizPath, universeName, type Lang } from '../data/product'
+import { CONTENT, SITE, UNIVERSES, quizPath, universeName, type Lang } from '../data/product'
 import { ROUTES } from '../i18n/ui'
 import { breadcrumbs, faqPage, webPage } from '../data/schema'
 
@@ -16,13 +16,20 @@ const counts = ((fr ? quizFr : quizEn) as { counts: Record<string, number> }).co
 const total = Math.floor(Object.values(counts).reduce((a, b) => a + b, 0) / 100) * 100
 const path = ROUTES.quiz[lang]
 const n = UNIVERSES.length
+const nf = new Intl.NumberFormat(fr ? 'fr-FR' : 'en-US')
+const bigStats = [
+  { v: `${nf.format(CONTENT.questions[lang])}+`, l: fr ? 'questions dans l’app' : 'questions in the app' },
+  { v: String(n), l: fr ? 'univers manga' : 'manga universes' },
+  { v: `${CONTENT.wordPairs[lang]}+`, l: fr ? 'paires Undercover' : 'Undercover word pairs' },
+  { v: '5', l: fr ? 'questions par quiz ici' : 'questions per quiz here' },
+]
 
 const c = fr
   ? {
       title: `Quiz manga gratuits : ${n} quiz anime en 5 questions`,
       description: `Quiz manga gratuits sans inscription : Naruto, One Piece, Dragon Ball, Jujutsu Kaisen et ${n - 4} autres. 5 questions par univers.`,
       eyebrow: 'Quiz manga gratuits',
-      h1: 'Quel otaku es-tu ?',
+      h1: 'Quel otaku', h1b: 'es-tu ?',
       strong: 'Choisis ton manga et réponds à 5 questions, gratuitement et sans inscription.',
       rest: `${n} univers au choix. Quand tu as fini, défie tes amis avec ton score.`,
       crumb: 'Quiz manga',
@@ -39,7 +46,7 @@ const c = fr
       title: `Free anime quizzes: ${n} manga quizzes in 5 questions`,
       description: `Free anime quizzes, no sign-up: Naruto, One Piece, Dragon Ball, Jujutsu Kaisen and ${n - 4} more. 5 questions per universe.`,
       eyebrow: 'Free anime quizzes',
-      h1: 'What kind of otaku are you?',
+      h1: 'What kind of otaku', h1b: 'are you?',
       strong: 'Pick your anime and answer 5 questions, free and with no sign-up.',
       rest: `${n} universes to choose from. When you’re done, challenge your friends with your score.`,
       crumb: 'Anime quizzes',
@@ -69,10 +76,14 @@ const jsonLd = [
   <section class="section hub">
     <div class="glow" aria-hidden="true"></div>
     <div class="wrap">
+      <nav class="crumbs" aria-label={fr ? "Fil d'Ariane" : 'Breadcrumb'}><a href={ROUTES.home[lang]}>Shobukan</a> / <span>{c.crumb}</span></nav>
       <div class="section-head">
-        <h1 class="display">{c.h1}</h1>
+        <h1 class="display">{c.h1} <span class="nw">{c.h1b}</span></h1>
         <p class="lede"><strong>{c.strong}</strong> {c.rest}</p>
       </div>
+      <dl class="big-stats">
+        {bigStats.map((b) => <div><dt>{b.l}</dt><dd>{b.v}</dd></div>)}
+      </dl>
       <UniverseGrid lang={lang} linkToQuiz />
     </div>
   </section>
@@ -88,4 +99,15 @@ const jsonLd = [
     pointer-events: none;
   }
   .hub .wrap { position: relative; }
+  .nw { white-space: nowrap; }
+  .crumbs { font-size: 14px; color: var(--muted); margin-bottom: 18px; }
+  .crumbs a { color: var(--muted); text-decoration: none; }
+  .crumbs a:hover { color: var(--text); }
+  .crumbs span { color: var(--text); }
+  .big-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; margin: 8px 0 28px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); background: var(--border); max-width: 880px; }
+  @media (min-width: 720px) { .big-stats { grid-template-columns: repeat(4, 1fr); } }
+  .big-stats div { display: flex; flex-direction: column-reverse; gap: 2px; padding: 16px 18px; background: var(--surface); }
+  .big-stats dd { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(28px, 3.4vw, 40px); line-height: 1; letter-spacing: -0.03em; color: var(--text); }
+  .big-stats div:first-child dd { color: var(--accent-hot); }
+  .big-stats dt { font-size: 14px; color: var(--muted); }
 </style>

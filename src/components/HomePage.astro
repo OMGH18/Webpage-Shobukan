@@ -9,7 +9,8 @@ import Faq from './Faq.astro'
 import CtaBand from './CtaBand.astro'
 import rainArt from '../assets/art/chapter-rain.jpg'
 import mountainArt from '../assets/art/chapter-mountain.jpg'
-import revengeArt from '../assets/art/chapter-revenge.jpg'
+import summitArt from '../assets/art/chapter-summit.jpg'
+import CardFan from './CardFan.astro'
 import UniverseMarquee from './UniverseMarquee.astro'
 import { CONTENT, PLAYERS, PRICES, SITE, UNIVERSES, formatPrice, universeName, type Lang } from '../data/product'
 import { ROUTES } from '../i18n/ui'
@@ -50,7 +51,12 @@ const c = fr
       crit: ['Épéiste', 'Antagoniste', 'Mentor'],
       chapters: ['La brume du pont', 'La Forêt de la Mort', 'La Vallée de la Fin'],
       word: 'Ton mot', noWord: 'Aucun mot', roles: ['Civil', 'Civil', 'Infiltré', 'Mister White'],
-      heroNote: `Gratuit sur iPhone et Android · ${PLAYERS.min} à ${PLAYERS.max} joueurs · Français et anglais`,
+      tryQuiz: 'Tester un quiz',
+      trust: [
+        { t: 'Gratuit', s: 'Sans compte à créer', svg: 'M20 12v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8M2 8h20v4H2zM12 21V8m0 0H7.5a2.5 2.5 0 1 1 0-5C11 3 12 8 12 8Zm0 0h4.5a2.5 2.5 0 1 0 0-5C13 3 12 8 12 8Z' },
+        { t: `${nf.format(CONTENT.questions.fr)}+ questions`, s: `${UNIVERSES.length} univers manga`, svg: 'M4 5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2V5Zm0 15a2 2 0 0 0 2 2h13v-4M9 8h6' },
+        { t: `${PLAYERS.min} à ${PLAYERS.max} joueurs`, s: 'En ligne ou sur un téléphone', svg: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8' },
+      ],
       quizQ: 'Combien de sabres utilise Zoro ?',
       storyTitleA: 'Ta soirée', storyTitleB: 'Undercover', storySub: `${CONTENT.wordPairs.fr}+ paires de mots, ${UNIVERSES.length} univers`,
       steps: [
@@ -99,7 +105,12 @@ const c = fr
       crit: ['Swordsman', 'Antagonist', 'Mentor'],
       chapters: ['Mist Over the Bridge', 'The Forest of Death', "The Valley's End"],
       word: 'Your word', noWord: 'No word', roles: ['Civilian', 'Civilian', 'Impostor', 'Mister White'],
-      heroNote: `Free on iPhone and Android · ${PLAYERS.min} to ${PLAYERS.max} players · English and French`,
+      tryQuiz: 'Try a quiz',
+      trust: [
+        { t: 'Free', s: 'No account needed', svg: 'M20 12v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8M2 8h20v4H2zM12 21V8m0 0H7.5a2.5 2.5 0 1 1 0-5C11 3 12 8 12 8Zm0 0h4.5a2.5 2.5 0 1 0 0-5C13 3 12 8 12 8Z' },
+        { t: `${nf.format(CONTENT.questions.en)}+ questions`, s: `${UNIVERSES.length} manga universes`, svg: 'M4 5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2V5Zm0 15a2 2 0 0 0 2 2h13v-4M9 8h6' },
+        { t: `${PLAYERS.min} to ${PLAYERS.max} players`, s: 'Online or on one phone', svg: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8' },
+      ],
       quizQ: 'How many swords does Zoro use?',
       storyTitleA: 'Your', storyTitleB: 'Undercover night', storySub: `${CONTENT.wordPairs.en}+ word pairs, ${UNIVERSES.length} universes`,
       steps: [
@@ -134,19 +145,25 @@ const jsonLd = [organization(), website(), app(lang), faqPage(`${SITE}${path}#fa
 
 <Base lang={lang} title={c.title} description={c.description} path={path} alternates={{ fr: ROUTES.home.fr, en: ROUTES.home.en }} jsonLd={jsonLd}>
   <div class="wrap stack">
-    <!-- HERO : bannière en trois cases de manga, titre centré -->
+    <!-- HERO : texte à gauche, éventail de cartes à droite -->
     <section class="hero">
-      <div class="strip" aria-hidden="true">
-        <div class="cell c1"><Image src={rainArt} alt="" width={700} loading="eager" fetchpriority="high" /></div>
-        <div class="cell c2"><Image src={mountainArt} alt="" width={700} loading="eager" /></div>
-        <div class="cell c3"><Image src={revengeArt} alt="" width={700} loading="eager" /></div>
-      </div>
+      <div class="hero-bg" aria-hidden="true"><Image src={summitArt} alt="" width={900} quality={60} loading="eager" /></div>
       <div class="hero-copy">
-        <h1 class="display">{c.h1a} <span class="hl">{c.h1b}</span></h1>
+        <h1 class="display">{c.h1a} <span class="hl">{c.h1b.slice(0, c.h1b.lastIndexOf(' ') + 1)}<span class="u">{c.h1b.slice(c.h1b.lastIndexOf(' ') + 1)}<svg class="brush" viewBox="0 0 300 16" preserveAspectRatio="none" aria-hidden="true"><path d="M3 11C60 5 140 3 297 7c-60 1-150 4-230 7" /></svg></span></span></h1>
         <p class="hero-lede"><strong>{c.lede}</strong> {c.lede2}</p>
-        <StoreButtons lang={lang} medium={medium} center note={false} />
-        <p class="hero-note">{c.heroNote}</p>
+        <StoreButtons lang={lang} medium={medium} note={false}>
+          <a class="btn btn-ghost try" href={ROUTES.quiz[lang]}>{c.tryQuiz} <span aria-hidden="true">→</span></a>
+        </StoreButtons>
+        <ul class="trust">
+          {c.trust.map((tr) => (
+            <li>
+              <span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={tr.svg} fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
+              <span><b>{tr.t}</b><small>{tr.s}</small></span>
+            </li>
+          ))}
+        </ul>
       </div>
+      <div class="hero-art"><CardFan lang={lang} /></div>
     </section>
 
     <!-- BENTO : Undercover + fonctionnalités -->
@@ -268,40 +285,46 @@ const jsonLd = [organization(), website(), app(lang), faqPage(`${SITE}${path}#fa
 <style>
   .stack { display: grid; gap: clamp(16px, 2.4vw, 28px); padding-top: 16px; }
 
-  /* ---------- HERO : trois cases de manga, titre centré ---------- */
+  /* ---------- HERO : texte + éventail de cartes ---------- */
   .hero {
-    position: relative; overflow: hidden; isolation: isolate;
-    border-radius: var(--radius-lg);
-    min-height: clamp(500px, 46vw, 620px);
-    display: grid; place-items: center; text-align: center;
-    background: #000;
+    position: relative; isolation: isolate;
+    display: grid; gap: 28px; align-items: center;
+    padding: clamp(24px, 5vw, 64px) 0 clamp(12px, 3vw, 32px);
   }
-  .strip { position: absolute; inset: 0; z-index: -2; display: grid; grid-template-columns: 1fr 1.15fr 1fr; gap: 10px; background: var(--bg); }
-  .cell { position: relative; overflow: hidden; }
-  .cell :global(img) { width: 100%; height: 100%; object-fit: cover; transform: scale(1.04); }
-  .c1 { clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%); margin-right: -8%; }
-  .c2 { clip-path: polygon(8% 0, 100% 0, 92% 100%, 0 100%); margin: 0 -6%; }
-  .c3 { clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%); margin-left: -8%; }
-  .c1 :global(img) { object-position: 40% 60%; }
-  .c2 :global(img) { object-position: 50% 40%; }
-  .c3 :global(img) { object-position: 50% 55%; }
-  .hero::before {
-    content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  @media (min-width: 900px) { .hero { grid-template-columns: 1.08fr 1fr; gap: 24px; min-height: 560px; } }
+  /* Planche de manga très effacée en fond, fondue dans le noir */
+  .hero-bg { position: absolute; z-index: -1; inset: -16px calc(-1 * var(--gutter)) 0; overflow: hidden; pointer-events: none; }
+  .hero-bg :global(img) {
+    position: absolute; right: 0; top: 0; width: min(900px, 100%); height: 100%; object-fit: cover; object-position: 50% 30%;
+    opacity: 0.22; filter: grayscale(0.4);
+    mask-image: radial-gradient(70% 75% at 70% 40%, #000, transparent 75%);
+    -webkit-mask-image: radial-gradient(70% 75% at 70% 40%, #000, transparent 75%);
+  }
+  .hero-bg::after {
+    content: ''; position: absolute; inset: 0;
     background:
-      radial-gradient(ellipse 46% 62% at 50% 50%, rgba(5, 5, 8, 0.88), rgba(5, 5, 8, 0.55) 60%, rgba(5, 5, 8, 0.25) 100%),
-      linear-gradient(180deg, rgba(5, 5, 8, 0.2), rgba(5, 5, 8, 0.75));
+      radial-gradient(40% 50% at 75% 45%, rgba(255, 51, 72, 0.16), transparent 70%),
+      radial-gradient(rgba(255, 246, 230, 0.06) 1px, transparent 1.4px) 0 0 / 14px 14px;
+    mask-image: linear-gradient(180deg, #000 60%, transparent);
+    -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent);
   }
-  .hero-copy { padding: 48px 20px; max-width: 760px; }
-  .hero h1 { font-size: clamp(36px, 5.6vw, 68px); line-height: 1.1; text-shadow: 0 4px 30px rgba(0, 0, 0, 0.7); }
-  .hero h1 .hl { display: block; }
-  .hero-lede { color: #e5dfd4; font-size: clamp(16px, 1.5vw, 18px); margin: 20px auto 28px; max-width: 580px; text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9); }
+  .hero h1 { font-size: clamp(38px, 5.4vw, 72px); line-height: 1.08; }
+  .hero h1 .hl { display: block; transform: rotate(-1.5deg); transform-origin: left; margin-top: 4px; }
+  .hero h1 .u { position: relative; display: inline-block; }
+  .brush { position: absolute; left: -4%; bottom: -0.14em; width: 108%; height: 0.24em; overflow: visible; }
+  .brush path { fill: none; stroke: var(--gold); stroke-width: 5; stroke-linecap: round; opacity: 0.9; }
+  .hero-lede { color: var(--muted); font-size: clamp(16px, 1.5vw, 18px); margin: 26px 0 26px; max-width: 560px; }
   .hero-lede strong { color: var(--text); font-weight: 600; }
-  .hero-note { margin: 16px 0 0; font-size: 14px; color: #bdb6c7; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9); }
-  @media (max-width: 760px) {
-    .strip { grid-template-columns: 1fr; }
-    .c1, .c3 { display: none; }
-    .c2 { clip-path: none; margin: 0; }
-  }
+  .try { height: 100%; min-height: 54px; padding: 0 20px; font-size: 16px; border-radius: 14px; }
+  .trust { list-style: none; margin: 30px 0 0; padding: 22px 0 0; border-top: 1px solid var(--border); display: grid; gap: 14px; grid-template-columns: 1fr; max-width: 640px; }
+  @media (min-width: 560px) { .trust { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+  .trust li { display: flex; align-items: center; gap: 11px; }
+  .ti { width: 38px; height: 38px; flex: none; display: grid; place-items: center; border-radius: 11px; background: var(--brand-tint); border: 1px solid rgba(255, 51, 72, 0.25); color: var(--accent-hot); }
+  .ti svg { width: 19px; height: 19px; }
+  .trust b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 15px; line-height: 1.25; }
+  .trust small { display: block; color: var(--faint); font-size: 13px; line-height: 1.3; }
+  .hero-art { position: relative; }
+  @media (max-width: 899px) { .hero-art { order: -1; margin: 0 auto -6px; width: 100%; max-width: 420px; } }
 
   /* ---------- BENTO ---------- */
   .bento { display: grid; gap: 12px; }

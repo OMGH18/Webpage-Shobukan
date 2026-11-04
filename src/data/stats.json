@@ -1,0 +1,272 @@
+{
+ "attack_on_titan": {
+  "grid": 88,
+  "fr": {
+   "easy": 15,
+   "medium": 97,
+   "hard": 101,
+   "pairs": 12
+  },
+  "en": {
+   "easy": 9,
+   "medium": 71,
+   "hard": 63,
+   "pairs": 12
+  }
+ },
+ "black_clover": {
+  "grid": 0,
+  "fr": {
+   "easy": 6,
+   "medium": 34,
+   "hard": 25,
+   "pairs": 6
+  },
+  "en": {
+   "easy": 8,
+   "medium": 31,
+   "hard": 27,
+   "pairs": 12
+  }
+ },
+ "bleach": {
+  "grid": 184,
+  "fr": {
+   "easy": 19,
+   "medium": 67,
+   "hard": 83,
+   "pairs": 22
+  },
+  "en": {
+   "easy": 10,
+   "medium": 42,
+   "hard": 51,
+   "pairs": 28
+  }
+ },
+ "chainsaw_man": {
+  "grid": 0,
+  "fr": {
+   "easy": 7,
+   "medium": 42,
+   "hard": 44,
+   "pairs": 12
+  },
+  "en": {
+   "easy": 9,
+   "medium": 26,
+   "hard": 34,
+   "pairs": 17
+  }
+ },
+ "death_note": {
+  "grid": 0,
+  "fr": {
+   "easy": 17,
+   "medium": 28,
+   "hard": 21,
+   "pairs": 12
+  },
+  "en": {
+   "easy": 8,
+   "medium": 13,
+   "hard": 13,
+   "pairs": 10
+  }
+ },
+ "demon_slayer": {
+  "grid": 116,
+  "fr": {
+   "easy": 18,
+   "medium": 58,
+   "hard": 64,
+   "pairs": 18
+  },
+  "en": {
+   "easy": 16,
+   "medium": 38,
+   "hard": 35,
+   "pairs": 27
+  }
+ },
+ "dragon_ball": {
+  "grid": 259,
+  "fr": {
+   "easy": 32,
+   "medium": 75,
+   "hard": 70,
+   "pairs": 12
+  },
+  "en": {
+   "easy": 21,
+   "medium": 37,
+   "hard": 45,
+   "pairs": 23
+  }
+ },
+ "fullmetal_alchemist": {
+  "grid": 0,
+  "fr": {
+   "easy": 13,
+   "medium": 31,
+   "hard": 37,
+   "pairs": 12
+  },
+  "en": {
+   "easy": 16,
+   "medium": 36,
+   "hard": 27,
+   "pairs": 13
+  }
+ },
+ "hunter_x_hunter": {
+  "grid": 178,
+  "fr": {
+   "easy": 11,
+   "medium": 49,
+   "hard": 68,
+   "pairs": 12
+  },
+  "en": {
+   "easy": 7,
+   "medium": 33,
+   "hard": 28,
+   "pairs": 13
+  }
+ },
+ "jojo": {
+  "grid": 0,
+  "fr": {
+   "easy": 10,
+   "medium": 32,
+   "hard": 49,
+   "pairs": 12
+  },
+  "en": {
+   "easy": 7,
+   "medium": 22,
+   "hard": 29,
+   "pairs": 11
+  }
+ },
+ "jujutsu_kaisen": {
+  "grid": 74,
+  "fr": {
+   "easy": 9,
+   "medium": 47,
+   "hard": 76,
+   "pairs": 20
+  },
+  "en": {
+   "easy": 11,
+   "medium": 42,
+   "hard": 32,
+   "pairs": 27
+  }
+ },
+ "kingdom": {
+  "grid": 0,
+  "fr": {
+   "easy": 7,
+   "medium": 27,
+   "hard": 31,
+   "pairs": 6
+  },
+  "en": {
+   "easy": 3,
+   "medium": 23,
+   "hard": 16,
+   "pairs": 10
+  }
+ },
+ "my_hero_academia": {
+  "grid": 149,
+  "fr": {
+   "easy": 15,
+   "medium": 56,
+   "hard": 47,
+   "pairs": 13
+  },
+  "en": {
+   "easy": 15,
+   "medium": 40,
+   "hard": 21,
+   "pairs": 18
+  }
+ },
+ "naruto": {
+  "grid": 237,
+  "fr": {
+   "easy": 26,
+   "medium": 64,
+   "hard": 69,
+   "pairs": 29
+  },
+  "en": {
+   "easy": 30,
+   "medium": 71,
+   "hard": 43,
+   "pairs": 33
+  }
+ },
+ "one_piece": {
+  "grid": 527,
+  "fr": {
+   "easy": 23,
+   "medium": 70,
+   "hard": 79,
+   "pairs": 28
+  },
+  "en": {
+   "easy": 22,
+   "medium": 56,
+   "hard": 32,
+   "pairs": 36
+  }
+ },
+ "one_punch_man": {
+  "grid": 144,
+  "fr": {
+   "easy": 16,
+   "medium": 24,
+   "hard": 28,
+   "pairs": 12
+  },
+  "en": {
+   "easy": 6,
+   "medium": 21,
+   "hard": 16,
+   "pairs": 12
+  }
+ },
+ "spy_x_family": {
+  "grid": 0,
+  "fr": {
+   "easy": 13,
+   "medium": 32,
+   "hard": 11,
+   "pairs": 6
+  },
+  "en": {
+   "easy": 8,
+   "medium": 14,
+   "hard": 5,
+   "pairs": 11
+  }
+ },
+ "tokyo_ghoul": {
+  "grid": 0,
+  "fr": {
+   "easy": 9,
+   "medium": 26,
+   "hard": 23,
+   "pairs": 6
+  },
+  "en": {
+   "easy": 5,
+   "medium": 14,
+   "hard": 19,
+   "pairs": 10
+  }
+ }
+}

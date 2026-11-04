@@ -8,7 +8,8 @@ import CtaBand from './CtaBand.astro'
 import Faq from './Faq.astro'
 import quizFr from '../data/quiz-fr.json'
 import quizEn from '../data/quiz-en.json'
-import { SITE, UNIVERSES, quizPath, universeName, type Lang, type Universe } from '../data/product'
+import { SITE, UNIVERSES, quizPath, universeName, universeStats, type Lang, type Universe } from '../data/product'
+import { KANJI_PATHS } from '../data/kanji'
 import { ROUTES } from '../i18n/ui'
 import { APP_ID, breadcrumbs, faqPage, webPage } from '../data/schema'
 
@@ -26,6 +27,16 @@ const img = art[`../assets/universes/${u.id.replaceAll('_', '-')}.png`]?.default
 const name = universeName(u, lang)
 const path = quizPath(u, lang)
 const others = UNIVERSES.length - 1
+const st = universeStats(u, lang)
+// Pastilles de chiffres : volume réel de contenu de l'app pour cet univers.
+const chips = [
+  { v: st.questions, l: fr ? 'questions dans l’app' : 'questions in the app', cls: 'total' },
+  { v: st.easy, l: fr ? 'faciles' : 'easy', cls: 'easy' },
+  { v: st.medium, l: fr ? 'moyennes' : 'medium', cls: 'medium' },
+  { v: st.hard, l: fr ? 'difficiles' : 'hard', cls: 'hard' },
+  { v: st.pairs, l: fr ? 'paires Undercover' : 'Undercover pairs', cls: '' },
+  { v: st.grid, l: fr ? 'persos Anime Grid' : 'Anime Grid characters', cls: '' },
+].filter((ch) => ch.v > 0)
 
 const c = fr
   ? {
@@ -100,8 +111,14 @@ const style = `--c1:${u.colors[0]};--c2:${u.colors[1]};--c3:${u.colors[2]}`
         <nav class="crumbs" aria-label={c.crumbsLabel}><a href={ROUTES.home[lang]}>Shobukan</a> / <a href={ROUTES.quiz[lang]}>{c.hub}</a> / <span>{name}</span></nav>
         <h1 class="display">{fr ? `Quiz ${name}` : `${name} Quiz`}</h1>
         <p class="lede"><strong>{c.ledeStrong}</strong> {c.ledeRest}</p>
+        <ul class="ustats" aria-label={fr ? `Contenu ${name} dans l'app` : `${name} content in the app`}>
+          {chips.map((ch) => <li class={ch.cls}><b>{ch.v}</b> {ch.l}</li>)}
+        </ul>
       </div>
-      {img && <Image class="uart" src={img} alt="" width={360} loading="eager" />}
+      <div class="uvis">
+        <svg class="ukanji" viewBox="0 0 1000 1000" aria-hidden="true"><path d={KANJI_PATHS[u.kanji]} /></svg>
+        {img && <Image class="uart" src={img} alt="" width={360} loading="eager" />}
+      </div>
     </div>
   </section>
 
@@ -139,8 +156,30 @@ const style = `--c1:${u.colors[0]};--c2:${u.colors[1]};--c3:${u.colors[2]}`
   .crumbs a { color: var(--muted); text-decoration: none; }
   .crumbs a:hover { color: var(--text); }
   .crumbs span { color: var(--text); }
-  .uart { width: min(300px, 60vw); height: auto; justify-self: center; filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.5)); transform: rotate(-6deg); }
-  @media (max-width: 819px) { .uart { width: 150px; justify-self: start; order: -1; } }
+  .uvis { position: relative; display: grid; place-items: center; justify-self: center; }
+  .ukanji { position: absolute; width: 150%; height: auto; fill: rgba(255, 255, 255, 0.1); transform: rotate(-4deg); }
+  .uvis :global(.uart) { position: relative; width: min(300px, 60vw); height: auto; filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.5)); transform: rotate(-6deg); }
+  @media (max-width: 819px) {
+    .uvis { justify-self: start; order: -1; }
+    .uvis :global(.uart) { width: 140px; }
+    .ukanji { width: 130%; }
+  }
+  .ustats { list-style: none; margin: 22px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .ustats li {
+    display: inline-flex; align-items: baseline; gap: 6px; padding: 6px 12px; border-radius: 999px; font-size: 14px; color: var(--muted);
+    background: rgba(5, 5, 8, 0.55); border: 1px solid var(--border-strong); backdrop-filter: blur(6px);
+  }
+  .ustats b { font-family: var(--font-display); font-weight: 800; font-size: 16px; color: var(--text); }
+  @media (max-width: 559px) {
+    .ustats { gap: 6px; }
+    .ustats li { padding: 4px 10px; font-size: 13px; }
+    .ustats b { font-size: 14px; }
+  }
+  .ustats .total { border-color: rgba(255, 51, 72, 0.55); }
+  .ustats .total b { color: var(--accent-hot); }
+  .ustats .easy b { color: var(--good); }
+  .ustats .medium b { color: var(--gold); }
+  .ustats .hard b { color: #ff6b7a; }
   .quiz-section { padding-top: 8px; }
   .narrow { max-width: 820px; }
   .qhero-grid { padding-inline: clamp(20px, 3.5vw, 48px); }
