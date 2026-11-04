@@ -48,3 +48,16 @@ python3 scripts/build-stats.py ../shobukan-app/scripts/csv
 
 Les kanji décoratifs des tuiles sont stockés en contours SVG dans
 `src/data/kanji.ts` (aucune police japonaise n'est chargée par le visiteur).
+
+## Textes légaux (CGU, confidentialité)
+
+Les pages `/terms/`, `/privacy/` (et `/en/…`) affichent les textes de l'app,
+copiés dans `src/data/legal.json`. Après une modification des textes légaux
+dans l'app :
+
+```bash
+python3 scripts/sync-legal.py ../shobukan-app
+```
+
+La page `/account-deletion/` est propre au site (exigence Google Play) :
+son texte est dans `src/components/LegalPage.astro`.

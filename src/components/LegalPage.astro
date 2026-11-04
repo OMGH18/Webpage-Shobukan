@@ -1,0 +1,170 @@
+---
+// Pages légales (CGU, confidentialité, suppression de compte) au design du site.
+// Les textes CGU / confidentialité viennent de l'app (src/data/legal.json,
+// synchronisé par scripts/sync-legal.py) : le site et l'app disent la même chose.
+import Base from '../layouts/Base.astro'
+import legal from '../data/legal.json'
+import { PUBLISHER, type Lang } from '../data/product'
+import { ROUTES } from '../i18n/ui'
+import { breadcrumbs, webPage } from '../data/schema'
+
+type Section = { title: string; body: string }
+interface Props {
+  lang: Lang
+  doc: 'terms' | 'privacy' | 'deletion'
+}
+const { lang, doc } = Astro.props
+const fr = lang === 'fr'
+const L = (legal as Record<string, any>)[lang]
+const paths = {
+  terms: { fr: '/terms/', en: '/en/terms/' },
+  privacy: { fr: '/privacy/', en: '/en/privacy/' },
+  deletion: { fr: '/account-deletion/', en: '/en/account-deletion/' },
+}
+const path = paths[doc][lang]
+const fmt = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString(fr ? 'fr-FR' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+
+// Suppression de compte : texte propre au site (exigence Google Play).
+const deletion: { title: string; updated: string; sections: Section[] } = fr
+  ? {
+      title: 'Suppression de compte',
+      updated: '2026-11-04',
+      sections: [
+        { title: 'Depuis l’application', body: `• Ouvre Shobukan et va dans Profil.\n• Appuie sur « Supprimer mon compte ».\n• Confirme : ton compte et tes données sont supprimés définitivement.\n\nTu peux aussi utiliser Profil → « Réinitialiser » pour effacer tes données côté serveur tout en gardant une session anonyme.` },
+        { title: 'Abonnement Premium', body: 'Supprimer ton compte n’arrête pas la facturation de l’abonnement : résilie-le aussi depuis les réglages d’abonnement de ton compte App Store ou Google Play.' },
+        { title: 'Sans l’application', body: `Si tu n’as plus accès à l’application, écris à ${PUBLISHER.email} depuis l’adresse liée à ton compte (ou en précisant ton pseudo). La demande est traitée sous 30 jours.` },
+        { title: 'Données supprimées', body: '• Profil, pseudo, avatar et statistiques\n• Packs personnalisés que tu as créés\n• Identité liée (Apple / Google) et session d’authentification\n• Données de partie encore associées à ton compte' },
+        { title: 'Données conservées', body: '• Journaux de plantage anonymisés (Sentry) : 90 jours\n• Marqueur pseudonymisé anti-abus des parties offertes (hash non réversible) : jusqu’à 12 mois\n• Informations de facturation légalement requises, conservées par Apple / Google' },
+      ],
+    }
+  : {
+      title: 'Account deletion',
+      updated: '2026-11-04',
+      sections: [
+        { title: 'From the app', body: `• Open Shobukan and go to Profile.\n• Tap “Delete my account”.\n• Confirm: your account and data are permanently deleted.\n\nYou can also use Profile → “Reset” to erase your server-side data while keeping an anonymous session.` },
+        { title: 'Premium subscription', body: 'Deleting your account does not stop subscription billing: also cancel it from the subscription settings of your App Store or Google Play account.' },
+        { title: 'Without the app', body: `If you no longer have access to the app, email ${PUBLISHER.email} from the address linked to your account (or include your nickname). Requests are handled within 30 days.` },
+        { title: 'Deleted data', body: '• Profile, nickname, avatar and stats\n• Custom packs you created\n• Linked identity (Apple / Google) and authentication session\n• Game data still tied to your account' },
+        { title: 'Retained data', body: '• Anonymised crash logs (Sentry): 90 days\n• Pseudonymised anti-abuse marker for free games (non-reversible hash): up to 12 months\n• Legally required billing information, kept by Apple / Google' },
+      ],
+    }
+
+const page =
+  doc === 'deletion'
+    ? deletion
+    : { title: L[doc].title as string, updated: (legal as any).updated[doc] as string, sections: L[doc].sections as Section[] }
+
+// Mentions légales du site (éditeur + hébergeur), affichées sous chaque document.
+const notices: Section[] = [
+  ...(L.notices.sections as Section[]).map((s) =>
+    s.body.includes(PUBLISHER.email) && !s.body.includes('Bagnolet')
+      ? { ...s, body: `${s.body}\n${fr ? 'Adresse : ' : 'Address: '}123 rue Anatole France, 93170 Bagnolet, France` }
+      : s,
+  ),
+  {
+    title: fr ? 'Hébergement du site' : 'Website hosting',
+    body: 'GitHub Pages, GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, ' + (fr ? 'États-Unis' : 'USA'),
+  },
+]
+
+// Découpe un texte en paragraphes et listes à puces (« • »). Met en gras le libellé avant « : ».
+type Block = { kind: 'p'; text: string } | { kind: 'ul'; items: string[] }
+const blocks = (body: string): Block[] => {
+  const out: Block[] = []
+  for (const raw of body.split('\n')) {
+    const line = raw.trim()
+    if (!line) continue
+    if (line.startsWith('•')) {
+      const item = line.replace(/^•\s*/, '')
+      const last = out[out.length - 1]
+      if (last?.kind === 'ul') last.items.push(item)
+      else out.push({ kind: 'ul', items: [item] })
+    } else out.push({ kind: 'p', text: line })
+  }
+  return out
+}
+const splitLabel = (s: string): [string, string] | null => {
+  const m = s.match(/^([^:]{2,60}?)\s?:\s(.+)$/)
+  return m ? [m[1], m[2]] : null
+}
+const crumbs = fr ? 'Mentions légales' : 'Legal'
+const other: Lang = fr ? 'en' : 'fr'
+const docLinks = [
+  { href: paths.terms[lang], label: fr ? 'Conditions d’utilisation' : 'Terms of use', key: 'terms' },
+  { href: paths.privacy[lang], label: fr ? 'Confidentialité' : 'Privacy', key: 'privacy' },
+  { href: paths.deletion[lang], label: fr ? 'Suppression de compte' : 'Account deletion', key: 'deletion' },
+]
+const description = fr
+  ? `${page.title} de l'application Shobukan, éditée par ${PUBLISHER.name}.`
+  : `${page.title} for the Shobukan app, published by ${PUBLISHER.name}.`
+const jsonLd = [
+  webPage(path, `${page.title} — Shobukan`, lang),
+  breadcrumbs([{ name: 'Shobukan', path: ROUTES.home[lang] }, { name: page.title, path }]),
+]
+---
+
+<Base lang={lang} title={`${page.title} — Shobukan`} description={description} path={path} alternates={{ fr: paths[doc].fr, en: paths[doc].en }} jsonLd={jsonLd}>
+  <section class="section">
+    <div class="wrap doc">
+      <nav class="crumbs" aria-label={fr ? "Fil d'Ariane" : 'Breadcrumb'}><a href={ROUTES.home[lang]}>Shobukan</a> / <span>{crumbs}</span></nav>
+      <h1 class="display">{page.title}</h1>
+      <p class="updated">{fr ? 'Dernière mise à jour : ' : 'Last updated: '}{fmt(page.updated)}</p>
+      <nav class="tabs" aria-label={crumbs}>
+        {docLinks.map((d) => <a href={d.href} aria-current={d.key === doc ? 'page' : undefined}>{d.label}</a>)}
+      </nav>
+
+      {page.sections.map((s) => (
+        <section class="block">
+          <h2>{s.title}</h2>
+          {blocks(s.body).map((b) =>
+            b.kind === 'p' ? (
+              <p>{b.text}</p>
+            ) : (
+              <ul>
+                {b.items.map((it) => {
+                  const lb = splitLabel(it)
+                  return <li>{lb ? <><strong>{lb[0]}</strong>{fr ? ' : ' : ': '}{lb[1]}</> : it}</li>
+                })}
+              </ul>
+            ),
+          )}
+        </section>
+      ))}
+
+      <section class="block notices" id="mentions">
+        <h2>{L.notices.title}</h2>
+        {notices.map((s) => (
+          <div class="notice">
+            <h3>{s.title}</h3>
+            {blocks(s.body).map((b) => (b.kind === 'p' ? <p>{b.text}</p> : <ul>{b.items.map((it) => <li>{it}</li>)}</ul>))}
+          </div>
+        ))}
+        <p class="contact">Contact{fr ? ' : ' : ': '}<a href={`mailto:${PUBLISHER.email}`}>{PUBLISHER.email}</a></p>
+      </section>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .doc { max-width: 820px; }
+  .crumbs { font-size: 14px; color: var(--muted); margin-bottom: 18px; }
+  .crumbs a { color: var(--muted); text-decoration: none; }
+  .crumbs span { color: var(--text); }
+  .doc h1 { font-size: clamp(30px, 4.6vw, 48px); }
+  .updated { color: var(--faint); font-size: 14px; margin: 12px 0 0; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 8px; }
+  .tabs a { font-size: 14px; font-weight: 600; text-decoration: none; color: var(--muted); padding: 7px 13px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface); }
+  .tabs a:hover { color: var(--text); }
+  .tabs a[aria-current='page'] { color: #fff; background: var(--accent); border-color: var(--accent); }
+  .block { padding: 26px 0 4px; border-bottom: 1px solid var(--border); }
+  .block h2 { font-family: var(--font-display); font-weight: 800; font-size: 20px; letter-spacing: -0.01em; }
+  .block h3 { font-family: var(--font-display); font-weight: 700; font-size: 16px; margin-top: 14px; }
+  .block p, .block li { color: var(--muted); font-size: 15.5px; line-height: 1.65; }
+  .block p { margin: 10px 0; }
+  .block ul { margin: 10px 0; padding-left: 20px; display: grid; gap: 6px; }
+  .block li::marker { color: var(--accent); }
+  .block strong { color: var(--text); font-weight: 600; }
+  .notices { border-bottom: 0; }
+  .notice p { margin: 4px 0; }
+  .contact { margin-top: 18px !important; }
+</style>

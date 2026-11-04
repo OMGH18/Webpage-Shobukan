@@ -1,4 +1,8 @@
 ---
+// Badges officiels App Store et Google Play. Si un badge existe dans la langue
+// de la page (src/assets/badges/<store>-<lang>.svg), il est utilisé ; sinon
+// on prend la version anglaise.
+import type { ImageMetadata } from 'astro'
 import { androidLink, iosLink, type Lang } from '../data/product'
 import { t } from '../i18n/ui'
 
@@ -11,17 +15,19 @@ interface Props {
 }
 const { lang, medium, note = true, center = false } = Astro.props
 const ui = t(lang).stores
+const files = import.meta.glob<{ default: ImageMetadata }>('../assets/badges/*.svg', { eager: true })
+const badge = (store: string) => (files[`../assets/badges/${store}-${lang}.svg`] ?? files[`../assets/badges/${store}-en.svg`])!.default
+const apple = badge('app-store')
+const google = badge('google-play')
 ---
 
 <div class:list={['stores', { center }]}>
   <div class="row">
     <a class="store" href={iosLink(lang)} data-store="ios">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span><small>{ui.iosSmall}</small><b>{ui.iosBig}</b></span>
+      <img src={apple.src} width={apple.width} height={apple.height} alt={`${ui.iosSmall} ${ui.iosBig}`.replace("l' ", "l'")} />
     </a>
     <a class="store" href={androidLink(medium)} data-store="android">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span><small>{ui.androidSmall}</small><b>{ui.androidBig}</b></span>
+      <img src={google.src} width={google.width} height={google.height} alt={`${ui.androidSmall} ${ui.androidBig}`} />
     </a>
     <slot />
   </div>
@@ -29,21 +35,12 @@ const ui = t(lang).stores
 </div>
 
 <style>
-  .row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
   .center .row { justify-content: center; }
-  .store {
-    display: inline-flex; align-items: center; gap: 12px;
-    min-width: 188px; padding: 11px 20px 11px 16px;
-    background: #fff; color: #120609; text-decoration: none;
-    border-radius: 14px; line-height: 1.15;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-  .store:hover { transform: translateY(-2px); color: #120609; box-shadow: 0 16px 36px rgba(227, 38, 61, 0.35); }
-  .store svg { width: 24px; height: 24px; color: var(--accent); flex: none; }
-  .store small { display: block; font-size: 11px; font-weight: 600; opacity: 0.7; }
-  .store b { display: block; font-size: 19px; font-weight: 800; letter-spacing: -0.01em; }
+  .store { display: inline-block; line-height: 0; border-radius: 9px; transition: transform 0.15s ease, filter 0.15s ease; }
+  .store:hover { transform: translateY(-2px); filter: drop-shadow(0 10px 22px rgba(255, 51, 72, 0.35)); }
+  .store img { height: 54px; width: auto; }
   .note { font-size: 13px; color: var(--muted); margin: 14px 0 0; }
   .center .note { text-align: center; }
-  @media (max-width: 420px) { .store { flex: 1 1 100%; } }
+  @media (max-width: 420px) { .store img { height: 48px; } }
 </style>

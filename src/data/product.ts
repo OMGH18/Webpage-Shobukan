@@ -41,6 +41,8 @@ export const PRICES = {
   yearly: 90,
   yearlyPerMonth: 7.5,
   creatorCredit: 1.99,
+  /** Packs de cartes du Mode Histoire (achat unique, accès à vie) : 2,99 € à 4,99 €. */
+  storyPackFrom: 2.99,
   freeHostedGames: 5,
 } as const
 

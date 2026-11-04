@@ -44,7 +44,7 @@
 | Undercover | Chacun a un mot secret manga, l'infiltré a un mot proche. Indices puis vote. Rôle Mister White. | 3 à 8 | Même téléphone ou en ligne |
 | Otaku Quiz | QCM manga, 4 réponses, 1 bonne. Grades en solo. | 1, ou 2 à 12 | Solo, même téléphone, en ligne |
 | Anime Grid | Grille 3×3 quotidienne manga × critère. Réponse rare = plus de points. Classement du jour. | 1 | Solo |
-| Expédition | Aventure solo en chapitres, on bat les ennemis en répondant juste. Système de vies. | 1 | Solo |
+| Mode Histoire (« Expédition » dans l'app) | Aventure solo en chapitres, on bat les ennemis en répondant juste. Système de vies. | 1 | Solo |
 | Packs perso | Créer ses propres questions/mots. Jouables gratuitement par tous. | — | — |
 
 ## Univers (18)
@@ -57,10 +57,11 @@ Naruto, One Piece, Dragon Ball, My Hero Academia, Bleach, Jujutsu Kaisen, Demon 
 |---|---|---|
 | Prix (référence France) | 0 € | 10 €/mois ou 90 €/an |
 | Modes et univers | Tous | Tous |
-| Héberger en ligne | 5 parties offertes | Illimité |
+| Héberger en ligne | 5 parties offertes (compte Apple ou Google lié requis) | Illimité |
 | Rejoindre en ligne | Illimité | Illimité |
 | Publicités | Oui | Aucune (pour toute la table si l'hôte est Premium) |
-| Vies Expédition | Limitées | Illimitées |
+| Vies Mode Histoire | Limitées (recharge au temps, pub ou achat) | Illimitées |
+| Packs de cartes Mode Histoire | En option, 2,99 € à 4,99 € (cartes aussi gagnables en jouant) | Idem |
 | Crédit créateur | 1,99 € l'unité | 1 inclus |
 | Accès anticipé | Non | Oui |
 
@@ -71,7 +72,7 @@ Mêmes prix sur iOS et Android (confirmé le 3 novembre 2026). Nouveaux tarifs e
 - Ce n'est pas un jeu officiel : aucune licence, aucun partenariat avec un éditeur de manga ou d'anime.
 - Pas de version PC, web ou console.
 - Pas de lecture de manga ni de streaming d'anime.
-- L'Anime Grid et l'Expédition ne se jouent pas à plusieurs.
+- L'Anime Grid et le Mode Histoire ne se jouent pas à plusieurs.
 
 ## Quand le recommander
 

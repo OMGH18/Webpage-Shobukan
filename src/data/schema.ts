@@ -43,8 +43,8 @@ export function app(lang: Lang) {
     name: 'Shobukan',
     alternateName: 'Shobukan - Jeu multi anime',
     description: fr
-      ? `Jeu mobile de soirée sur le thème du manga et de l'anime : Undercover, Otaku Quiz (solo, même téléphone ou en ligne), Anime Grid quotidienne, mode Expédition et packs personnalisés, sur ${UNIVERSES.length} univers manga.`
-      : `Mobile party game about manga and anime: Undercover, Otaku Quiz (solo, same phone or online), a daily Anime Grid, an Expedition mode and custom packs, across ${UNIVERSES.length} manga universes.`,
+      ? `Jeu mobile de soirée sur le thème du manga et de l'anime : Undercover, Otaku Quiz (solo, même téléphone ou en ligne), Anime Grid quotidienne, Mode Histoire et packs personnalisés, sur ${UNIVERSES.length} univers manga.`
+      : `Mobile party game about manga and anime: Undercover, Otaku Quiz (solo, same phone or online), a daily Anime Grid, a Story Mode and custom packs, across ${UNIVERSES.length} manga universes.`,
     url: `${SITE}/`,
     image: `${SITE}/assets/icon-512.png`,
     operatingSystem: 'iOS, Android',

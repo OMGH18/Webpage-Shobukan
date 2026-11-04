@@ -1,0 +1,236 @@
+{
+ "updated": {
+  "terms": "2026-07-05",
+  "privacy": "2026-07-10"
+ },
+ "fr": {
+  "terms": {
+   "title": "Conditions générales d'utilisation",
+   "sections": [
+    {
+     "title": "1. Acceptation des CGU",
+     "body": "L'utilisation de Shobukan implique l'acceptation pleine et entière des présentes Conditions Générales d'Utilisation. Si tu n'acceptes pas ces conditions, n'utilise pas l'application."
+    },
+    {
+     "title": "2. Description du service",
+     "body": "Shobukan est une application mobile de mini-jeux sociaux à thème manga, jouable en groupe (présentiel ou à distance). La version de base est gratuite, financée par la publicité. Un abonnement Premium retire les publicités pour tout le groupe, permet d'héberger en illimité et inclut un crédit créateur. Chaque pack créé consomme ensuite un crédit acheté ponctuellement. Voir la section 5."
+    },
+    {
+     "title": "3. Utilisation acceptable",
+     "body": "Tu t'engages à utiliser l'application de manière loyale et à ne pas :\n\n• L'utiliser à des fins illicites, discriminatoires ou offensantes\n• Perturber le bon fonctionnement du service ou des autres joueurs\n• Tenter de contourner les mécanismes de sécurité (RLS, anti-cheat, achats)\n• Utiliser des pseudos offensants, trompeurs ou usurpant une identité\n• Publier dans tes packs personnalisés du contenu illicite, haineux, sexuel ou violant des droits d'auteur"
+    },
+    {
+     "title": "4. Contenu généré par les utilisateurs (packs personnalisés)",
+     "body": "Les packs que tu crées restent ta propriété intellectuelle. En les créant tu garantis détenir les droits sur le contenu. Nous nous réservons le droit de supprimer tout pack signalé ou détecté comme illégal, haineux, sexuel ou contraire aux CGU, sans préavis. Tes packs sont privés par défaut ; tu peux choisir de les publier, ils deviennent alors visibles et jouables par la communauté."
+    },
+    {
+     "title": "5. Achats (Premium & crédits créateur)",
+     "body": "Les achats se font via l'App Store (Apple) ou Google Play.\n\n• Premium annuel : 90 €/an, avec renouvellement automatique sauf résiliation.\n• Premium mensuel : 10 €/mois, avec renouvellement automatique sauf résiliation.\n• Crédit créateur : achat ponctuel consommable (1 crédit = 1 pack créé), y compris après utilisation du crédit Premium inclus.\n• Tarifs : affichés clairement dans l'app avant tout achat.\n• Facturation et résiliation : gérées par Apple / Google via ton compte.\n• Restauration : « Restaurer mes achats » dans l'app si tu changes d'appareil ou réinstalles.\n• Remboursements : gérés par Apple / Google — contacte leur support pour toute demande."
+    },
+    {
+     "title": "6. Compte et liaison Apple / Google",
+     "body": "Tu peux utiliser Shobukan en mode anonyme (par défaut) ou lier ton compte avec Sign in with Apple ou Google. La liaison te permet de retrouver ton statut Premium, tes stats et tes packs sur un autre appareil. Tu peux supprimer définitivement ton compte à tout moment depuis Profil → « Supprimer mon compte »."
+    },
+    {
+     "title": "7. Disponibilité du service",
+     "body": "L'éditeur s'efforce d'assurer la disponibilité du service mais ne peut garantir une disponibilité permanente et ininterrompue. Des interruptions de maintenance ou techniques peuvent survenir sans préavis. L'accès Premium reste disponible tant que l'abonnement est actif, sans garantie de disponibilité ininterrompue du service."
+    },
+    {
+     "title": "8. Propriété intellectuelle",
+     "body": "L'ensemble des éléments constitutifs de l'application Shobukan (code, design, contenu rédactionnel, sons, icônes, logo) sont la propriété exclusive de l'éditeur et sont protégés par les lois françaises et internationales sur la propriété intellectuelle. Les références aux univers manga sont utilisées à titre culturel et de citation, sans intention de violer les droits des ayants-droit."
+    },
+    {
+     "title": "9. Limitation de responsabilité",
+     "body": "L'éditeur ne saurait être tenu responsable des dommages directs ou indirects résultant d'une interruption du service, d'une perte de données de partie, d'un problème réseau ou d'un défaut d'une plateforme tierce (Apple, Google, Supabase, RevenueCat). L'utilisation de l'application se fait sous l'entière responsabilité de l'utilisateur."
+    },
+    {
+     "title": "10. Modifications des CGU",
+     "body": "L'éditeur se réserve le droit de modifier les présentes CGU à tout moment. En cas de modification substantielle, la nouvelle version te sera présentée à l'ouverture de l'app et tu devras la valider."
+    },
+    {
+     "title": "11. Loi applicable et juridiction",
+     "body": "Les présentes CGU sont soumises au droit français. Tout litige relatif à leur interprétation ou exécution sera soumis aux tribunaux compétents du ressort du siège social de l'éditeur."
+    },
+    {
+     "title": "12. Contact",
+     "body": "Pour toute question relative aux présentes CGU ou à l'application, contacte-nous via les coordonnées indiquées dans les mentions légales."
+    }
+   ]
+  },
+  "privacy": {
+   "title": "Politique de confidentialité",
+   "sections": [
+    {
+     "title": "En résumé",
+     "body": "Shobukan fonctionne par défaut sans inscription. Tu joues avec un identifiant anonyme généré sur ton appareil. Tu peux ensuite lier ton compte Apple ou Google si tu veux retrouver ton statut Premium et tes packs personnalisés sur un autre appareil ; cette liaison est requise pour réclamer les parties en ligne offertes. On collecte le strict minimum pour faire fonctionner le jeu et corriger les bugs."
+    },
+    {
+     "title": "Données collectées",
+     "body": "• Identifiant anonyme : un UUID généré automatiquement à la 1ʳᵉ ouverture, stocké sur ton appareil. Pas de PII associée.\n\n• Pseudo + avatar : choisis par toi, partagés avec les autres joueurs de la room. Stockés localement et côté serveur.\n\n• Liaison Apple / Google (facultatif, requise pour les parties offertes) : si tu choisis « Continuer avec Apple/Google », ton identifiant est lié à ta session Supabase. Ton email reste privé sauf si tu autorises son partage.\n\n• Anti-abus des parties offertes : lors de l'activation des parties offertes, nous conservons un hash SHA-256 non réversible de l'identifiant technique Apple/Google et le compteur associé. Ni l'identifiant brut ni ton email ne sont stockés dans ce compteur.\n\n• Packs personnalisés : tes paires de mots / questions / cartes sont stockées côté serveur, accessibles par toi (et par la communauté si tu publies un pack).\n\n• Événements de jeu : descriptions, votes, questions enregistrés pour le bon déroulement de la partie. Supprimés à la fin de la partie.\n\n• Achats : RevenueCat traite tes achats In-App et conserve un ID transaction. Pas de coordonnées bancaires côté Shobukan (Apple / Google les gèrent).\n\n• Crashs et performances : Sentry capture les erreurs techniques (stack traces anonymisées). PostHog mesure l'usage des écrans pour améliorer l'app — sans IDFA tant que tu refuses le suivi."
+    },
+    {
+     "title": "Données NON collectées",
+     "body": "• Email, numéro de téléphone, adresse postale (sauf liaison Apple/Google où tu choisis ce que tu partages)\n• Données de paiement (Apple / Google les gèrent)\n• Données de localisation\n• Contacts ou photos\n• Données publicitaires cross-app sans consentement ATT"
+    },
+    {
+     "title": "Sous-traitants",
+     "body": "• Supabase, Inc. — base de données et auth (supabase.com/privacy)\n• RevenueCat, Inc. — gestion des achats In-App (revenuecat.com/privacy)\n• Sentry (Functional Software, Inc.) — crash reporting (sentry.io/privacy)\n• PostHog — analytics produit, hébergement UE (posthog.com/privacy)\n• Apple / Google — connexion, achats In-App, notifications push"
+    },
+    {
+     "title": "Suivi cross-app (ATT)",
+     "body": "iOS te demande l'autorisation de suivi via la pop-up système (ATT). Si tu refuses, PostHog et RevenueCat n'utilisent pas ton IDFA. Tu gardes accès à toutes les fonctions, seules les métriques d'usage agrégées en pâtissent."
+    },
+    {
+     "title": "Achats (Premium & crédits)",
+     "body": "Les abonnements Premium et les crédits de création sont gérés par Apple / Google. Premium se renouvelle automatiquement selon la formule choisie sauf résiliation depuis ton compte App Store ou Google Play ; les crédits sont des achats ponctuels. Tu peux restaurer Premium depuis Réglages → « Restaurer mes achats ». Aucun remboursement n'est traité par Shobukan : passe par le support Apple / Google."
+    },
+    {
+     "title": "Conservation des données",
+     "body": "• Données de partie : effacées à la fin de la partie ou sous 2h pour les rooms abandonnées\n• Profil + stats + packs : conservés tant que ton compte est actif\n• Marqueur pseudonymisé des parties offertes : au maximum 12 mois après ta dernière utilisation, puis le quota peut être réinitialisé\n• Crash reports Sentry : 90 jours\n• Analytics PostHog : 12 mois maximum, agrégées\n• Compte lié : tant que tu ne le supprimes pas"
+    },
+    {
+     "title": "Tes droits (RGPD)",
+     "body": "Tu disposes des droits d'accès, rectification, suppression, portabilité et opposition. Tu peux :\n\n• Réinitialiser tes données depuis Profil → « Réinitialiser » (efface tout côté serveur, garde une session anonyme)\n• Supprimer définitivement ton compte depuis Profil → « Supprimer mon compte » (efface aussi ton compte auth)\n• Exporter tes données depuis Réglages → « Télécharger mes données »\n\nPour toute demande spécifique, contacte-nous via les mentions légales."
+    },
+    {
+     "title": "Modifications",
+     "body": "Nous pouvons modifier cette politique. En cas de changement substantiel, la nouvelle version te sera présentée à l'ouverture de l'app et tu devras la valider pour continuer à utiliser le service."
+    }
+   ]
+  },
+  "notices": {
+   "title": "Mentions légales",
+   "sections": [
+    {
+     "title": "Éditeur de l'application",
+     "body": "Raison sociale : Djabel Solutions\nEmail : support@djabelsolutions.fr"
+    },
+    {
+     "title": "Propriété intellectuelle",
+     "body": "L'ensemble des éléments constitutifs de l'application Shobukan (code source, graphismes, textes, sons) sont la propriété exclusive de l'éditeur et sont protégés par les lois françaises et internationales relatives à la propriété intellectuelle."
+    },
+    {
+     "title": "Références aux œuvres manga",
+     "body": "Les références aux univers manga, personnages et techniques présentes dans l'application sont utilisées à titre informatif et ludique. Les droits afférents appartiennent à leurs détenteurs respectifs. Shobukan n'est pas affilié aux éditeurs ou auteurs des œuvres citées."
+    }
+   ],
+   "ip_title": "Propriété intellectuelle",
+   "ip_body": "Shobukan est un jeu de société indépendant sur le thème de la culture manga et anime. Les titres d'œuvres, noms de personnages et de techniques qui apparaissent dans l'application sont cités à titre purement référentiel, pour désigner les univers dont il est question entre joueurs. Ils demeurent la propriété de leurs ayants droit respectifs. Shobukan n'est affilié à, ni sponsorisé, licencié ou approuvé par aucun éditeur, studio ou ayant droit. Aucun visuel, extrait ou contenu original de ces œuvres n'est reproduit dans l'application. Si vous êtes un ayant droit et souhaitez nous contacter, écrivez-nous via l'adresse support indiquée dans les réglages."
+  }
+ },
+ "en": {
+  "terms": {
+   "title": "Terms of Use",
+   "sections": [
+    {
+     "title": "1. Acceptance of the Terms",
+     "body": "Using Shobukan implies full acceptance of these Terms of Use. If you do not accept these terms, do not use the app."
+    },
+    {
+     "title": "2. Service description",
+     "body": "Shobukan is a mobile app of manga-themed social mini-games, played in groups (in person or remotely). The base version is free and ad-supported. A Premium subscription removes ads for the whole group, unlocks unlimited hosting, and includes one creator credit. Each pack created after that consumes a separately purchased credit. See section 5."
+    },
+    {
+     "title": "3. Acceptable use",
+     "body": "You agree to use the app fairly and not to:\n\n• Use it for unlawful, discriminatory or offensive purposes\n• Disrupt the proper operation of the service or other players\n• Attempt to bypass security mechanisms (RLS, anti-cheat, purchases)\n• Use offensive, misleading or impersonating nicknames\n• Publish, in your custom packs, content that is unlawful, hateful, sexual or infringing copyright"
+    },
+    {
+     "title": "4. User-generated content (custom packs)",
+     "body": "The packs you create remain your intellectual property. By creating them you warrant that you hold the rights to the content. We reserve the right to remove any pack reported or detected as illegal, hateful, sexual or contrary to the Terms, without notice. Your packs are private by default; you may choose to publish them, after which they become visible and playable by the community."
+    },
+    {
+     "title": "5. Purchases (Premium & creator credits)",
+     "body": "Purchases are made via the App Store (Apple) or Google Play.\n\n• Annual Premium: €90/year, automatically renewing unless cancelled.\n• Monthly Premium: €10/month, automatically renewing unless cancelled.\n• Creator credit: one-off consumable purchase (1 credit = 1 created pack), including after the included Premium credit has been used.\n• Prices: shown clearly in the app before purchase.\n• Billing and cancellation: handled by Apple / Google via your account.\n• Restore: \"Restore purchases\" in the app if you change device or reinstall.\n• Refunds: handled by Apple / Google — contact their support for any request."
+    },
+    {
+     "title": "6. Account and Apple / Google linking",
+     "body": "You can use Shobukan anonymously (default) or link your account with Sign in with Apple or Google. Linking lets you recover your Premium status, stats and packs on another device. You can permanently delete your account at any time from Profile → \"Delete my account\"."
+    },
+    {
+     "title": "7. Service availability",
+     "body": "The publisher strives to keep the service available but cannot guarantee permanent, uninterrupted availability. Maintenance or technical interruptions may occur without notice. Premium access remains available while the subscription is active, without a guarantee of uninterrupted service availability."
+    },
+    {
+     "title": "8. Intellectual property",
+     "body": "All components of the Shobukan app (code, design, editorial content, sounds, icons, logo) are the exclusive property of the publisher and are protected by French and international intellectual property laws. References to manga universes are used for cultural and citation purposes, without intent to infringe rights holders."
+    },
+    {
+     "title": "9. Limitation of liability",
+     "body": "The publisher cannot be held liable for direct or indirect damages resulting from a service interruption, loss of game data, a network issue or a third-party platform failure (Apple, Google, Supabase, RevenueCat). Use of the app is under the user's full responsibility."
+    },
+    {
+     "title": "10. Changes to the Terms",
+     "body": "The publisher reserves the right to change these Terms at any time. In case of a substantial change, the new version will be shown at app launch and you will have to accept it."
+    },
+    {
+     "title": "11. Governing law and jurisdiction",
+     "body": "These Terms are governed by French law. Any dispute regarding their interpretation or performance will be submitted to the competent courts of the publisher's registered office."
+    },
+    {
+     "title": "12. Contact",
+     "body": "For any question regarding these Terms or the app, contact us via the details provided in the legal notices."
+    }
+   ]
+  },
+  "privacy": {
+   "title": "Privacy Policy",
+   "sections": [
+    {
+     "title": "In short",
+     "body": "Shobukan works without sign-up by default. You play with an anonymous identifier generated on your device. You can then link your Apple or Google account if you want to recover your Premium status and custom packs on another device; this link is required to claim free online games. We collect the bare minimum to run the game and fix bugs."
+    },
+    {
+     "title": "Data collected",
+     "body": "• Anonymous ID: a UUID generated automatically on first launch, stored on your device. No PII attached.\n\n• Nickname + avatar: chosen by you, shared with other players in the room. Stored locally and server-side.\n\n• Apple / Google linking (optional, required for free games): if you choose \"Continue with Apple/Google\", your identifier is linked to your Supabase session. Your email stays private unless you allow sharing it.\n\n• Free-game anti-abuse: when you activate free games, we keep a non-reversible SHA-256 hash of the Apple/Google technical identifier and its associated counter. Neither the raw identifier nor your email is kept in this counter.\n\n• Custom packs: your word pairs / questions / cards are stored server-side, accessible by you (and by the community if you publish a pack).\n\n• Game events: descriptions, votes, questions recorded for the game to run. Deleted at the end of the game.\n\n• Purchases: RevenueCat processes your In-App purchases and keeps a transaction ID. No banking details on Shobukan's side (Apple / Google handle them).\n\n• Crashes and performance: Sentry captures technical errors (anonymized stack traces). PostHog measures screen usage to improve the app — without IDFA as long as you decline tracking."
+    },
+    {
+     "title": "Data NOT collected",
+     "body": "• Email, phone number, postal address (except Apple/Google linking where you choose what you share)\n• Payment data (Apple / Google handle them)\n• Location data\n• Contacts or photos\n• Cross-app advertising data without ATT consent"
+    },
+    {
+     "title": "Sub-processors",
+     "body": "• Supabase, Inc. — database and auth (supabase.com/privacy)\n• RevenueCat, Inc. — In-App purchase management (revenuecat.com/privacy)\n• Sentry (Functional Software, Inc.) — crash reporting (sentry.io/privacy)\n• PostHog — product analytics, EU hosting (posthog.com/privacy)\n• Apple / Google — sign-in, In-App purchases, push notifications"
+    },
+    {
+     "title": "Cross-app tracking (ATT)",
+     "body": "iOS asks for tracking permission via the system pop-up (ATT). If you decline, PostHog and RevenueCat do not use your IDFA. You keep access to all features; only aggregated usage metrics are affected."
+    },
+    {
+     "title": "Purchases (Premium & credits)",
+     "body": "Premium subscriptions and creation credits are handled by Apple / Google. Premium renews automatically according to the selected plan unless cancelled from your App Store or Google Play account; credits are one-time purchases. You can restore Premium from Settings → \"Restore purchases\". No refund is processed by Shobukan: please go through Apple / Google support."
+    },
+    {
+     "title": "Data retention",
+     "body": "• Game data: deleted at the end of the game or within 2h for abandoned rooms\n• Profile + stats + packs: kept as long as your account is active\n• Pseudonymized free-game marker: up to 12 months after your last use, then the quota can reset\n• Sentry crash reports: 90 days\n• PostHog analytics: 12 months max, aggregated\n• Linked account: until you delete it"
+    },
+    {
+     "title": "Your rights (GDPR)",
+     "body": "You have the rights of access, rectification, deletion, portability and objection. You can:\n\n• Reset your data from Profile → \"Reset\" (erases everything server-side, keeps an anonymous session)\n• Permanently delete your account from Profile → \"Delete my account\" (also erases your auth account)\n• Export your data from Settings → \"Download my data\"\n\nFor any specific request, contact us via the legal notices."
+    },
+    {
+     "title": "Changes",
+     "body": "We may change this policy. In case of a substantial change, the new version will be shown at app launch and you will have to accept it to keep using the service."
+    }
+   ]
+  },
+  "notices": {
+   "title": "Legal notices",
+   "sections": [
+    {
+     "title": "App publisher",
+     "body": "Company: Djabel Solutions\nEmail: support@djabelsolutions.fr"
+    },
+    {
+     "title": "Intellectual property",
+     "body": "All components of the Shobukan app (source code, graphics, text, sounds) are the exclusive property of the publisher and are protected by French and international intellectual property laws."
+    },
+    {
+     "title": "References to manga works",
+     "body": "References to manga universes, characters and techniques in the app are used for informational and entertainment purposes. The related rights belong to their respective holders. Shobukan is not affiliated with the publishers or authors of the cited works."
+    }
+   ],
+   "ip_title": "Intellectual property",
+   "ip_body": "Shobukan is an independent party game themed around manga and anime culture. Titles of works, character and technique names appearing in the app are used for identification purposes only, to designate the universes players are talking about. They remain the property of their respective rights holders. Shobukan is not affiliated with, sponsored, licensed or endorsed by any publisher, studio or rights holder. No artwork, excerpt or original content from these works is reproduced in the app. If you are a rights holder and wish to reach us, contact the support address listed in the settings."
+  }
+ }
+}

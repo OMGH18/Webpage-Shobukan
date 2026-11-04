@@ -27,9 +27,10 @@ const c = fr
         ['Univers manga', `Les ${UNIVERSES.length}`, `Les ${UNIVERSES.length}`],
         ['Parties sur un seul téléphone', 'Illimitées', 'Illimitées'],
         ['Rejoindre une partie en ligne', 'Illimité', 'Illimité'],
-        ['Héberger une partie en ligne', `${PRICES.freeHostedGames} offertes`, 'Illimité'],
+        ['Héberger une partie en ligne', `${PRICES.freeHostedGames} offertes (compte Apple ou Google lié)`, 'Illimité'],
         ['Publicités', 'Oui', 'Aucune'],
-        ['Vies en Expédition', 'Limitées (recharge avec le temps ou une pub)', 'Illimitées'],
+        ['Vies en Mode Histoire', 'Limitées (recharge avec le temps, une pub ou un achat)', 'Illimitées'],
+        ['Packs de cartes du Mode Histoire', `En option, dès ${p(PRICES.storyPackFrom)}`, `En option, dès ${p(PRICES.storyPackFrom)}`],
         ['Créer un pack personnalisé', `${p(PRICES.creatorCredit)} le crédit`, `1 crédit inclus, puis ${p(PRICES.creatorCredit)}`],
       ],
       extras: [
@@ -37,7 +38,7 @@ const c = fr
         { t: 'Les crédits créateur', b: `Un crédit coûte ${p(PRICES.creatorCredit)} et permet de créer un pack personnalisé (tes questions ou tes mots). Une fois créé, ton pack se joue et se partage gratuitement par tout le monde.` },
       ],
       faq: [
-        { q: 'Shobukan est-il vraiment gratuit ?', a: `Oui. Tous les modes et les ${UNIVERSES.length} univers sont jouables gratuitement, avec des publicités. Rien n'est verrouillé derrière Premium à part l'hébergement illimité, l'absence de pub et les vies illimitées en Expédition.` },
+        { q: 'Shobukan est-il vraiment gratuit ?', a: `Oui. Tous les modes et les ${UNIVERSES.length} univers sont jouables gratuitement, avec des publicités. Rien n'est verrouillé derrière Premium à part l'hébergement illimité, l'absence de pub et les vies illimitées en Mode Histoire. Les cartes du Mode Histoire se gagnent aussi en jouant : les packs payants ne font qu'accélérer.` },
         { q: 'Combien coûte Premium ?', a: `${p(PRICES.monthly)} par mois ou ${p(PRICES.yearly)} par an en France (soit ${p(PRICES.yearlyPerMonth)} par mois), sur iPhone comme sur Android.` },
         { q: 'Comment résilier Premium ?', a: "Depuis les réglages d'abonnement de ton compte App Store ou Google Play, à tout moment. Premium reste actif jusqu'à la fin de la période payée." },
         { q: 'Mes amis doivent-ils payer pour jouer avec moi ?', a: `Non. Rejoindre une partie en ligne est gratuit et illimité. Si l'hôte est Premium, toute la table joue sans pub.` },
@@ -56,9 +57,10 @@ const c = fr
         ['Manga universes', `All ${UNIVERSES.length}`, `All ${UNIVERSES.length}`],
         ['Same-phone games', 'Unlimited', 'Unlimited'],
         ['Join an online game', 'Unlimited', 'Unlimited'],
-        ['Host an online game', `${PRICES.freeHostedGames} free`, 'Unlimited'],
+        ['Host an online game', `${PRICES.freeHostedGames} free (linked Apple or Google account)`, 'Unlimited'],
         ['Ads', 'Yes', 'None'],
-        ['Expedition lives', 'Limited (refill over time or with an ad)', 'Unlimited'],
+        ['Story Mode lives', 'Limited (refill over time, with an ad or a purchase)', 'Unlimited'],
+        ['Story Mode card packs', `Optional, from ${p(PRICES.storyPackFrom)}`, `Optional, from ${p(PRICES.storyPackFrom)}`],
         ['Create a custom pack', `${p(PRICES.creatorCredit)} per credit`, `1 credit included, then ${p(PRICES.creatorCredit)}`],
       ],
       extras: [
@@ -66,7 +68,7 @@ const c = fr
         { t: 'Creator credits', b: `A credit costs ${p(PRICES.creatorCredit)} and lets you create one custom pack (your questions or words). Once created, anyone can play and share your pack for free.` },
       ],
       faq: [
-        { q: 'Is Shobukan really free?', a: `Yes. Every mode and all ${UNIVERSES.length} universes are free to play, with ads. Premium only adds unlimited hosting, no ads and unlimited Expedition lives.` },
+        { q: 'Is Shobukan really free?', a: `Yes. Every mode and all ${UNIVERSES.length} universes are free to play, with ads. Premium only adds unlimited hosting, no ads and unlimited Story Mode lives. Story Mode cards can also be earned by playing: paid packs only speed things up.` },
         { q: 'How much is Premium?', a: `${p(PRICES.monthly)} per month or ${p(PRICES.yearly)} per year in France (${p(PRICES.yearlyPerMonth)} per month), on iPhone and Android.` },
         { q: 'How do I cancel Premium?', a: 'From the subscription settings of your App Store or Google Play account, at any time. Premium stays active until the end of the paid period.' },
         { q: 'Do my friends need to pay to play with me?', a: 'No. Joining an online game is free and unlimited. If the host is Premium, the whole table plays without ads.' },

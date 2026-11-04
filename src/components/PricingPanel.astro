@@ -10,8 +10,8 @@ const p = (v: number) => formatPrice(v, lang)
 const c = fr
   ? {
       monthly: 'Mensuel', yearly: 'Annuel', save: '-25 %',
-      free: { name: 'Gratuit', price: p(0), sub: 'Pour toujours', items: ['Tous les modes', `Les ${UNIVERSES.length} univers manga`, 'Parties sur un téléphone illimitées', 'Rejoindre en ligne sans limite', `${PRICES.freeHostedGames} parties en ligne hébergées`, 'Avec publicités'], cta: 'Jouer gratuitement' },
-      premium: { name: 'Premium', badge: 'Recommandé', perMonth: '/mois', perYear: '/an', yearlyNote: `soit ${p(PRICES.yearlyPerMonth)} par mois`, monthlyNote: 'Sans engagement', items: ['Zéro pub, pour toute la table', 'Parties en ligne illimitées', 'Vies illimitées en Expédition', '1 crédit créateur inclus', 'Accès anticipé aux nouveautés'], cta: 'Passer Premium' },
+      free: { name: 'Gratuit', price: p(0), sub: 'Pour toujours', items: ['Tous les modes', `Les ${UNIVERSES.length} univers manga`, 'Parties sur un téléphone illimitées', 'Rejoindre en ligne sans limite', `${PRICES.freeHostedGames} parties en ligne offertes à héberger`, 'Avec publicités'], cta: 'Jouer gratuitement' },
+      premium: { name: 'Premium', badge: 'Recommandé', perMonth: '/mois', perYear: '/an', yearlyNote: `soit ${p(PRICES.yearlyPerMonth)} par mois`, monthlyNote: 'Sans engagement', items: ['Zéro pub, pour toute la table', 'Parties en ligne illimitées', 'Vies illimitées en Mode Histoire', '1 crédit créateur inclus', 'Accès anticipé aux nouveautés'], cta: 'Passer Premium' },
       credit: { name: 'Crédit créateur', price: p(PRICES.creatorCredit), per: '/pack', sub: 'À l’unité', items: ['Crée ton propre pack', 'Tes questions ou tes mots', 'Jouable gratuitement par tous', 'Achat unique, sans abonnement'], cta: 'Créer un pack' },
       trust: ['Sans engagement', 'Résiliable à tout moment', 'Mêmes prix sur iPhone et Android', 'Rejoindre une partie est gratuit'],
       details: 'Détail complet des prix',
@@ -19,8 +19,8 @@ const c = fr
     }
   : {
       monthly: 'Monthly', yearly: 'Yearly', save: '-25%',
-      free: { name: 'Free', price: p(0), sub: 'Forever', items: ['Every mode', `All ${UNIVERSES.length} manga universes`, 'Unlimited same-phone games', 'Join online without limit', `Host ${PRICES.freeHostedGames} online games`, 'With ads'], cta: 'Play for free' },
-      premium: { name: 'Premium', badge: 'Recommended', perMonth: '/month', perYear: '/year', yearlyNote: `that's ${p(PRICES.yearlyPerMonth)} per month`, monthlyNote: 'No commitment', items: ['No ads, for the whole table', 'Unlimited online games', 'Unlimited Expedition lives', '1 creator credit included', 'Early access to new content'], cta: 'Go Premium' },
+      free: { name: 'Free', price: p(0), sub: 'Forever', items: ['Every mode', `All ${UNIVERSES.length} manga universes`, 'Unlimited same-phone games', 'Join online without limit', `${PRICES.freeHostedGames} free online games to host`, 'With ads'], cta: 'Play for free' },
+      premium: { name: 'Premium', badge: 'Recommended', perMonth: '/month', perYear: '/year', yearlyNote: `that's ${p(PRICES.yearlyPerMonth)} per month`, monthlyNote: 'No commitment', items: ['No ads, for the whole table', 'Unlimited online games', 'Unlimited Story Mode lives', '1 creator credit included', 'Early access to new content'], cta: 'Go Premium' },
       credit: { name: 'Creator credit', price: p(PRICES.creatorCredit), per: '/pack', sub: 'Pay per pack', items: ['Create your own pack', 'Your questions or words', 'Free for everyone to play', 'One-off, no subscription'], cta: 'Create a pack' },
       trust: ['No commitment', 'Cancel anytime', 'Same price on iPhone and Android', 'Joining a game is free'],
       details: 'Full pricing details',

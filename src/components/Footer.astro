@@ -17,7 +17,7 @@ const half = Math.ceil(UNIVERSES.length / 2)
     <div class="wrap">
       <div class="head">
         <a class="logo" href={ROUTES.home[lang]}><Image src={icon} alt="" width={64} height={64} /><span>Shobukan</span></a>
-        <p class="sub">{fr ? 'Le party game manga' : 'The manga party game'} · Undercover · Otaku Quiz · Anime Grid · {fr ? 'Expédition' : 'Expedition'}</p>
+        <p class="sub">{fr ? 'Le party game manga' : 'The manga party game'} · Undercover · Otaku Quiz · Anime Grid · {fr ? 'Mode Histoire' : 'Story Mode'}</p>
       </div>
       <div class="cols">
         <nav aria-label={ui.footer.game}>
@@ -38,9 +38,9 @@ const half = Math.ceil(UNIVERSES.length / 2)
         <nav aria-label={ui.footer.help}>
           <h2>{ui.footer.help}</h2>
           <a href={`mailto:${PUBLISHER.email}`}>{ui.footer.contact}</a>
-          <a href="/privacy/">{ui.footer.privacy}</a>
-          <a href="/terms/">{ui.footer.terms}</a>
-          <a href="/account-deletion/">{ui.footer.deletion}</a>
+          <a href={fr ? '/privacy/' : '/en/privacy/'}>{ui.footer.privacy}</a>
+          <a href={fr ? '/terms/' : '/en/terms/'}>{ui.footer.terms}</a>
+          <a href={fr ? '/account-deletion/' : '/en/account-deletion/'}>{ui.footer.deletion}</a>
         </nav>
         <nav aria-label={ui.footer.follow}>
           <h2>{ui.footer.follow}</h2>

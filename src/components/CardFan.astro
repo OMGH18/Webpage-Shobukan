@@ -1,35 +1,43 @@
 ---
-// Éventail de cartes de l'ouverture : deux vraies cartes de l'Expédition
-// encadrant une carte « mot secret » d'Undercover. Bordure holographique.
+// Éventail de l'ouverture : une carte par mode (Otaku Quiz, Undercover,
+// Mode Histoire), illustrées avec les visuels de l'app. Bordure holographique.
 import { Image } from 'astro:assets'
-import contre from '../assets/art/cards/contre.png'
-import memoire from '../assets/art/cards/memoire.png'
+import pages from '../assets/art/format-picker-bg.jpg'
 import rain from '../assets/art/chapter-rain.jpg'
-import { PLAYERS, type Lang } from '../data/product'
+import arena from '../assets/art/arena-shonen-pop.jpg'
+import { CONTENT, PLAYERS, type Lang } from '../data/product'
 
 interface Props { lang: Lang }
 const { lang } = Astro.props
 const fr = lang === 'fr'
-const exp = fr ? 'Carte de l’Expédition' : 'Expedition card'
+const nf = new Intl.NumberFormat(fr ? 'fr-FR' : 'en-US')
 ---
 
 <div class="fan" aria-hidden="true">
   <div class="holo c-left">
     <div class="face">
-      <Image class="art" src={contre} alt="" width={460} loading="eager" />
-      <div class="foot"><b>{fr ? 'Contre' : 'Counter'}</b><small>{exp}</small></div>
+      <div class="art quiz">
+        <Image class="bg" src={pages} alt="" width={460} loading="eager" />
+        <span class="q">
+          <b>{fr ? 'Combien de sabres utilise Zoro ?' : 'How many swords does Zoro use?'}</b>
+          <span class="opts"><i>2</i><i class="ok">3</i><i>4</i><i>5</i></span>
+        </span>
+      </div>
+      <div class="foot"><b>Otaku Quiz</b><small>{`${nf.format(CONTENT.questions[lang])}+ questions`}</small></div>
     </div>
   </div>
   <div class="holo c-right">
     <div class="face">
-      <Image class="art" src={memoire} alt="" width={460} loading="eager" />
-      <div class="foot"><b>{fr ? 'Mémoire' : 'Memory'}</b><small>{exp}</small></div>
+      <div class="art story">
+        <Image class="bg" src={arena} alt="" width={460} loading="eager" />
+      </div>
+      <div class="foot"><b>{fr ? 'Mode Histoire' : 'Story Mode'}</b><small>{fr ? 'Aventure solo en chapitres' : 'Solo adventure in chapters'}</small></div>
     </div>
   </div>
   <div class="holo c-mid">
     <div class="face">
       <div class="art word">
-        <Image class="word-bg" src={rain} alt="" width={460} loading="eager" fetchpriority="high" />
+        <Image class="bg" src={rain} alt="" width={460} loading="eager" fetchpriority="high" />
         <span class="secret"><small>{fr ? 'Ton mot secret' : 'Your secret word'}</small>Itachi Uchiha</span>
         <span class="stamp">{fr ? 'Infiltré ?' : 'Impostor?'}</span>
       </div>
@@ -40,7 +48,8 @@ const exp = fr ? 'Carte de l’Expédition' : 'Expedition card'
 
 <style>
   @property --a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
-  .fan { --w: clamp(150px, 19vw, 236px); position: relative; width: 100%; height: calc(var(--w) * 1.62); }
+  .fan { --w: clamp(132px, 19vw, 236px); --sx: 72%; --sy: 17%; position: relative; width: 100%; height: calc(var(--w) * 1.72); }
+  @media (max-width: 520px) { .fan { --sx: 64%; --sy: 26%; height: calc(var(--w) * 1.86); } }
   .holo {
     position: absolute; left: calc(50% - var(--w) / 2); top: 4%; width: var(--w);
     padding: 3px; border-radius: 20px;
@@ -50,12 +59,12 @@ const exp = fr ? 'Carte de l’Expédition' : 'Expedition card'
     transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
   @keyframes holo { to { --a: 360deg; } }
-  .c-left { transform: translateX(-62%) translateY(9%) rotate(-12deg); }
-  .c-right { transform: translateX(62%) translateY(9%) rotate(12deg); }
+  .c-left { transform: translateX(calc(-1 * var(--sx))) translateY(var(--sy)) rotate(-9deg); }
+  .c-right { transform: translateX(var(--sx)) translateY(var(--sy)) rotate(9deg); }
   .c-right .foot { text-align: right; }
   .c-mid { transform: translateY(-2%); z-index: 2; }
-  .fan:hover .c-left { transform: translateX(-70%) translateY(7%) rotate(-15deg); }
-  .fan:hover .c-right { transform: translateX(70%) translateY(7%) rotate(15deg); }
+  .fan:hover .c-left { transform: translateX(calc(-1 * var(--sx) - 8%)) translateY(15%) rotate(-12deg); }
+  .fan:hover .c-right { transform: translateX(calc(var(--sx) + 8%)) translateY(15%) rotate(12deg); }
   .fan:hover .c-mid { transform: translateY(-5%); }
 
   .face { position: relative; overflow: hidden; border-radius: 17px; background: var(--surface); }
@@ -68,13 +77,31 @@ const exp = fr ? 'Carte de l’Expédition' : 'Expedition card'
   .c-left .face::after { animation-delay: 1.2s; }
   .c-right .face::after { animation-delay: 2.4s; }
   @keyframes shine { 0%, 55% { background-position: 120% 0; } 100% { background-position: -120% 0; } }
-  .face :global(.art) { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
+
+  .face .art { position: relative; display: grid; place-items: center; aspect-ratio: 1; overflow: hidden; background: #0b0b12; }
+  .art :global(.bg) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .foot { display: grid; gap: 1px; padding: 9px 12px 11px; border-top: 1px solid var(--border); }
   .foot b { font-family: var(--font-brand); font-weight: 400; font-size: calc(var(--w) * 0.085); line-height: 1.2; color: var(--text); }
   .foot small { font-size: calc(var(--w) * 0.052); color: var(--faint); font-weight: 500; }
 
-  .face .word { position: relative; display: grid; place-items: center; background: #0b0b12; }
-  .word :global(.word-bg) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; opacity: 0.55; }
+  /* Otaku Quiz : planche de manga + mini question */
+  .quiz :global(.bg) { object-position: 50% 70%; filter: saturate(0.8); }
+  .quiz::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(120, 10, 60, 0.25), rgba(5, 5, 8, 0.55)); }
+  .q {
+    position: relative; z-index: 2; width: 84%; display: grid; gap: calc(var(--w) * 0.03);
+    background: #fff; color: #120609; border-radius: 10px; padding: calc(var(--w) * 0.045);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4); transform: rotate(-2deg);
+  }
+  .q b { font-size: calc(var(--w) * 0.052); line-height: 1.25; }
+  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--w) * 0.022); }
+  .opts i { font-style: normal; font-weight: 600; font-size: calc(var(--w) * 0.05); border: 1.5px solid #e5e0e2; border-radius: 6px; padding: 2px 6px; }
+  .opts .ok { border-color: #06a77d; background: #d4f6ea; }
+
+  /* Mode Histoire : arène shōnen */
+  .story :global(.bg) { object-position: 50% 32%; }
+
+  /* Undercover : mot secret */
+  .word :global(.bg) { object-position: 50% 30%; opacity: 0.55; }
   .word::before { content: ''; position: absolute; inset: 0; z-index: 1; background: radial-gradient(70% 55% at 50% 50%, rgba(5, 5, 8, 0.85), rgba(5, 5, 8, 0.25)); }
   .secret {
     position: relative; z-index: 2; text-align: center; display: grid; gap: 4px;

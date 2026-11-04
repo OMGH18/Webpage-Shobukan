@@ -48,9 +48,9 @@ export const ui = {
       game: 'The game',
       help: 'Help',
       follow: 'Follow Shobukan',
-      privacy: 'Privacy (FR)',
-      terms: 'Terms of use (FR)',
-      deletion: 'Account deletion (FR)',
+      privacy: 'Privacy',
+      terms: 'Terms of use',
+      deletion: 'Account deletion',
       contact: 'Contact',
       legal:
         'Shobukan is an independent manga trivia game published by Djabel Solutions. It is not affiliated with, sponsored or endorsed by any manga or anime publisher. Titles and character names belong to their respective owners.',
